@@ -13,7 +13,7 @@
             <div class="task-list__inputs-container">
               
               <OneTask
-                v-for="(task, index) in allTasks[this.activeTableIndex + 1].taskLists[this.taskListIndex].tasks"
+                v-for="(task, index) in doneTasks"
                 :task = 'task'
                 :Index = 'index'
                 :tableInd = 'activeTableIndex'
@@ -95,11 +95,19 @@ export default {
           }
         },
 
+        //фильтруем список по сделанным задачам
         doneTasks() {
-           const t = allTasks[this.activeTableIndex + 1].taskLists[this.taskListIndex].tasks;
-           return t;
+           const t = this.allTasks[this.activeTableIndex + 1].taskLists[this.taskListIndex].tasks;
+           return t.filter(function(task){
+             return !task.isDone
+           });
           //  .filterBy(t.isDone);
         }
+
+  },
+
+  filters: {
+
   }
 };
 </script>

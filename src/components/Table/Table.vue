@@ -18,10 +18,18 @@
        :TList = 'TList'
        :taskListIndex = 'index'>
     </TaskList>    
+     
+     <div class="add-list__bg"
+      @click="addList">
+       <img src="../../../img/icons/add-plus-button.svg"
+         class='add-list__img'
+         >
+     </div> 
 
     <hr>
 
-    <span style="color: white; font-weigth: 500; background: black;">
+    <span style="color: white; font-weigth: 500; background: black;"
+     >
     {{ allTasks }}
     </span>
 
@@ -50,7 +58,8 @@ export default {
         },
         activeTableIndex() {
           return this.$store.state.activeTableIndex;
-        }
+        },
+ 
     },
     methods: {
         //Подтягиваем расчеты из хранилища
@@ -70,12 +79,38 @@ export default {
         //так вызываем action, он дает что то вроде асинхронной загрузки для mutation
         callAction() {
              this.$store.dispatch('register', user.id)
+        },
+        addList() {
+          this.$store.dispatch('addList');
         }
     },
+
     components: {
         TaskList
     }
   }
 
 </script>
+
+<style lang="scss">
+  .add-list {
+      &__bg {
+          height: 46px;
+          width: 46px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, .1);
+          display: flex;
+          margin-left: 140px;
+      }
+
+      &__img {
+          height: 30px;
+          width: 30px;
+          margin: auto;
+
+
+      }
+  }
+</style>
+
 

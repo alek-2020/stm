@@ -302,6 +302,49 @@ export const store = new Vuex.Store({
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);
             })
+        },
+
+        //добавляем лист задач
+        addList({ dispatch, commit, state }) {
+          let tableInd = state.activeTableIndex;
+          tableInd += 1;
+          const TableLists =  state.allTasks[tableInd].taskLists;
+          const tableId = state.allTasks[tableInd].id;
+
+          console.log('Получили списки и id', TableLists, tableId);
+
+          const newTaskList = {
+             name: 'Введите название списка',
+             tasks: [
+                 {
+                     text: 'Привет, я задача',
+                     isDone: false
+                 }
+             ]
+          }
+
+          TableLists.push(newTaskList);
+
+          console.log('Новый массив со списком', TableLists);
+
+        //   firebase
+        //   .database()
+        //   .ref("tables/" + tableId + "/taskLists")
+        //   .set(true)
+        //   .then(data => {
+
+        //     //Если успех внесем изменения в локальный массив
+        //     const taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
+
+        //     console.log('Задачка готова!');
+            
+
+        //   })
+        //   .catch(error => {
+        //       console.log('Полный провал. Ошибка: ', error);
+        //   })
+
+
         }
     },
     //сюда сбросим простые расчеты
