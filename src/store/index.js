@@ -126,8 +126,10 @@ export const store = new Vuex.Store({
                     .once('value')
                     .then(data => {
 
-                        state.taskLists.push(data.val());
 
+                        state.taskLists.push(data.val());
+                        
+                        console.log('Получили список задач ', data.val());
                         //пишем списки в супер JSON
                         console.log('ЛОВИМ БАЗ С ИМЕНЕМ. СЕЙЧС ЭЛЕМ ', element);
                         state.allTasks[state.activeTableIndex + 1].taskLists.push({
@@ -313,38 +315,173 @@ export const store = new Vuex.Store({
 
           console.log('Получили списки и id', TableLists, tableId);
 
+          
+     
           const newTaskList = {
-             name: 'Введите название списка',
-             tasks: [
-                 {
-                     text: 'Привет, я задача',
-                     isDone: false
-                 }
-             ]
+            'name': 'Введите название списка',
+            'color': 'black',
+            'tasks': []
+         }
+
+         TableLists.push(newTaskList);
+         console.log('Новый массив со списком', TableLists);
+
+
+
+
+          firebase
+          .database()
+          .ref("taskLists/")
+          .push(newTaskList)
+          .then(data => {
+
+
+            console.log('список в СПИСКАХ!', data.id);
+            //теперь привяжем id списка к столу
+            const newListId = data.key;
+            console.log('список в СПИСКАХ!!!!!!!', newListId);
+
+            dispatch('getTaskListInTable', {tableId, newListId}) ;
+
+
+          })
+          .catch(error => {
+              console.log('Полный провал. Ошибка: ', error);
+          })
+        },
+
+/////////
+        getTaskListInTable({ dispatch, commit, state }, {tableId, newListId} ) {
+           
+            firebase
+            .database()
+            .ref("tables/" + tableId + "/taskLists")
+            .once('value')
+            .then(data => {
+  
+  
+              console.log('ПОЛУЧИЛИ СТОЛЫ С СЕРВАКА', data.val());
+              const taskListsId = data.val();
+               dispatch('addListIdToTable', {tableId, newListId, taskListsId}) ;
+
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+
+            
+        },
+
+        addListIdToTable({ dispatch, commit, state }, {tableId, newListId, taskListsId}) {
+         
+        //   let taskListsId = state.userTables.taskLists;
+          
+
+          if(typeof taskListsId == "undefined"){
+            console.log('переменная не попределена задач нема', taskListsId)
+
+            taskListsId = [newListId]
+          } else {
+            taskListsId.push(newListId);
           }
 
-          TableLists.push(newTaskList);
+        // taskListsId = newListId;
 
-          console.log('Новый массив со списком', TableLists);
+          console.log('А СПИСКИ У НАС ТАКИЕ ', taskListsId);
 
-        //   firebase
-        //   .database()
-        //   .ref("tables/" + tableId + "/taskLists")
-        //   .set(true)
-        //   .then(data => {
+          firebase
+          .database()
+          .ref("tables/" + tableId + "/taskLists")
+          .set(taskListsId)
+          .then(data => {
 
-        //     //Если успех внесем изменения в локальный массив
-        //     const taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
 
-        //     console.log('Задачка готова!');
+            console.log('АЙДИШНИКИ В СТОЛЕ БРАТУХА!!!');
+            //нужно получим заново наши столы
+            // dispatch('GetTablesOnly');
+
+          })
+          .catch(error => {
+              console.log('Полный провал. Ошибка: ', error);
+          })
+
+
+        },
+        
+        //ДОБАВЛЕНИЕ РАБОЧЕГО СТОЛА
+
+        // 1. закидываем новый стол в tables
+
+        pushNewTable({ dispatch, commit, state }, newTableBtn) {
+            const userId = state.userId;
+
+            firebase
+            .database()
+            .ref("tables/")
+            .push(newTableBtn)
+            .then(data => {
             
+             console.log('Закинули стол ', newTableBtn);
+             console.log('Запушили столешек', data);
+             const newTableId = data.key;
 
-        //   })
-        //   .catch(error => {
-        //       console.log('Полный провал. Ошибка: ', error);
-        //   })
+             //Зальем стол в наш локальный объект
+            state.allTasks.push(newTableBtn);
 
 
+             dispatch('getTablesList', newTableId);
+
+
+  
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+        },
+
+        // 2. получим список столов с сервера
+        getTablesList({ dispatch, commit, state }, newTableId ) {
+
+            const userId = state.userId;
+
+            firebase
+            .database()
+            .ref("users/" + userId + "/tables")
+            .once('value')
+            .then(data => {
+  
+            //   console.log('адрес такой users/ ', userId , '/tables');
+              console.log('столы у нас такие!!! ', data.val());
+              let allTables = data.val();
+
+              allTables.push(newTableId);
+              dispatch('apdateTablesList', {allTables, userId})
+            
+  
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+        },
+
+        // 3. Апдейтим новый список
+
+        apdateTablesList({ dispatch, commit, state },  {allTables, userId}) {
+
+
+            firebase
+            .database()
+            .ref("users/" + userId + "/tables")
+            .set(allTables)
+            .then(data => {
+  
+               console.log('Залили списки столов в юзера');
+            
+  
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
         }
     },
     //сюда сбросим простые расчеты
