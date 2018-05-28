@@ -14,7 +14,7 @@
     <!-- <router-view></router-view> -->
 
     <TaskList
-       v-for="(TList, index) in allTasks[activeTableIndex + 1].taskLists"
+       v-for="(TList, index) in allTasks[activeTableIndex].taskLists"
        :TList = 'TList'
        :taskListIndex = 'index'>
     </TaskList>    
@@ -91,6 +91,7 @@ export default {
   }
 
 </script>
+
 
 <style lang="scss">
   .add-list {

@@ -1,18 +1,20 @@
 <template>
 
 <button
-  class="desk-btns__one">
-  <!-- v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colOne + ', ' + table.colTwo }"
+  class="desk-btns__one"
+  v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colOne + ', ' + table.colTwo }"
   v-bind:class="{'desk-btns__last': ifLasBtn}"
   v-bind:id=" 'tableBtn-' + table.BtnId"
-  v-on:click = 'activeTable = index'
-  > -->
+  v-on:click = 'changeActiveTable(index)'
+  >
 
       <!-- input для вывода названия -->
       <input 
       class="desk-btns__input" 
       type="text"
       v-model="table.name"
+      @focusout='changeTableTitle(table.name)'
+      @keyup.enter='changeTableTitle(table.name)'
       > 
 
 
@@ -94,6 +96,21 @@ export default Vue.extend({
     test2() {
       console.log('Клик!');
     },
+
+  changeActiveTable(index) {
+        console.log('сменили индекс ', index)
+        this.$store.state.activeTableIndex = index;
+        //Стартуем подгрузку задач, я сказал стартуем
+         this.$store.dispatch('startGetTasks');
+
+      },
+
+      changeTableTitle(NewName) {
+
+         const TableId = this.table.id
+         this.$store.dispatch('changeTableTitle', { NewName, TableId })
+      }
+
 
   }
 //   ,

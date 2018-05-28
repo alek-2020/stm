@@ -1,41 +1,50 @@
 <template>
   <div class="desk-btns">
+    <div class="desk-btns__rel-cont">
+      <div class="desk-btns__cont">
+                        
+              <!-- удаление активного РС -->
+              <button
+              v-on:click="delTable">DEL
+              </button>
+
     
-    <div class="desk-btns__cont">
-                       
-            <!-- удаление активного РС -->
-            <button
-            v-on:click="delTable">DEL
-            </button>
-
-            <!-- запуск цикла расчета ширины инпутов-->
-   
-            
-            <!-- кнопка привязанная к РС -->
-             <TableListOne
-            v-for="(table, index) in showAllTasks"
-            :key="index"
-            :index = 'index'
-            :table = 'table'
-
-            :ifLasBtn = 'LastBtn'
-            > </TableListOne>
               
-            <!--  добавление РС-->
-            <!-- <div class="desk-btns__add"
-            v-on:click="AddTableBtn"
-            v-bind:class = "{'desk-btns__apply': plusActive}"
-            v-bind:style="{ 'background': lastTableColor() }"
-            ></div> -->
-            
+              <!-- кнопка привязанная к РС -->
+              <TableListOne
+              v-for="(table, index) in showAllTasks"
+              :key="index"
+              :index = 'index'
+              :table = 'table'
+
+              :ifLasBtn = 'LastBtn'
+              > </TableListOne>
+                
+              <!--  добавление РС-->
+              <!-- <div class="desk-btns__add"
+              v-on:click="AddTableBtn"
+              v-bind:class = "{'desk-btns__apply': plusActive}"
+              v-bind:style="{ 'background': lastTableColor() }"
+              ></div> -->
+              
+      </div>
     </div>
 
-     <div class="add-list__bg"
+     <!-- <div class="add-list__bg add-table"
       @click="AddTableBtn">
          <img src="../../../img/icons/add-plus-button.svg"
           class='add-list__img'
          >
-     </div> 
+     </div>  -->
+
+      <!--  добавление РС-->
+      <div class="desk-btns__add"
+        @click="AddTableBtn"
+        v-bind:class = "{'desk-btns__apply': plusActive}"
+        v-bind:style="{ 'background': lastTableColor() }"
+      ></div>
+
+
       <!-- <TableListOne
         v-for="(Btn, index) in tableList"
         v-bind:key="index" 
@@ -271,12 +280,26 @@ export default Vue.extend({
   &__cont {
     padding: 10px;
     display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
 
     /*
             & *:not(:first-child) {
                 margin-left: 10px;
             }
 */
+  }
+
+  &__rel-cont {
+    position: relative;
+    width: calc(100% - 70px);
+    border: solid;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 80px;
+
   }
 
   &__add {
@@ -320,5 +343,37 @@ export default Vue.extend({
     }
   }
 }
+
+
+       
+    .desk-btns {
+        &__add {
+            height: 40px;
+            min-width: 40px;
+            border-radius: 7px;
+            font-size: 20px;
+            border: none;
+            background-color: #ee5727;
+            z-index: 1000;
+            position: relative;
+            margin-left: 10px;
+            transition: all .7s;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                background-image: url(../../../img/icons/add-task.svg); 
+                background-size: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+                width: 100%;
+                height: 100%;
+             }
+            }
+        }
 </style>
 

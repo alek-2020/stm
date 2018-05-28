@@ -62,23 +62,61 @@ export const store = new Vuex.Store({
         /// Для баз данных
         ///////////////////
 
+        startGetTasks({ dispatch,  commit , state}) {
+
+            console.log('Если зашли в startGetTasks уже хорошо', state.allTasks);
+
+           //Выполняем только если текущий стол незагружен
+           if(state.allTasks.length < 1) {
+               //если не подгружали вообще ни одного стола
+               console.log('если не подгружали вообще ни одного стола', state.allTables);
+               dispatch('altGetUserFB');
+           } else {
+
+            console.log('если и сюда',  state.allTasks[state.activeTableIndex].taskLists);
+
+           
+            //тут нужно очистить временые переменные? что бы не пушить в них другие столы
+           
+             state.userData = [];
+             state.userTables = [];
+             state.taskLists = [];
+             state.tasksFB = [];
+
+             console.log('если и сюда',  state.allTasks[state.activeTableIndex].taskLists);
+
+            if(state.allTasks[state.activeTableIndex].taskLists.length < 1) { 
+                //если есть загруженные , но текущий не загружен
+                console.log('если есть загруженные , но текущий не загружен');
+
+                dispatch('altGetUserFB'); 
+            }  else {
+                console.log(' если так то это значит, что мы кликнули на уже загруженные РС, поэт');
+
+                // если так то это значит, что мы кликнули на уже загруженные РС, поэтому ничего не делаем
+            }
+           }
+        },
+
         //Первичное получение данных с БД (users)
         altGetUserFB({ dispatch,  commit , state}) {
-           
-            firebase
-            .database()
-            .ref("users/" + state.userId)
-            .once("value")
-            .then(data => {
+     
             
-             state.userData = data.val();
-             console.log("ПЕРВЫЙ ЗАПРОС НА СЕРВ ", state.userData );
-             dispatch('altGetTables')
-            })
+                firebase
+                .database()
+                .ref("users/" + state.userId)
+                .once("value")
+                .then(data => {
+                
+                state.userData = data.val();
+                console.log("ПЕРВЫЙ ЗАПРОС НА СЕРВ ", state.userData );
+                dispatch('altGetTables')
+                })
 
-            .catch(error => {
-                console.log('Полный провал. Ошибка: ', error);
-            })
+                .catch(error => {
+                    console.log('Полный провал. Ошибка: ', error);
+                })
+    
           },
 
         //Получаем рабочие столы с БД
@@ -132,7 +170,7 @@ export const store = new Vuex.Store({
                         console.log('Получили список задач ', data.val());
                         //пишем списки в супер JSON
                         console.log('ЛОВИМ БАЗ С ИМЕНЕМ. СЕЙЧС ЭЛЕМ ', element);
-                        state.allTasks[state.activeTableIndex + 1].taskLists.push({
+                        state.allTasks[state.activeTableIndex].taskLists.push({
                             id: element,
                             'name': data.val().name,
                             'color': data.val().color,
@@ -149,7 +187,8 @@ export const store = new Vuex.Store({
 
         //Прогоняем списки для вызова задач
         getTaskListsForGetTasksFB({ dispatch, commit, state }) {
-
+            console.log('крутим массив ', state.taskLists);
+            
             state.taskLists.forEach((array, index) => {
                 console.log('КРУТИМ ВЕРТИМ. НОМЕР: ', array, index);
 
@@ -173,7 +212,7 @@ export const store = new Vuex.Store({
                         console.log('Пишем задачу ', data.val());
 
                         //Пишем нашу задачу в супер JSON
-                        state.allTasks[state.activeTableIndex + 1].taskLists[i].tasks.push({
+                        state.allTasks[state.activeTableIndex ].taskLists[i].tasks.push({
                             id: element,
                             'text': data.val().text,
                             'color': data.val().color,
@@ -251,7 +290,15 @@ export const store = new Vuex.Store({
 
               console.log('подучили наши задачи на серваке', data.val());
               tasks = data.val();
-              tasks.push(Key);
+
+              //Еси это первой значение в массиве создаем его
+              if(tasks == null) {
+                tasks = [Key]
+              } else {
+                tasks.push(Key);
+              }
+
+              
               console.log('Задачи с запушенным ID ', tasks);
               dispatch('addTaskInTasksNext', {taskId, tasks});
 
@@ -284,7 +331,7 @@ export const store = new Vuex.Store({
         //Отметить задачу как сделанную
         checkTask({ dispatch, commit, state }, {task, taskInd, tableInd, taskListInd}) {
            console.log('ДЛЯ ОТМЕТКИ ЗАДАЧИ ПОЛУЧАЕМ ', task, taskInd, tableInd, taskListInd);
-           tableInd =+ 1
+        //    tableInd =+ 1
            const taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
 
 
@@ -309,8 +356,11 @@ export const store = new Vuex.Store({
         //добавляем лист задач
         addList({ dispatch, commit, state }) {
           let tableInd = state.activeTableIndex;
-          tableInd += 1;
-          const TableLists =  state.allTasks[tableInd].taskLists;
+        //   tableInd += 1;
+          let TableLists =  state.allTasks[tableInd].taskLists;
+
+          
+
           const tableId = state.allTasks[tableInd].id;
 
           console.log('Получили списки и id', TableLists, tableId);
@@ -323,7 +373,22 @@ export const store = new Vuex.Store({
             'tasks': []
          }
 
-         TableLists.push(newTaskList);
+          //если мы ещё не создавали списков, то будет undefined
+          //Так что делаем проверку
+          if(typeof TableLists == 'undefined') {
+            // console.log('undefined брат', TableLists, newTaskList, state.allTasks[tableInd], tableInd);
+            state.allTasks[tableInd].taskLists = [newTaskList]
+            // TableLists = [newTaskList];
+            // state.allTasks[tableInd].taskLists = [newTaskList]; 
+            console.log('добавили в массив ', state.allTasks[tableInd].taskLists);
+
+        } else {
+            console.log('массив не пустой', TableLists);
+
+            TableLists.push(newTaskList);
+        }
+         
+          console.log();
          console.log('Новый массив со списком', TableLists);
 
 
@@ -377,7 +442,7 @@ export const store = new Vuex.Store({
         //   let taskListsId = state.userTables.taskLists;
           
 
-          if(typeof taskListsId == "undefined"){
+          if(taskListsId == null){
             console.log('переменная не попределена задач нема', taskListsId)
 
             taskListsId = [newListId]
@@ -426,6 +491,12 @@ export const store = new Vuex.Store({
              const newTableId = data.key;
 
              //Зальем стол в наш локальный объект
+             newTableBtn.id = data.key;
+              
+             console.log('Закинули стол (тут он уже с добавленным id для локального пуша) ', newTableBtn);
+
+
+
             state.allTasks.push(newTableBtn);
 
 
@@ -454,7 +525,16 @@ export const store = new Vuex.Store({
               console.log('столы у нас такие!!! ', data.val());
               let allTables = data.val();
 
-              allTables.push(newTableId);
+              //делаем проверку на undefined
+              //if(typeof allTables == 'undefined') {
+              if(allTables == null) {
+                console.log('Ещё нет столов', allTables);
+                 allTables = [newTableId]
+              } else {
+                console.log('Уже есть столы', allTables);
+                allTables.push(newTableId);
+              }
+
               dispatch('apdateTablesList', {allTables, userId})
             
   
@@ -478,6 +558,60 @@ export const store = new Vuex.Store({
                console.log('Залили списки столов в юзера');
             
   
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+        },
+
+        ///Изменение поля в задаче
+        changeText({ dispatch, commit, state },  { text, task }) {
+            // TaskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd]
+            console.log('Вот наша задача ', task);
+            const TaskId = task.id;
+    
+            firebase
+            .database()
+            .ref("tasks/" + TaskId + "/text")
+            .set(text)
+            .then(data => {
+  
+               console.log('Поменяли текст в задаче');
+            
+  
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+
+        },
+
+        //Изменение заголовка списка
+        changeListTitle({ dispatch, commit, state },  { NewName, ListId }) {
+
+
+            firebase
+            .database()
+            .ref("taskLists/" + ListId + "/name")
+            .set(NewName)
+            .then(data => {
+               console.log('Поменяли заголовок в списке');
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+
+
+        },
+
+        //Меняем название стола
+        changeTableTitle({ dispatch, commit, state },  { NewName, TableId }) {
+            firebase
+            .database()
+            .ref("tables/" + TableId + "/name")
+            .set(NewName)
+            .then(data => {
+               console.log('Поменяли заголовок стола');
             })
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);

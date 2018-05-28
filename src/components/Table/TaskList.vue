@@ -8,7 +8,9 @@
             <!-- <listMenu></listMenu> -->
             
             <input class="task-list__name" type="text"  
-              v-model="TList.name">
+              v-model="TList.name"
+              @focusout='changeListTitle(TList.name)'
+              @keyup.enter='changeListTitle(TList.name)'>
 
             <div class="task-list__inputs-container">
               
@@ -23,7 +25,7 @@
             </div>
             
             <div class="task-list__add"
-             @click="AddEmptyInp(taskListIndex, (activeTableIndex + 1))">
+             @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
                 <div class="task-list__text"></div>
             </div>
 
@@ -70,7 +72,15 @@ export default {
        this.$store.dispatch( 'addTask', {tableInd, taskListInd, task})
   
 
+    },
+
+    changeListTitle(NewName) {
+      
+      const ListId = this.TList.id
+
+      this.$store.dispatch('changeListTitle', { NewName, ListId });
     }
+
   },
   props: ['TList', 'taskListIndex'],
   components: {
@@ -86,7 +96,7 @@ export default {
           return this.$store.state.activeTableIndex;
         },
         getListName() {
-          const TLName = allTasks[activeTableIndex + 1].taskLists[taskListIndex].name
+          const TLName = allTasks[activeTableIndex ].taskLists[taskListIndex].name
           console.log('можно и отсюда вывести ', TLName)
          if (TLName) {
             return TLName
@@ -97,7 +107,7 @@ export default {
 
         //фильтруем список по сделанным задачам
         doneTasks() {
-           const t = this.allTasks[this.activeTableIndex + 1].taskLists[this.taskListIndex].tasks;
+           const t = this.allTasks[this.activeTableIndex ].taskLists[this.taskListIndex].tasks;
            return t.filter(function(task){
              return !task.isDone
            });

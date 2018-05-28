@@ -68,7 +68,7 @@ export default {
   },
   created() {
     //  this.getAllTasks
-      this.$store.dispatch('altGetUserFB');
+      this.$store.dispatch('startGetTasks');
   }
 }
 </script>

@@ -4,7 +4,8 @@
         <input type="text"
          class="one-task__text"
          v-model="task.text"
-         @focusout='saveTask'>
+         @focusout='changeText(task.text)'
+         @keyup.enter='changeText(task.text)'>
          <div class="check-box"
           @click="checkTask"></div>
          </div>
@@ -15,9 +16,9 @@
 export default {
     props: ['task', 'Index', 'tableInd', 'taskInd'],
     methods: {
-      saveTask() {
-        console.log('фокус ушел((((((')
-      },
+    //   saveTask() {
+    //     console.log('фокус ушел((((((')
+    //   },
        checkTask () {
         const task = this.task
         const taskInd = this.Index
@@ -26,6 +27,15 @@ export default {
          
         console.log('ДЛЯ ОТМЕТКИ ОТПРАВЛЯЕМ ПАРАМЕТРЫ ', task, taskInd, tableInd, taskListInd);
         this.$store.dispatch('checkTask', { task, taskInd, tableInd, taskListInd})
+      },
+      changeText(text) {
+        const task = this.task
+        const taskInd = this.Index
+        // const tableInd = this.tableInd
+        // const taskListInd = this.taskInd
+
+         console.log('Клавиша нажата, отправляем ', text);
+         this.$store.dispatch('changeText', { text, task });
       }
     },
     computed: {
