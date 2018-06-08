@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
     
     <div
@@ -75,6 +77,12 @@ export default {
 
 <style lang="scss">
 
+@import 'scss/m-p-h-w';
+@import 'scss/normalize';
+
+html {
+  min-width: 300px;
+}
 body {
   padding: 0;
   margin: 0;

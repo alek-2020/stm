@@ -25,7 +25,7 @@
 
       <!-- рамка для активной кнопки  -->
       <div 
-      v-bind:class="{'desk-btns__one-active': activeTable === index }"
+      v-bind:class="{'desk-btns__one-active': actTableInd === index }"
       ></div>
 
 </button>
@@ -45,86 +45,79 @@ import Vue from "vue";
 
 export default Vue.extend({
   data() {
-
-      return {
-      activeTable: 0,
-           gradients: [
-                {
-                    colId: 1,
-                    colorOne: "#d24242",
-                    colorTwo: "#af4242"
-                },
-                {
-                    colId: 2,
-                    colorOne: "#f85725",
-                    colorTwo: "#8a5e41"
-                },
-                {
-                    colId: 3,
-                    colorOne: "#e15656",
-                    colorTwo: "#825a5a"
-                },
-                {
-                    colId: 4,
-                    colorOne: "#8fb554",
-                    colorTwo: "#5b917d"
-                },
-                {
-                    colId: 5,    
-                    colorOne: "#2a2a39",
-                    colorTwo: "#535472"
-                },
-                {
-                    colId: 6,
-                    colorOne: "#535472",
-                    colorTwo: "#2a2a39"
-                },
-                {
-                    colId: 7,
-                    colorOne: "#582121",
-                    colorTwo: "#bf3737"
-                }  
-            ]//,
-      
-
-
-      }
-    
+    return {
+      gradients: [
+        {
+          colId: 1,
+          colorOne: "#d24242",
+          colorTwo: "#af4242"
+        },
+        {
+          colId: 2,
+          colorOne: "#f85725",
+          colorTwo: "#8a5e41"
+        },
+        {
+          colId: 3,
+          colorOne: "#e15656",
+          colorTwo: "#825a5a"
+        },
+        {
+          colId: 4,
+          colorOne: "#8fb554",
+          colorTwo: "#5b917d"
+        },
+        {
+          colId: 5,
+          colorOne: "#2a2a39",
+          colorTwo: "#535472"
+        },
+        {
+          colId: 6,
+          colorOne: "#535472",
+          colorTwo: "#2a2a39"
+        },
+        {
+          colId: 7,
+          colorOne: "#582121",
+          colorTwo: "#bf3737"
+        }
+      ] //,
+    };
   },
-  props: ['table', 'index', 'ifLasBtn'],
+  props: ["table", "index", "ifLasBtn"],
   methods: {
     test2() {
-      console.log('Клик!');
+      console.log("Клик!");
     },
 
-  changeActiveTable(index) {
-        console.log('сменили индекс ', index)
-        this.$store.state.activeTableIndex = index;
-        //Стартуем подгрузку задач, я сказал стартуем
-         this.$store.dispatch('startGetTasks');
+    changeActiveTable(index) {
+      this.$store.state.activeTableIndex = index;
+      //Стартуем подгрузку задач, я сказал стартуем
+      this.$store.dispatch("startGetTasks");
+    },
 
-      },
-
-      changeTableTitle(NewName) {
-
-         const TableId = this.table.id
-         this.$store.dispatch('changeTableTitle', { NewName, TableId })
-      }
-
-
+    changeTableTitle(NewName) {
+      const TableId = this.table.id;
+      this.$store.dispatch("changeTableTitle", { NewName, TableId });
+    }
+  },
+  computed: {
+    actTableInd() {
+      return this.$store.state.activeTableIndex;
+    }
   }
-//   ,
-//     watch: { 
-//             people(newVal, oldVal) { // watch it
-//               console.log(this.people)}
-//             }
+  //   ,
+  //     watch: {
+  //             people(newVal, oldVal) { // watch it
+  //               console.log(this.people)}
+  //             }
 });
 </script>
 
 
 <style lang="scss">
 .desk-btns {
-
   //  базовые стили кнопки
   &__one {
     padding: 7px;

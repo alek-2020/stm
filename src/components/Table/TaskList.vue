@@ -22,6 +22,8 @@
                 :taskInd = 'taskListIndex'> 
               </OneTask> 
 
+
+
             </div>
             
             <div class="task-list__add"
@@ -125,10 +127,10 @@ export default {
 
 <style  lang="scss">
 .task-list {
-  min-width: 200px;
-  max-width: 300px;
+  // min-width: 250px;
+  // max-width: 400px;
   border: solid 3px #c6c6c6ad;
-  margin: 15px;
+  margin: 3% 0 0 3%;
   padding: 10px;
   border-radius: 5px;
   display: flex;
@@ -137,6 +139,7 @@ export default {
   position: relative;
   background: rgba(255, 255, 255, 0.85);
   overflow: hidden;
+  box-sizing: border-box;
 
   &:hover {
   }
@@ -173,6 +176,40 @@ export default {
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
 
+  }
+}
+
+@media screen and (min-width: 300px) {
+  .task-list {
+    //( 100 - 3*3 )/2
+     width: 94%;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .task-list {
+
+
+    
+    // min-width: 200px;
+    // max-width: 500px;
+    // flex-grow: 1;
+    //( 100 - 3*3 )/2
+     width: 45.5%;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .task-list {
+    //( 100 - 3*3 )/2
+     width: calc( 88% / 3 );
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .task-list {
+    //( 100 - 3*3 )/2
+     width: calc( 85% / 4 );
   }
 }
 </style>

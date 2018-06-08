@@ -37,7 +37,9 @@ export default {
 <style lang="scss">
   .settings-block {
       width: 100%;
-      height: 100px;
+    //   height: 100px;
+      height: 0;
+      overflow: hidden;
       background: rgba(255, 255, 255, 0.3);
   
       display: flex;

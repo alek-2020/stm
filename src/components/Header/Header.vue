@@ -2,17 +2,41 @@
  <div class="">
   <div class="t-header">
 
-        <div class="t-header__logo"
+        <!-- <div class="t-header__logo"
             v-html="logoSVG">  
+        </div> -->
+<div class="desk-btns__group-1">
+       <!--  добавление РС-->
+      <div class=" btn-bg-white"
+        @click="AddTableBtn(); HeaderAdd();"
+        v-bind:class = "{'desk-btns__apply': plusActive}"
+      >
+        <div class="desk-btns__add"
+        v-html="plusIcon"></div>
+        <div class="desk-btns__check-add">
+          <div class="text">Новый стол</div>
+          <div class="text">Список задач</div>
         </div>
-        
-        <input class="t-header__search" placeholder="Search">
+
+      </div>
+              <!-- v-bind:style="{ 'background': lastTableColor() }" -->
+      <div class="btn-filter btn-bg-white ml-2" v-html="filterIcon">
+      </div>
+</div>
+
+        <!-- <input class="t-header__search" placeholder="Search"> -->
         
         <div class="t-header__desk-name">
             <div class="t-header__desk-name-abs">
-              {{ activeTableName }}
+              <input type="text"
+                 v-model="actTabName"
+                 placeholder="Стол">
+              
+              <div class="table-settings"
+                v-html="settingsIcon"></div>
+              
               <div class="delTable"
-              v-html="SVGCross"
+              v-html="deleteIcon"
               v-on:click="delTable()"              
               ></div>
               
@@ -22,20 +46,27 @@
         <!-- <div class="t-header__logout">
             EXIT
         </div> -->
+     <div class="desk-btns__group-2 ml-3">
+          
+          <router-link to="/login" 
+            class="t-header__profile btn-bg-white ml-2"
+            v-html="loginIcon">
+            <!-- <img src="/img/icons/log-in.svg" alt=""> -->
+          </router-link>
 
-        <router-link to="/login" class="t-header__profile">
-          <img src="/img/icons/log-in.svg" alt="">
-        </router-link>
+          <!-- <div class="t-header__star"><img src="/img/icons/star.svg" alt=""></div> -->
+          
+          <div class="t-header__menu btn-bg-white mx-2"
+            @click="ActivateDots"
+            v-html="menuIcon">
+              <!-- <img src="/img/icons/more-dots.svg" alt=""> -->
+                 
+                  <ThreeDotsMenu
+                  v-if="ThreeDotsActive">
+                  </ThreeDotsMenu>
+          </div>
 
-        <!-- <div class="t-header__star"><img src="/img/icons/star.svg" alt=""></div> -->
-        
-        <div class="t-header__menu"
-          @click="ActivateDots">
-            <img src="/img/icons/more-dots.svg" alt="">
-                <ThreeDotsMenu
-                v-if="ThreeDotsActive">
-                </ThreeDotsMenu>
-        </div>
+       </div>
     </div>
     
 
@@ -44,189 +75,399 @@
 </template>
 
 <script>
-import HeaderSettings from './HeaderSettings.vue'
-import ThreeDotsMenu from './ThreeDotsMenu.vue'
-// import * as test from '@OtherSrc/svg.js'
+import HeaderSettings from "./HeaderSettings.vue";
+import ThreeDotsMenu from "./ThreeDotsMenu.vue";
+
+import { svgHeader } from '../../OtherSrc/svg.js';
 
 //   console.log(test);
 
-
 export default {
-   data() {
-       return{
-           logoSVG: '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
-        //    activeTableName: 'Стол Василия',
-           SVGCross: '<svg></svg>',
-           ThreeDotsActive: false
+  data() {
+    return {
+     
+      logoSVG:
+        '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
+      //    activeTableName: 'Стол Василия',
+      SVGCross: "<svg></svg>",
+      ThreeDotsActive: false,
+      actTabName: 'Колбасный Стол',
 
-       }
-   }, 
-   methods: {
-      ActivateDots() {
-          this.ThreeDotsActive = !this.ThreeDotsActive;
-      }
-   },
-   computed: {
-        // visibleTables(){
-        //     return this.tasks.filter( user => {
-        //         return !tasks.visible
-        //     })
-        // }
-        activeTableIndex() {
-          return this.$store.state.activeTableIndex;
+    
+       tables: [
+        {
+          BtnId: 243,
+          name: "Название стола",
+          colOne: "#fff",
+          colTwo: "#ccc",
+          colorId: "4"
         },
-        allTasks() {
-            return this.$store.state.allTasks;
+        {
+          BtnId: 2453,
+          name: "Название стола",
+          colOne: "#fff",
+          colTwo: "#ccc",
+          colorId: "4"
         },
-        activeTableName() {
-            return this.allTasks[0].name;
+        {
+          BtnId: 23435,
+          name: "Название стола",
+          colOne: "#fff",
+          colTwo: "#ccc",
+          colorId: "4"
         },
+        {
+          BtnId: 223,
+          name: "Название стола",
+          colOne: "#fff",
+          colTwo: "#ccc",
+          colorId: "4"
+        }
+      ],
 
-   },
-   components: {
-       HeaderSettings,
-       ThreeDotsMenu
-   }
-}
+    };
+  },
+  methods: {
+    ActivateDots() {
+      this.ThreeDotsActive = !this.ThreeDotsActive;
+     var a  = this.ThreeDotsActive;
+     console.log('рамка', a);
+  } ,
+
+    //Скроллим наш список столов в конец для добавления нового
+    //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
+    HeaderAdd () {
+        const container = document.querySelector('.ps-container');
+        const bigDiv = document.querySelector('.desk-btns__cont');
+        console.log('скролл', container.scrollLeft, bigDiv.clientWidth, container.offsetWidth);
+        container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
+    },
+
+    //добавление рс
+    AddTableBtn: function() {
+      // this.$store.dispatch("checkTableInput");
+      this.$store.state.plusActive = true;
+
+    },
+ 
+    //     lastTableColor() {
+    //   var i = this.tables.length - 1;
+    //   var colOne = this.tables[i].colorOne;
+    //   var colTwo = this.tables[i].colorTwo;
+    //   console.log("linear-gradient( to bottom, " + colOne + ", " + colTwo);
+
+    //   return "linear-gradient( to bottom, " + colOne + ", " + colTwo;
+    // },
+
+    delTable() {
+      this.$store.dispatch('delActiveTable');
+    }
+  },
+  computed: {
+ 
+    //Получим svg
+    filterIcon() {
+      return svgHeader.filter;
+    },
+    loginIcon() {
+      return svgHeader.login;
+    },
+    plusIcon() {
+      return svgHeader.plus;
+    },
+    menuIcon() {
+      return svgHeader.menu;
+    },
+    settingsIcon() {
+      return svgHeader.settings;
+    },
+    deleteIcon() {
+      return svgHeader.delete;
+    },
+    //
+    lastTableColor() {
+        return this.$store.dispatch('lastTableColor');
+    },
+    plusActive() {
+            return this.$store.state.plusActive;
+    },
+    // visibleTables(){
+    //     return this.tasks.filter( user => {
+    //         return !tasks.visible
+    //     })
+    // }
+
+
+
+    // activeTableIndex() {
+    //   return this.$store.state.activeTableIndex;
+    // },
+    // allTasks() {
+    //   return this.$store.state.allTasks;
+    // },
+    // activeTableName() {
+    //   const a = this.activeTableIndex;
+    //   this.actTabName = this.allTasks[a].name;
+    // }
+  },
+  components: {
+    HeaderSettings,
+    ThreeDotsMenu,
+  },
+  created() {
+
+console.log('Подтягиваем SVG', svgHeader.filter);
+   
+  }
+};
 </script>
 
 <style lang="scss">
-    .t-header {
-        height: 40px;
-        width: 100%;
-        background: rgba( 255, 255, 255, .6);
-        display: flex;
-        align-items: center;
-        position: relative;
 
-        &__logo {
-            margin-left: 10px;
+//--- VARIABLES ---//
 
-            & svg {
-                height: 20px;
-                fill: gray;
-            }
-        }
+$h-icons-col: rgb(82, 82, 82);
 
-        &__search {
-            box-sizing: border-box;
-            height: 30px;
-            width: 100px;
-            background: white;
-            border-radius: 15px;
-            border: solid 1px #a2a2a2;
-            margin-left: 30px;
-            padding: 0 30px 0 12px;
-            font-size: 16px;
-            font-family: open sans;
-            outline: none;
-            transition: border .2s;
-            transition: width .4s;
+$h-icons-bg-col: rgba(255,255,255, .65);
 
-            background-image: url(/src/img/icons/magnifying-glass.svg);
-            background-size: 14px;
-            background-repeat: no-repeat;
-            background-position: calc(100% - 8px) 50%;
+$h-small-icons-col: rgb(56, 56, 56);
+//-----------------//
 
-            &:focus {
-                border-width: 2px;
-                width: 200px;
-            }
+.t-header {
+  height: 40px;
+  width: 100%;
+  min-width: 300px;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  position: relative;
 
-            &::placeholder {
-                /* Chrome, Firefox, Opera, Safari 10.1+ */
-                color: #c4c4c4;
-                opacity: 1;
-                /* Firefox */
-            }
+  &__logo {
+    margin-left: 10px;
 
-            &:-ms-input-placeholder {
-                /* Internet Explorer 10-11 */
-                color: #c4c4c4;
-            }
+    & svg {
+      height: 20px;
+      fill: gray;
+    }
+  }
 
-            &::-ms-input-placeholder {
-                /* Microsoft Edge */
-                color: #c4c4c4;
-            }
-        }
+  &__search {
+    box-sizing: border-box;
+    height: 30px;
+    width: 100px;
+    background: white;
+    border-radius: 15px;
+    border: solid 1px #a2a2a2;
+    margin-left: 30px;
+    padding: 0 30px 0 12px;
+    font-size: 16px;
+    font-family: open sans;
+    outline: none;
+    transition: border 0.2s;
+    transition: width 0.4s;
 
-        &__desk-name {
-            font-family: "Open Sans", sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            flex-grow: 1;
-            justify-content: center;
-            white-space: nowrap;
+    background-image: url(/src/img/icons/magnifying-glass.svg);
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 8px) 50%;
 
-            &-abs {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                display: flex;
-            }
-        }
-
-        &__star {
-            & img {
-                height: 20px;
-            }
-        }
-
-        &__profile {
-            // height: 22px;
-            // width: 21px;
-            // height: 100%;
-            margin-right: 10px;
-            & img {
-                height: 25px;
-            }
-        }
-
-        &__menu {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            transition: background .2s;
-            transition: transform .3s;
-            margin-left: 10px;
-            margin-right: 20px;
-            border-radius: 7px;
-            transition: background .3s;
-            background: #0000000f;
-
-            &:hover {
-                background: rgba(255, 255, 255, .8);
-            }
-
-            & img {
-                width: 18px;
-                margin: auto;
-            }
-
-        }
-
-        &__logout {
-            font-family: 'Open Sans', sans-serif;
-            border: solid 2px rgb(75, 75, 75);
-            border-radius: 6px;
-            padding: 1px 5px;
-            margin-right: 10px;
-
-        }
-
+    &:focus {
+      border-width: 2px;
+      width: 200px;
     }
 
-    .delTable{ 
-        margin-left: 5px;
-        
-        & svg {
-            height: 10px;
-            fill: gray;
-        }
+    &::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: #c4c4c4;
+      opacity: 1;
+      /* Firefox */
     }
+
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: #c4c4c4;
+    }
+
+    &::-ms-input-placeholder {
+      /* Microsoft Edge */
+      color: #c4c4c4;
+    }
+  }
+
+  &__desk-name {
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    white-space: nowrap;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    // margin: 0 100px;
+
+    &-abs {
+      display: flex;
+      justify-content: center;
+
+      & input{
+          margin: 0 auto;
+          display: block;
+          border-radius: 5px;
+          padding: 5px;
+          border: none;
+          background: transparent;
+          font-family: 'Roboto', sans-serif;
+          font-size: 20px;
+          text-align: center;
+      }
+    }
+  }
+
+  &__star {
+    & img {
+      height: 20px;
+    }
+  }
+
+  &__profile {
+    // height: 22px;
+    // width: 21px;
+    // height: 100%;
+    // margin-right: 10px;
+    display: flex;
+    & svg {
+      height: 20px;
+      margin: auto;
+      fill: $h-icons-col;
+    }
+  }
+
+  &__menu {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    transition: background 0.2s;
+    transition: transform 0.3s;
+    // margin-left: 10px;
+    // margin-right: 20px;
+    border-radius: 7px;
+    transition: background 0.3s;
+    background: #0000000f;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    & svg {
+      width: 15px;
+      margin: auto;
+      fill: $h-icons-col;
+    }
+  }
+
+  &__logout {
+    font-family: "Open Sans", sans-serif;
+    border: solid 2px rgb(75, 75, 75);
+    border-radius: 6px;
+    padding: 1px 5px;
+    margin-right: 10px;
+  }
+}
+
+// .delTable {
+//   margin-left: 5px;
+
+//   & svg {
+//     height: 10px;
+//     fill: $h-icons-col;
+//   }
+// }
+
+
+
+.desk-btns {
+
+  &__group-1, &__group-2 {
+    display: flex;
+    
+  }
+
+  &__group-2 {
+    position: absolute;
+    right: 0;
+  }
+
+  &__add {
+    position: relative;
+    transition: all 0.7s;
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    & svg {
+      height: 16px;
+      margin: auto;
+      fill:  $h-icons-col;
+    }
+
+
+  }
+
+  &__check-add {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 35px;
+    background: $h-icons-bg-col;
+    border-radius: 7px;
+    border-top-left-radius: 0;
+    padding: 5px;
+    font-family: Roboto, sans-serif;
+
+  }
+}
+
+.table-settings {
+    width: 20px;
+    display: flex;
+
+    & > svg {
+      height: 16px;
+      margin: auto;
+      fill: $h-small-icons-col;
+    }
+}
+
+.delTable {
+    width: 20px;
+    display: flex;
+
+    & > svg {
+      height: 16px;
+      margin: auto;
+      fill: $h-small-icons-col;
+    }
+}
+
+.btn-bg-white {
+   width: 30px;
+   height: 30px;
+   background: $h-icons-bg-col;
+   border-radius: 7px;
+   display: flex;
+}
+
+.btn-filter {
+  & svg {
+    height: 18px;
+    margin: auto;
+    fill: $h-icons-col;
+  }
+}
+
 </style>
 
 

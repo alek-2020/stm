@@ -12,13 +12,14 @@
       {{ showThing }}
       lljlkj -->
     <!-- <router-view></router-view> -->
-
-    <TaskList
-       v-for="(TList, index) in allTasks[activeTableIndex].taskLists"
+  <div class="table__taskLists-box">
+     <TaskList
+       v-for="(TList, index) in thisTableTaskLists"
        :TList = 'TList'
        :taskListIndex = 'index'>
     </TaskList>    
-     
+  </div>
+ 
      <div class="add-list__bg"
       @click="addList">
        <img src="../../../img/icons/add-plus-button.svg"
@@ -26,12 +27,11 @@
          >
      </div> 
 
-    <hr>
 
-    <span style="color: white; font-weigth: 500; background: black;"
-     >
-    {{ allTasks }}
-    </span>
+     <span style="color: white; font-weigth: 500; background: black;"
+      >
+     {{ allTasks }}
+     </span>
 
   </div>
 </template>
@@ -57,9 +57,11 @@ export default {
             return this.$store.state.allTasks;
         },
         activeTableIndex() {
-          return this.$store.state.activeTableIndex;
+           return this.$store.state.activeTableIndex;
         },
- 
+        thisTableTaskLists() {
+           return this.$store.state.allTasks[this.activeTableIndex].taskLists;
+        }
     },
     methods: {
         //Подтягиваем расчеты из хранилища
@@ -108,9 +110,15 @@ export default {
           height: 30px;
           width: 30px;
           margin: auto;
-
-
       }
+  }
+
+  .table {
+    &__taskLists-box {
+       display: flex;
+       flex-wrap: wrap;
+    //    margin-right: 3%;
+    }
   }
 </style>
 
