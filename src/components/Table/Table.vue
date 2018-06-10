@@ -16,9 +16,10 @@
      <TaskList
        v-for="(TList, index) in thisTableTaskLists"
        :TList = 'TList'
-       :taskListIndex = 'index'>
+       :taskListIndex = 'index'
+       :key='TList.name'>
     </TaskList>    
-  </div>
+  </div> 
  
      <div class="add-list__bg"
       @click="addList">
@@ -60,8 +61,10 @@ export default {
            return this.$store.state.activeTableIndex;
         },
         thisTableTaskLists() {
+            console.log('получили индекс ', this.$store.state.allTasks);
+            console.log('получили индекс ', this.$store.state.allTasks[0]);
            return this.$store.state.allTasks[this.activeTableIndex].taskLists;
-        }
+        } 
     },
     methods: {
         //Подтягиваем расчеты из хранилища

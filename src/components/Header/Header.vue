@@ -11,7 +11,7 @@
         @click="AddTableBtn(); HeaderAdd();"
         v-bind:class = "{'desk-btns__apply': plusActive}"
       >
-        <div class="desk-btns__add"
+        <div class="desk-btns__h-add"
         v-html="plusIcon"></div>
         <div class="desk-btns__check-add">
           <div class="text">Новый стол</div>
@@ -393,14 +393,14 @@ $h-small-icons-col: rgb(56, 56, 56);
   &__group-1, &__group-2 {
     display: flex;
     
-  }
+  } 
 
   &__group-2 {
     position: absolute;
     right: 0;
   }
 
-  &__add {
+  &__h-add {
     position: relative;
     transition: all 0.7s;
     width: 100%;

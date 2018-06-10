@@ -70,14 +70,17 @@ export default {
   },
   created() {
     //  this.getAllTasks
+          //  this.$store.dispatch('testbro');
+
       this.$store.dispatch('startGetTasks');
-  }
+
+ }
 }
 </script>
 
 <style lang="scss">
 
-@import 'scss/m-p-h-w';
+@import 'scss/bootsParts/bootsParts';
 @import 'scss/normalize';
 
 html {

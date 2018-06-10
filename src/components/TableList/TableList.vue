@@ -254,7 +254,13 @@ export default Vue.extend({
     
 <style lang="scss">
 .desk-btns {
-  position: relative; 
+  position: relative;
+
+  &__add {
+    background: white;
+    height: 30px;
+    width: 20px;
+  } 
 
   &__cont {
     padding: 10px;
