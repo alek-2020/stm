@@ -61,12 +61,13 @@ export default {
            return this.$store.state.activeTableIndex;
         },
         thisTableTaskLists() {
-            if(this.$store.state.allTasks.lenhth > 0) {
+            if(this.$store.state.allTasks.length > 0) {
                            console.log('получили индекс ', this.$store.state.allTasks[0]);
-            console.log('получили индекс ', this.$store.state.allTasks);
+                         console.log('получили индекс ', this.$store.state.allTasks);
+                        return this.$store.state.allTasks[this.activeTableIndex].taskLists;
 
-               return this.$store.state.allTasks[this.activeTableIndex].taskLists;
-            }
+            } 
+
         } 
     },
     methods: {
