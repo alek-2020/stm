@@ -24,10 +24,11 @@ export const store = new Vuex.Store({
             taskLists: [],
             tasksFB: [],
             activeTableIndex: 0,
+            tableSettingsActive: false,
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 
-            currentBgImg: '/img/bg/stm-bg-1.jpg',
+            currentBgImg: '',
             tables: [],
             tasks: [
                 // {

@@ -35,7 +35,7 @@
               > </TableListOne>
                 
               <!--  добавление РС-->
-              <div class="desk-btns__add"
+              <div class="desk-btns__add btn btn_icon_add-white btn_icon_only"
               v-on:click="AddTableBtn"
               v-bind:class = "{'desk-btns__apply': plusActive}"
               ></div>
@@ -257,9 +257,11 @@ export default Vue.extend({
   position: relative;
 
   &__add {
-    background: white;
-    height: 30px;
-    width: 20px;
+    background: rgb(134, 134, 134);
+    height: 40px;
+    width: 40px;
+    margin-left: 10px;
+    border-radius: 7px;
   } 
 
   &__cont {
@@ -289,7 +291,7 @@ export default Vue.extend({
 
 
   &__apply {
-    margin-left: -10px;
+    // margin-left: -10px;
 
     &:before {
       content: "";

@@ -7,15 +7,20 @@
         </div> -->
 <div class="desk-btns__group-1">
        <!--  добавление РС-->
-      <div class=" btn-bg-white"
-        @click="AddTableBtn(); HeaderAdd();"
-        v-bind:class = "{'desk-btns__apply': plusActive}"
+      <div class=" btn-bg-white ml-2"
+        @click="AddTableBtn();"
+         :class = "{'desk-btns__h-add_active': hPlusActive}"
       >
         <div class="desk-btns__h-add"
         v-html="plusIcon"></div>
-        <div class="desk-btns__check-add">
-          <div class="text">Новый стол</div>
-          <div class="text">Список задач</div>
+
+        <div class=" desk-btns__check-add"
+          >
+          <div class="btn btn_hover_gray text px-3"
+           @click="HeaderAdd();"
+          >Новый стол</div>
+          <div class="btn btn btn_hover_gray text"
+          > Список задач</div>
         </div>
 
       </div>
@@ -33,7 +38,9 @@
                  placeholder="Стол">
               
               <div class="table-settings"
-                v-html="settingsIcon"></div>
+                v-html="settingsIcon"
+                @click="showTableSettings"
+                ></div>
               
               <div class="delTable"
               v-html="deleteIcon"
@@ -78,23 +85,22 @@
 import HeaderSettings from "./HeaderSettings.vue";
 import ThreeDotsMenu from "./ThreeDotsMenu.vue";
 
-import { svgHeader } from '../../OtherSrc/svg.js';
+import { svgHeader } from "../../OtherSrc/svg.js";
 
 //   console.log(test);
 
 export default {
   data() {
     return {
-     
+      hPlusActive: false,
       logoSVG:
         '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
       //    activeTableName: 'Стол Василия',
       SVGCross: "<svg></svg>",
       ThreeDotsActive: false,
-      actTabName: 'Колбасный Стол',
+      actTabName: "Колбасный Стол",
 
-    
-       tables: [
+      tables: [
         {
           BtnId: 243,
           name: "Название стола",
@@ -123,33 +129,36 @@ export default {
           colTwo: "#ccc",
           colorId: "4"
         }
-      ],
-
+      ]
     };
   },
   methods: {
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;
-     var a  = this.ThreeDotsActive;
-     console.log('рамка', a);
-  } ,
+      var a = this.ThreeDotsActive;
+      console.log("рамка", a);
+    },
 
     //Скроллим наш список столов в конец для добавления нового
     //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
-    HeaderAdd () {
-        const container = document.querySelector('.ps-container');
-        const bigDiv = document.querySelector('.desk-btns__cont');
-        console.log('скролл', container.scrollLeft, bigDiv.clientWidth, container.offsetWidth);
-        container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
+    HeaderAdd() {
+      const container = document.querySelector(".ps-container");
+      const bigDiv = document.querySelector(".desk-btns__cont");
+      console.log(
+        "скролл",
+        container.scrollLeft,
+        bigDiv.clientWidth,
+        container.offsetWidth
+      );
+      container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
     },
 
     //добавление рс
     AddTableBtn: function() {
-      // this.$store.dispatch("checkTableInput");
-      this.$store.state.plusActive = true;
+      // this.$store.state.plusActive = !this.$store.state.plusActive;
+      this.hPlusActive = !this.hPlusActive;
+   },
 
-    },
- 
     //     lastTableColor() {
     //   var i = this.tables.length - 1;
     //   var colOne = this.tables[i].colorOne;
@@ -160,11 +169,13 @@ export default {
     // },
 
     delTable() {
-      this.$store.dispatch('delActiveTable');
+      this.$store.dispatch("delActiveTable");
+    },
+    showTableSettings() {
+        this.$store.state.tableSettingsActive = !this.$store.state.tableSettingsActive;
     }
   },
   computed: {
- 
     //Получим svg
     filterIcon() {
       return svgHeader.filter;
@@ -186,18 +197,19 @@ export default {
     },
     //
     lastTableColor() {
-        return this.$store.dispatch('lastTableColor');
+      return this.$store.dispatch("lastTableColor");
     },
-    plusActive() {
-            return this.$store.state.plusActive;
-    },
+    // plusActive() {
+    //   return this.$store.state.plusActive;
+    // },
+    tableSettingsActive() {
+      return this.$store.state.tableSettingsActive;
+    }
     // visibleTables(){
     //     return this.tasks.filter( user => {
     //         return !tasks.visible
     //     })
     // }
-
-
 
     // activeTableIndex() {
     //   return this.$store.state.activeTableIndex;
@@ -212,23 +224,20 @@ export default {
   },
   components: {
     HeaderSettings,
-    ThreeDotsMenu,
+    ThreeDotsMenu
   },
   created() {
-
-console.log('Подтягиваем SVG', svgHeader.filter);
-   
+    console.log("Подтягиваем SVG", svgHeader.filter);
   }
 };
 </script>
 
 <style lang="scss">
-
 //--- VARIABLES ---//
 
 $h-icons-col: rgb(82, 82, 82);
 
-$h-icons-bg-col: rgba(255,255,255, .65);
+$h-icons-bg-col: rgba(255, 255, 255, 0.65);
 
 $h-small-icons-col: rgb(56, 56, 56);
 //-----------------//
@@ -312,16 +321,16 @@ $h-small-icons-col: rgb(56, 56, 56);
       display: flex;
       justify-content: center;
 
-      & input{
-          margin: 0 auto;
-          display: block;
-          border-radius: 5px;
-          padding: 5px;
-          border: none;
-          background: transparent;
-          font-family: 'Roboto', sans-serif;
-          font-size: 20px;
-          text-align: center;
+      & input {
+        margin: 0 auto;
+        display: block;
+        border-radius: 5px;
+        padding: 5px;
+        border: none;
+        background: transparent;
+        font-family: "Roboto", sans-serif;
+        font-size: 20px;
+        text-align: center;
       }
     }
   }
@@ -386,14 +395,16 @@ $h-small-icons-col: rgb(56, 56, 56);
 //   }
 // }
 
-
-
 .desk-btns {
 
-  &__group-1, &__group-2 {
+  &__group-1 {
+    position: absolute;
+  }
+
+  &__group-1,
+  &__group-2 {
     display: flex;
-    
-  } 
+  }
 
   &__group-2 {
     position: absolute;
@@ -410,10 +421,16 @@ $h-small-icons-col: rgb(56, 56, 56);
     & svg {
       height: 16px;
       margin: auto;
-      fill:  $h-icons-col;
+      fill: $h-icons-col;
     }
+  }
 
-
+  &__h-add_active {
+    height: 50px;
+    & .desk-btns__check-add {
+        max-height: 400px;
+        padding: 5px;
+    }
   }
 
   &__check-add {
@@ -421,43 +438,55 @@ $h-small-icons-col: rgb(56, 56, 56);
     top: 0;
     left: 0;
     margin-top: 35px;
-    background: $h-icons-bg-col;
+    // background: $h-icons-bg-col;
+    background: #efefef;
     border-radius: 7px;
-    border-top-left-radius: 0;
-    padding: 5px;
     font-family: Roboto, sans-serif;
+    z-index: 100;
+    line-height: 1.8;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: all 0.3s;
+    max-height: 0;
+    padding: 0 5px;
+
+    & .text {
+      border-radius: 6px;
+      transition: all .2s;
+    }
 
   }
 }
 
 .table-settings {
-    width: 20px;
-    display: flex;
+  width: 20px;
+  display: flex;
 
-    & > svg {
-      height: 16px;
-      margin: auto;
-      fill: $h-small-icons-col;
-    }
+  & > svg {
+    height: 16px;
+    margin: auto;
+    fill: $h-small-icons-col;
+  }
 }
 
 .delTable {
-    width: 20px;
-    display: flex;
+  width: 20px;
+  display: flex;
 
-    & > svg {
-      height: 16px;
-      margin: auto;
-      fill: $h-small-icons-col;
-    }
+  & > svg {
+    height: 16px;
+    margin: auto;
+    fill: $h-small-icons-col;
+  }
 }
 
 .btn-bg-white {
-   width: 30px;
-   height: 30px;
-   background: $h-icons-bg-col;
-   border-radius: 7px;
-   display: flex;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  background: $h-icons-bg-col;
+  border-radius: 7px;
+  display: flex;
 }
 
 .btn-filter {
@@ -467,7 +496,6 @@ $h-small-icons-col: rgb(56, 56, 56);
     fill: $h-icons-col;
   }
 }
-
 </style>
 
 

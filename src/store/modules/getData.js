@@ -5,7 +5,7 @@ export default {
  actions: {
 
     /////////////////////////////////////////
-    // Получаем столы, списки и залачи из БД
+    // Получаем столы, списки и задачи из БД
     /////////////////////////////////////////
 
     ///Инициализация получения списка задач для активного Рабочего Стола
@@ -14,7 +14,7 @@ export default {
         //Выполняем только если текущий стол незагружен
         if (rootState.allTasks.length < 1) {
             //если не подгружали вообще ни одного стола
-            console.log('раз. если не подгружали вообще ни одного стола', rootState.allTables);
+            console.log('getdata. Инициализируем первичную загрузку столов. Массив ещё пуст.', rootState.allTables);
             dispatch('altGetUserFB');
         } else {
 
@@ -54,8 +54,10 @@ export default {
             .then(data => {
 
                 rootState.userData = data.val();
-                console.log("ПЕРВЫЙ ЗАПРОС НА СЕРВ ", rootState.userData);
-                dispatch('altGetTables')
+                console.log("getdata. первый запрос на сервер. получили данные по userId ", rootState.userData);
+                dispatch('altGetTables');
+
+                dispatch('getSettings', data.val().settings);
             })
 
             .catch(error => {
@@ -73,7 +75,7 @@ export default {
                 .ref("tables/" + element)
                 .once('value')
                 .then(data => {
-                    console.log('ВТОРОЙ ПОДХОД. ПОЛУЧАЕМ СТОЛЫ ', data.val());
+                    console.log('getdata. ВТОРОЙ запрос. ПОЛУЧАЕМ СТОЛЫ ', data.val());
 
                     rootState.userTables.push(data.val())
 
@@ -86,9 +88,10 @@ export default {
                         taskLists: []
                     })
 
-                    console.log('На итерации пишем ', rootState.allTasks);
+                    // console.log('На итерации пишем ', rootState.allTasks);
 
                     if ((i + 1) == rootState.userData.tables.length) {
+                        console.log('getdata. записали столы', rootState.allTasks);
                         dispatch('getTaskLists');
 
                     }
@@ -126,6 +129,7 @@ export default {
                         'color': data.val().color,
                         tasks: []
                     });
+                    console.log('getdata. запушили список в локальный массив, инициализируем получение задач для него ', rootState.allTasks[rootState.activeTableIndex].taskLists);
                     dispatch('getTaskListsForGetTasksFB');
                 })
                 .catch(error => {
@@ -154,11 +158,11 @@ export default {
             firebase
                 .database()
                 .ref("tasks/" + element)
-                .once('value')
+                .once('values')
                 .then(data => {
 
                     rootState.tasksFB.push(data.val());
-                    console.log('Пишем задачу ', data.val());
+                    console.log('getdata. Пишем задачу ', data.val());
 
                     //Пишем нашу задачу в супер JSON
                     rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks.push({
@@ -175,6 +179,11 @@ export default {
 
         });
     },
+
+    getSettings({ dispatch, commit, state, rootState }, settings) {
+        console.log('getdata. Получили настройки ', settings);
+        rootState.currentBgImg = settings.bg;
+    }
 
  }
 }

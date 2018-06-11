@@ -271,12 +271,15 @@ export default {
   
               state.plusActive = !state.plusActive;
           },
-  
+
+
           // 0.2 Формируем стол 
-          AddTableBtn({ dispatch, commit, state }) {
+          AddTableBtn({ dispatch, commit, state, getters }) {
   
-              // let lastColId = this.getColId();
-              const lastColId = 3;
+              let lastColId = getters.getNewColId;
+              console.log('Новый id ', getters.getNewColId);
+
+            //   const lastColId = 3;
   
               // const newTableBtn = {
               //   name: this.newTableName,
@@ -333,12 +336,14 @@ export default {
                       console.log('Полный провал. Ошибка: ', error);
                   })
           },
+
+ 
   
           // 2. получим список столов с сервера
           getTablesList({ dispatch, commit, state }, newTableId) {
   
-              const userId = state.userId;
-  
+            const userId = state.userId;
+
               firebase
                   .database()
                   .ref("users/" + userId + "/tables")
@@ -471,4 +476,25 @@ export default {
   
   
           },
+
+          saveBg({ dispatch, commit, state }) {
+
+            console.log('Наш бг ', state.userId);
+
+            const userId = state.userId;
+            const bgImg = state.currentBgImg;
+
+            firebase
+            .database()
+            .ref( "users/" + userId + "/settings/bg")
+            .set(bgImg)
+            .then(data => {
+  
+                console.log('Сменили фон ', data);
+  
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+          }
 }

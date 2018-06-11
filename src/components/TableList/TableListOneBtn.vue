@@ -1,7 +1,7 @@
 <template>
 
 <button
-  class="desk-btns__one"
+  class="btn desk-btns__one"
   v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colOne + ', ' + table.colTwo }"
   v-bind:class="{'desk-btns__last': ifLasBtn}"
   v-bind:id=" 'tableBtn-' + table.BtnId"

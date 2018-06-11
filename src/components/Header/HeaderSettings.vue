@@ -1,10 +1,11 @@
 <template>
-  <div class="settings-block">
+  <div class="settings-block"
+    :class="{'settings-block_active': tableSettingsActive}">
     <div
      class="onePreview"
      v-for="(bg, index) in imgForBg"
      :key="index"
-     @click="changeBg(index)"
+     @click="changeBg(index); saveBg();"
      :style="{background: 'url('+bg+')'}">
     </div>    
   </div>
@@ -28,7 +29,15 @@ export default {
         console.log('Работает');
         this.$store.state.currentBgImg = this.imgForBg[index];
         console.log( 'ВАСЯ!!!!!!!', this.$store.state.currentBgImg);
+      },
+      saveBg() {
+        this.$store.dispatch('saveBg');
       }
+  },
+  computed: {
+    tableSettingsActive() {
+      return this.$store.state.tableSettingsActive;
+    }
   }
 }
 </script>
@@ -38,11 +47,15 @@ export default {
   .settings-block {
       width: 100%;
     //   height: 100px;
-      height: 0;
+      max-height: 0;
+      transition: max-height .4s;
       overflow: hidden;
       background: rgba(255, 255, 255, 0.3);
-  
       display: flex;
+
+      &_active {
+        max-height: 500px;
+      }
       
   }
 
