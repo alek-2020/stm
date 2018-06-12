@@ -46,7 +46,8 @@ import {mapGetters} from 'vuex'
 export default {
     data() {
         return {
-            Text: 'Всякая чухня'
+            Text: 'Всякая чухня',
+            VarThisTableTaskLists: [],
         }
     },
     computed: {
@@ -60,15 +61,24 @@ export default {
         activeTableIndex() {
            return this.$store.state.activeTableIndex;
         },
+        allTasks() {
+           return this.$store.state.allTasks;
+        },
         thisTableTaskLists() {
             if(this.$store.state.allTasks.length > 0) {
                            console.log('получили индекс ', this.$store.state.allTasks[0]);
                          console.log('получили индекс ', this.$store.state.allTasks);
                         return this.$store.state.allTasks[this.activeTableIndex].taskLists;
 
-            } 
-
+            }
         } 
+    },
+    watch: {
+        allTasks(val) {
+            this.VarThisTableTaskLists = this.thisTableTaskLists;
+            console.log('следим ', val);
+        }
+
     },
     methods: {
         //Подтягиваем расчеты из хранилища

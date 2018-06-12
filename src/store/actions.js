@@ -3,6 +3,8 @@ import * as firebase from "firebase";
 
 export default {
 
+
+
           //Закидываем новую задачу на сервер
           addTask({ dispatch, commit, state }, { tableInd, taskListInd, task }) {
               console.log('Получили всю байду', tableInd, taskListInd, task)
@@ -153,10 +155,12 @@ export default {
                   // ind--;
                   // ind++;
               } else {
-                  console.log('массив не пустой', TableLists);
+                  console.log('список до пуша ', state.allTasks[tableInd].taskLists);
                   
                   state.allTasks[tableInd].taskLists.push(newTaskList);
                   // TableLists.push(newTaskList);
+                  console.log('список после пуша ', state.allTasks[tableInd].taskLists);
+
               }
   
               console.log('Новый массив со списком',  state.allTasks[tableInd].taskLists);
@@ -214,11 +218,12 @@ export default {
   
   
               if (taskListsId == null) {
-                  console.log('переменная не попределена задач нема', taskListsId)
+                  console.log('лист. переменная не попределена задач нема', taskListsId)
   
                   taskListsId = [newListId]
               } else {
                   taskListsId.push(newListId);
+                  console.log('Запушили лист');
               }
   
               // taskListsId = newListId;

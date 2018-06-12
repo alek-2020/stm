@@ -4,6 +4,10 @@ export default {
 
  actions: {
 
+
+
+
+
     /////////////////////////////////////////
     // Получаем столы, списки и задачи из БД
     /////////////////////////////////////////
@@ -15,7 +19,8 @@ export default {
         if (rootState.allTasks.length < 1) {
             //если не подгружали вообще ни одного стола
             console.log('getdata. Инициализируем первичную загрузку столов. Массив ещё пуст.', rootState.allTables);
-            dispatch('altGetUserFB');
+            // dispatch('altGetUserFB');
+            dispatch('firstGettingData');
         } else {
 
             console.log('раз. хотя бы одни стол есть в локальтом массиве', rootState.allTasks[rootState.activeTableIndex].taskLists);
@@ -42,6 +47,16 @@ export default {
             }
         }
     },
+
+
+
+        // УПРАВЛЯЮЩАЯ ФУНКЦИЯ 1. ТЕКУЩИЙ СТОЛ НЕ ЗАГРУЖЕН.
+        async firstGettingData () {
+            const onw = altGetUserFB();
+            const jh= await altGetTables();
+        },
+
+
 
       ///Получаем данные по юзеру по его id с БД (users)
       altGetUserFB({ dispatch, commit, state, rootState }) {
