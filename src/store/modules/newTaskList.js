@@ -8,10 +8,25 @@ export default {
         //////////////////////////////////////////////////
 
         addTaskList({ dispatch }) {
-            // 1. Формируем параметры нового листа задач
+            // 1. Формируем параметры нового листа задач и пушим в TaskLists
             dispatch('addList')
                 .then(response => {
-                    console.log('Запушили список в локальный массив и в taskLists', response);
+                    console.log('newTaskList. Запушили список в локальный массив и в taskLists', response);
+                    const tableId = response.tableId;
+                    const newListId = response.newListId;
+                    // 2. Получим списки стола из table/taskLists
+                    return dispatch('getTaskListInTable', { tableId, newListId });
+                }).then(response => {
+                    console.log('newTaskList. Получили списки стола из table/taskLists ', response);
+                    const tableId = response.tableId;
+                    const newListId = response.newListId;
+                    const taskListsId = response.taskListsId;
+                    // 3. Отправим обновленные списки на сервер
+                    return dispatch('addListIdToTable', { tableId, newListId, taskListsId });
+                }).then(response => {
+                    console.log();
+                }).catch(error => {
+                    console.log('Полный провал. Ошибка: ', error);
                 })
         },
 
@@ -24,8 +39,6 @@ export default {
                 let tableInd = rootState.activeTableIndex;
                 let TableLists = rootState.allTasks[tableInd].taskLists;
                 const tableId = rootState.allTasks[tableInd].id;
-
-                // console.log('Получили списки и id', TableLists, tableId);
 
                 //Формируем параметры нового списка
                 const newTaskList = {
@@ -40,11 +53,7 @@ export default {
                     rootState.allTasks[tableInd].taskLists = [newTaskList]
                     // console.log('добавили в массив ', rootState.allTasks[tableInd].taskLists);
                 } else {
-                    // console.log('список до пуша ', rootState.allTasks[tableInd].taskLists);
                     rootState.allTasks[tableInd].taskLists.push(newTaskList);
-                    // TableLists.push(newTaskList);
-                    // console.log('список после пуша ', rootState.allTasks[tableInd].taskLists);
-
                 }
 
                 firebase
@@ -68,7 +77,6 @@ export default {
             })
         },
 
-        /////////
         getTaskListInTable({ dispatch, commit, state, rootState }, { tableId, newListId }) {
             return new Promise((resolve, reject) => {
 
@@ -78,11 +86,8 @@ export default {
                     .once('value')
                     .then(data => {
 
-
-                        console.log('ПОЛУЧИЛИ СТОЛЫ С СЕРВАКА', data.val());
                         const taskListsId = data.val();
-                        dispatch('addListIdToTable', { tableId, newListId, taskListsId });
-
+                        resolve({ tableId, newListId, taskListsId });
                     })
                     .catch(error => {
                         console.log('Полный провал. Ошибка: ', error);
@@ -94,21 +99,14 @@ export default {
         addListIdToTable({ dispatch, commit, state, rootState }, { tableId, newListId, taskListsId }) {
             return new Promise((resolve, reject) => {
 
-                //   let taskListsId = rootState.userTables.taskLists;
-
-
                 if (taskListsId == null) {
-                    console.log('лист. переменная не попределена задач нема', taskListsId)
+                    // console.log('лист. переменная не попределена задач нема', taskListsId)
 
                     taskListsId = [newListId]
                 } else {
                     taskListsId.push(newListId);
-                    console.log('Запушили лист');
+                    // console.log('Запушили лист');
                 }
-
-                // taskListsId = newListId;
-
-                console.log('А СПИСКИ У НАС ТАКИЕ ', taskListsId);
 
                 firebase
                     .database()
@@ -116,8 +114,7 @@ export default {
                     .set(taskListsId)
                     .then(data => {
 
-
-                        console.log('АЙДИШНИКИ В СТОЛЕ БРАТУХА!!!');
+                        resolve('newTaskList. Стол запушен. Все ОК!');
                         //нужно получим заново наши столы
                         // dispatch('GetTablesOnly');
 

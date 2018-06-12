@@ -65,15 +65,6 @@ export default {
 
                 let lastColId = getters.getNewColId;
 
-                //   const lastColId = 3;
-
-                // const newTableBtn = {
-                //   name: this.newTableName,
-                //   colorOne: this.gradients[lastColId].colorOne,
-                //   colorTwo: this.gradients[lastColId].colorTwo,
-                //   colorId: lastColId + 1
-                // };
-
                 const newTableBtn = {
                     name: "Новый стол",
                     colorOne: rootState.gradients[lastColId].colorOne,
@@ -82,7 +73,6 @@ export default {
                     taskList: [""]
                 };
 
-                // this.dispatch("pushNewTable", newTableBtn);
                 resolve(newTableBtn);
 
             });

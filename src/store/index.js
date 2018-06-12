@@ -8,6 +8,7 @@ import getters from './getters'
 import getData from './modules/getData'
 import newTable from './modules/newTable'
 import newTaskList from './modules/newTaskList'
+import newTask from './modules/newTask'
 
 import * as firebase from "firebase";
 
@@ -98,7 +99,8 @@ export const store = new Vuex.Store({
     modules: {
         getData,
         newTable,
-        newTaskList
+        newTaskList,
+        newTask
     },
 
 })
