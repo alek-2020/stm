@@ -142,9 +142,6 @@ export default {
   overflow: hidden;
   box-sizing: border-box;
 
-  &:hover {
-  }
-
   &__name {
     border: none;
     background: transparent;

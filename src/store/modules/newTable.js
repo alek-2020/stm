@@ -78,7 +78,8 @@ export default {
                     name: "Новый стол",
                     colorOne: rootState.gradients[lastColId].colorOne,
                     colorTwo: rootState.gradients[lastColId].colorTwo,
-                    colorId: lastColId + 1
+                    colorId: lastColId + 1,
+                    taskList: [""]
                 };
 
                 // this.dispatch("pushNewTable", newTableBtn);

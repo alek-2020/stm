@@ -100,7 +100,7 @@ export default {
              this.$store.dispatch('register', user.id)
         },
         addList() {
-          this.$store.dispatch('addList');
+          this.$store.dispatch('addTaskList');
         }
     },
 
