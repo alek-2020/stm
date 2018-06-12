@@ -110,7 +110,7 @@ export default Vue.extend({
   methods: {
 
         AddTableBtn: function() {
-      this.$store.dispatch("checkTableInput");
+      this.$store.dispatch("addNewTable");
 
     },
     mDownOnTableList(e) {

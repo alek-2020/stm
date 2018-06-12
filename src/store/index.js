@@ -6,6 +6,7 @@ import mutations from './mutations'
 import getters from './getters'
 
 import getData from './modules/getData'
+import newTable from './modules/newTable'
 
 import * as firebase from "firebase";
 
@@ -94,7 +95,8 @@ export const store = new Vuex.Store({
     getters,
     
     modules: {
-        getData
+        getData,
+        newTable
     },
 
 })

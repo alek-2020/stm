@@ -16,6 +16,7 @@
               
               <OneTask
                 v-for="(task, index) in doneTasks"
+                :key="task.text"
                 :task = 'task'
                 :Index = 'index'
                 :tableInd = 'activeTableIndex'
