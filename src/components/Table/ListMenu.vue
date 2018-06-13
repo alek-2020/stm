@@ -31,6 +31,7 @@
               <div class="col-palette" v-bind:class="{widthZero: !persHide.activeDotsCol}">
                <div class="col-palette__item"
                v-for="color in paletteColors"
+               :key="color"
                v-bind:style="{ background: color.color }"
                ></div>
                 
@@ -110,7 +111,8 @@
 </script>
 
 
-<style>
+<style lang="scss">
+
     .pers {
         display: flex;
         flex-wrap: nowrap;
@@ -221,7 +223,6 @@
         }
     }
 
-    .stop-1 {}
 
     .stop-2 {
         animation-delay: 5s;

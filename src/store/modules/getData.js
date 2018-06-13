@@ -26,7 +26,7 @@ export default {
                 })
                 .then(allTables => {
                     console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
-                    
+
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
                     dispatch('getTaskLists');
                 })
@@ -113,7 +113,7 @@ export default {
                                 colorId: data.val().colorId,
                                 colorOne: data.val().colorOne,
                                 colorTwo: data.val().colorTwo,
-                                taskLists: ['']
+                                taskLists: []
                             })
 
                             if ((i + 1) == rootState.userData.tables.length) {
@@ -132,61 +132,84 @@ export default {
         ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
         getTaskLists({ dispatch, commit, state, rootState }) {
 
-                //подтягиваем списки активного раб. ст.
-                rootState.userTables[rootState.activeTableIndex].taskLists.forEach((element, index) => {
-                    firebase
-                        .database()
-                        .ref("taskLists/" + element)
-                        .once('value')
-                        .then(data => {
+            //подтягиваем списки активного раб. ст.
+            rootState.userTables[rootState.activeTableIndex].taskLists.forEach((element, index) => {
+                firebase
+                    .database()
+                    .ref("taskLists/" + element)
+                    .once("value")
+                    .then(data => {
 
-                            rootState.taskLists.push(data.val());
 
-                            // console.log('Получили список задач ', data.val());
-                            //пишем списки в супер JSON
-                            rootState.allTasks[rootState.activeTableIndex].taskLists.push({
-                                id: element,
-                                'name': data.val().name,
-                                'color': data.val().color,
-                                tasks: []
-                            });
-                            // console.log('getdata. запушили список в локальный массив, инициализируем получение задач для него ', rootState.allTasks[rootState.activeTableIndex].taskLists);
-                            dispatch('getTasksInOneListFB', index);
+                        rootState.taskLists.push(data.val());
 
-                        })
-                        .catch(error => {
-                            console.log('Полный провал. Ошибка: ', error);
-                        })
+                        //пишем список в супер JSON
+                        rootState.allTasks[rootState.activeTableIndex].taskLists.push({
+                            id: element,
+                            'name': data.val().name,
+                            'color': data.val().color,
+                            tasks: []
+                        });
+
+                        console.log('.getdata. отправляем id-шники для получения', rootState.taskLists[index].tasks);
+
+                        // console.log('getdata. запушили список в локальный массив, инициализируем получение задач для него ', rootState.allTasks[rootState.activeTableIndex].taskLists);
+                        dispatch('getTasksInOneListFB', index);
+
+                    })
+                    .catch(error => {
+                        console.log('Полный провал. Ошибка: ', error);
+                    })
             });
         },
 
 
         ///Получаем задачи очередного списка
         getTasksInOneListFB({ dispatch, commit, state, rootState }, i) {
+            rootState.taskLists[i].tasks.forEach(element => {
 
-                rootState.taskLists[i].tasks.forEach(element => {
-                    firebase
-                        .database()
-                        .ref("tasks/" + element)
-                        .once('values')
-                        .then(data => {
+                firebase
+                    .database()
+                    .ref("tasks/" + element)
+                    .once("value")
+                    .then(data => {
+                        console.log('.getdata. получили данные с БД по задаче', data.val());
 
-                            rootState.tasksFB.push(data.val());
+                        // rootState.tasksFB.push(data.val());
 
-                            //Пишем нашу задачу в супер JSON
-                            rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks.push({
-                                id: element,
-                                'text': data.val().text,
-                                'color': data.val().color,
-                                'isDone': data.val().isDone
-                            })
+                        //Пишем нашу задачу в супер JSON
 
-                        })
-                        .catch(error => {
-                            console.log('Полный провал. Ошибка: ', error);
-                        })
+                        let dbTask = {
+                            'id': element,
+                            'text': data.val().text,
+                            'isDone': data.val().isDone
+                        }
 
-                });
+                        let bigJSON = rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks; 
+
+                        console.log('.getdata. сформировали задачу для пуша ', dbTask, ' записали большой массив  ', bigJSON);
+
+                        //Если это первая задача - создадим под нее пустой массив
+                        if(bigJSON == null) { rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks = ['.,','jn'] }
+
+                        console.log('.getdata. подготовили большой массив сделав там контейнер ', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
+
+
+                        console.log('.getdata. зашли в получение задач 4', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
+                        console.log('.getdata. зашли в получение задач 4', rootState.allTasks[rootState.activeTableIndex]);
+
+
+                        rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks.push(dbTask);
+
+                        console.log('.getdata. большой массив после пуша', bigJSON);
+                        console.log('.getdata. большой массив  после пуша напрямую' , rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
+
+                    })
+                    .catch(error => {
+                        console.log('Полный провал. Ошибка: ', error);
+                    })
+
+            });
         },
 
         //Записываем базовые настроки по юзеру

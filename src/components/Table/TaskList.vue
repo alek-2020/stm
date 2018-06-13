@@ -57,22 +57,9 @@ export default {
 
     //Добавляем новую задачу (пока что просто пустой инпут)
     AddEmptyInp(taskListInd, tableInd) {
-       console.log('Добавляем пустой инп', taskListInd, tableInd); 
-       const mas = this.allTasks[tableInd].taskLists[taskListInd].tasks;
-       const tableId = this.allTasks[tableInd].id;
-       const taskListId = this.allTasks[tableInd].taskLists[taskListInd].id;
-       const taskColor = "gray";
-       console.log('Задачи', mas);
-       const task = {
-         text: 'Задача удача',
-         tableId,
-         taskListId,
-         taskColor,
-         isDone: false
-       };
-       mas.push(task);
 
-       this.$store.dispatch( 'addTask', {tableInd, taskListInd, task})
+
+       this.$store.dispatch( 'addNewTask', {tableInd, taskListInd})
   
 
     },

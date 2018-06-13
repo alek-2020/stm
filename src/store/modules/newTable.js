@@ -70,7 +70,7 @@ export default {
                     colorOne: rootState.gradients[lastColId].colorOne,
                     colorTwo: rootState.gradients[lastColId].colorTwo,
                     colorId: lastColId + 1,
-                    taskList: [""]
+                    taskLists: []
                 };
 
                 resolve(newTableBtn);

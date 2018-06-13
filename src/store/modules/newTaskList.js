@@ -65,7 +65,10 @@ export default {
 
                         //теперь привяжем id списка к столу
                         const newListId = data.key;
-
+                        // докинем наш ключ в  allTasks. Сначала нужно узнать его индекс
+                        const ind = rootState.allTasks[tableInd].taskLists.length - 1;
+                        rootState.allTasks[tableInd].taskLists[ind].id = newListId;
+                        console.log('.newtasklist наш лист с id',  rootState.allTasks[tableInd].taskLists[ind].id)
 
                         // dispatch('getTaskListInTable', { tableId, newListId });
                         resolve({ tableId, newListId });

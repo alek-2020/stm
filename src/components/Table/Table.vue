@@ -31,7 +31,7 @@
 
      <span style="color: white; font-weigth: 500; background: black;"
       >
-     {{ allTasks }}
+     <!-- {{ allTasks }} -->
      </span>
 
   </div>
