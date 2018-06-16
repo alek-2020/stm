@@ -83,6 +83,12 @@ export default {
 @import 'scss/bootsParts/bootsParts';
 @import 'scss/normalize';
 
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 html {
   min-width: 300px;
 }

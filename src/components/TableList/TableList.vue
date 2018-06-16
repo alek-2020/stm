@@ -303,7 +303,7 @@ export default Vue.extend({
       height: 100%;
     }
   }
-}
+
 
 
 
@@ -314,7 +314,7 @@ export default Vue.extend({
 ////////ОБЫЧНОЕ СОТОЯНИЕ
 
 //Область скролла
-.ps.ps--active-x >
+& .ps.ps--active-x >
 .ps__scrollbar-x-rail {
     display: block;
     background-color: #ffffff31;
@@ -325,7 +325,7 @@ export default Vue.extend({
 }
 
 //скроллбар
-.ps.ps--active-x >
+& .ps.ps--active-x >
 .ps__scrollbar-x-rail >
 .ps__scrollbar-x {
     background-color: #ffffff4b;
@@ -340,7 +340,7 @@ export default Vue.extend({
 ////////HOVER
 
 //Область скролла
-.ps.ps--active-x >
+& .ps.ps--active-x >
 .ps__scrollbar-x-rail:hover {
    height: 10px;
    transition: height .2s;
@@ -348,7 +348,7 @@ export default Vue.extend({
 }
 
 //скроллбар
-.ps:hover >
+& .ps:hover >
 .ps__scrollbar-x-rail:hover >
 .ps__scrollbar-x {
     height: 10px;
@@ -362,11 +362,11 @@ export default Vue.extend({
 
 //////АCTIVE
 
-.ps__scrollbar-x-rail {
+& .ps__scrollbar-x-rail {
   top: -1px;
 }
 //область скролла
-.ps:hover.ps--in-scrolling.ps--x > 
+& .ps:hover.ps--in-scrolling.ps--x > 
 .ps__scrollbar-x-rail {
    background-color: #ffffff31;
    opacity: 1;
@@ -374,7 +374,7 @@ export default Vue.extend({
 
 //скроллбар
 
-.ps:hover.ps--in-scrolling.ps--x >
+& .ps:hover.ps--in-scrolling.ps--x >
 .ps__scrollbar-x-rail >
 .ps__scrollbar-x {
     background-color: rgba(255, 255, 255, 0.6);
@@ -385,7 +385,7 @@ export default Vue.extend({
 //////АCTIVE NOT HOVER
 
 //область скролла
-.ps.ps--in-scrolling.ps--x > 
+& .ps.ps--in-scrolling.ps--x > 
 .ps__scrollbar-x-rail {
    background-color: #ffffff31;
    opacity: 1;
@@ -394,7 +394,7 @@ export default Vue.extend({
 
 //скроллбар
 
-.ps.ps--in-scrolling.ps--x >
+& .ps.ps--in-scrolling.ps--x >
 .ps__scrollbar-x-rail >
 .ps__scrollbar-x {
     background-color: rgba(255, 255, 255, 0.6);
@@ -402,9 +402,10 @@ export default Vue.extend({
 }
 
 //Сделано через родителя, потому что иначе перебиваются настройки плагина
-.smoothScroll .desk-btns__rel-cont{
+& .smoothScroll .desk-btns__rel-cont{
     scroll-behavior: smooth;
 }
 
+}
 </style>
 

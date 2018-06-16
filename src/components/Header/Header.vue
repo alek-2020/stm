@@ -33,10 +33,13 @@
         
         <div class="t-header__desk-name">
             <div class="t-header__desk-name-abs">
-              <input type="text"
-                 v-model="actTabName"
-                 placeholder="Стол">
-              
+              <div class="actTabName__box">
+                <input class="actTabName__inp" type="text"
+                  v-model="actTabName"
+                  placeholder="Стол">
+                <span class="actTabName__buffer">{{ actTabName }}</span>
+              </div>
+
               <div class="table-settings"
                 v-html="settingsIcon"
                 @click="showTableSettings"
@@ -157,7 +160,7 @@ export default {
     AddTableBtn: function() {
       // this.$store.state.plusActive = !this.$store.state.plusActive;
       this.hPlusActive = !this.hPlusActive;
-   },
+    },
 
     //     lastTableColor() {
     //   var i = this.tables.length - 1;
@@ -172,7 +175,8 @@ export default {
       this.$store.dispatch("delActiveTable");
     },
     showTableSettings() {
-        this.$store.state.tableSettingsActive = !this.$store.state.tableSettingsActive;
+      this.$store.state.tableSettingsActive = !this.$store.state
+        .tableSettingsActive;
     }
   },
   computed: {
@@ -312,10 +316,12 @@ $h-small-icons-col: rgb(56, 56, 56);
     justify-content: center;
     white-space: nowrap;
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    // left: 50%;
+    // transform: translateX(-50%);
     text-align: center;
     // margin: 0 100px;
+    text-align: center;
+    margin: 0 45px;
 
     &-abs {
       display: flex;
@@ -396,7 +402,6 @@ $h-small-icons-col: rgb(56, 56, 56);
 // }
 
 .desk-btns {
-
   &__group-1 {
     position: absolute;
   }
@@ -428,8 +433,8 @@ $h-small-icons-col: rgb(56, 56, 56);
   &__h-add_active {
     height: 50px;
     & .desk-btns__check-add {
-        max-height: 400px;
-        padding: 5px;
+      max-height: 400px;
+      padding: 5px;
     }
   }
 
@@ -449,12 +454,38 @@ $h-small-icons-col: rgb(56, 56, 56);
     transition: all 0.3s;
     max-height: 0;
     padding: 0 5px;
+  }
+}
 
-    & .text {
-      border-radius: 6px;
-      transition: all .2s;
-    }
+.actTabName {
 
+  &__box {
+    width: min-content;
+    position: relative;
+    height: 30px;
+  }
+
+  &__buffer {
+    position: relative;
+    left: 0;
+    padding: 0 5px;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    height: 0;
+    opacity: 0;
+  }
+
+  &__inp {
+    border-radius: 6px;
+    transition: all 0.2s;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: left !important;
   }
 }
 

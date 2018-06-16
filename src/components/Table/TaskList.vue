@@ -118,7 +118,7 @@ export default {
   // min-width: 250px;
   // max-width: 400px;
   border: solid 3px #c6c6c6ad;
-  margin: 3% 0 0 3%;
+  margin-left: 15px;
   padding: 10px;
   border-radius: 5px;
   display: flex;
@@ -164,37 +164,37 @@ export default {
   }
 }
 
-@media screen and (min-width: 300px) {
-  .task-list {
-    //( 100 - 3*3 )/2
-     width: 94%;
-  }
-}
+// @media screen and (min-width: 300px) {
+//   .task-list {
+//     //( 100 - 3*3 )/2
+//      width: 94%;
+//   }
+// }
 
-@media screen and (min-width: 550px) {
-  .task-list {
+// @media screen and (min-width: 550px) {
+//   .task-list {
 
 
     
-    // min-width: 200px;
-    // max-width: 500px;
-    // flex-grow: 1;
-    //( 100 - 3*3 )/2
-     width: 45.5%;
-  }
-}
+//     // min-width: 200px;
+//     // max-width: 500px;
+//     // flex-grow: 1;
+//     //( 100 - 3*3 )/2
+//      width: 45.5%;
+//   }
+// }
 
-@media screen and (min-width: 850px) {
-  .task-list {
-    //( 100 - 3*3 )/2
-     width: calc( 88% / 3 );
-  }
-}
+// @media screen and (min-width: 850px) {
+//   .task-list {
+//     //( 100 - 3*3 )/2
+//      width: calc( 88% / 3 );
+//   }
+// }
 
-@media screen and (min-width: 1150px) {
-  .task-list {
-    //( 100 - 3*3 )/2
-     width: calc( 85% / 4 );
-  }
-}
+// @media screen and (min-width: 1150px) {
+//   .task-list {
+//     //( 100 - 3*3 )/2
+//      width: calc( 85% / 4 );
+//   }
+// }
 </style>
