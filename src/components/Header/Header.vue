@@ -31,7 +31,11 @@
 
         <!-- <input class="t-header__search" placeholder="Search"> -->
         
-        <div class="t-header__desk-name">
+        <div class="t-header__desk-name"
+          @mouseover="showSettings"
+          @mouseout="hideSettings"
+          @click=""
+          @клик на любом элементк кроме текущего>
             <div class="t-header__desk-name-abs">
               <div class="actTabName__box">
                 <input class="actTabName__inp" type="text"
@@ -42,11 +46,13 @@
 
               <div class="table-settings"
                 v-html="settingsIcon"
+                :class="{ 'table-settings_hidden': !tableSettingsVisible }"
                 @click="showTableSettings"
                 ></div>
               
               <div class="delTable"
               v-html="deleteIcon"
+              :class="{ delTable_hidden: !tableSettingsActive }"
               v-on:click="delTable()"              
               ></div>
               
@@ -56,10 +62,10 @@
         <!-- <div class="t-header__logout">
             EXIT
         </div> -->
-     <div class="desk-btns__group-2 ml-3">
+     <div class="desk-btns__group-2">
           
           <router-link to="/login" 
-            class="t-header__profile btn-bg-white ml-2"
+            class="t-header__profile btn-bg-white"
             v-html="loginIcon">
             <!-- <img src="/img/icons/log-in.svg" alt=""> -->
           </router-link>
@@ -142,6 +148,13 @@ export default {
       console.log("рамка", a);
     },
 
+    showSettings() {
+         this.$store.state.tableSettingsVisible = true;
+    },
+    hideSettings() {
+         this.$store.state.tableSettingsVisible = false;
+    },
+
     //Скроллим наш список столов в конец для добавления нового
     //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
     HeaderAdd() {
@@ -208,6 +221,9 @@ export default {
     // },
     tableSettingsActive() {
       return this.$store.state.tableSettingsActive;
+    },
+    tableSettingsVisible() {
+      return this.$store.state.tableSettingsVisible;
     }
     // visibleTables(){
     //     return this.tasks.filter( user => {
@@ -254,15 +270,6 @@ $h-small-icons-col: rgb(56, 56, 56);
   display: flex;
   align-items: center;
   position: relative;
-
-  &__logo {
-    margin-left: 10px;
-
-    & svg {
-      height: 20px;
-      fill: gray;
-    }
-  }
 
   &__search {
     box-sizing: border-box;
@@ -315,29 +322,21 @@ $h-small-icons-col: rgb(56, 56, 56);
     flex-grow: 1;
     justify-content: center;
     white-space: nowrap;
-    position: absolute;
+    position: relative;
     // left: 50%;
     // transform: translateX(-50%);
+    width: calc(100% - 90px);
     text-align: center;
     // margin: 0 100px;
     text-align: center;
-    margin: 0 45px;
+    margin: 0 20px;
+    height: 100%;
 
     &-abs {
       display: flex;
       justify-content: center;
-
-      & input {
-        margin: 0 auto;
-        display: block;
-        border-radius: 5px;
-        padding: 5px;
-        border: none;
-        background: transparent;
-        font-family: "Roboto", sans-serif;
-        font-size: 20px;
-        text-align: center;
-      }
+      align-items: center;
+      max-width: 100%;
     }
   }
 
@@ -403,7 +402,7 @@ $h-small-icons-col: rgb(56, 56, 56);
 
 .desk-btns {
   &__group-1 {
-    position: absolute;
+    position: relative;
   }
 
   &__group-1,
@@ -412,7 +411,7 @@ $h-small-icons-col: rgb(56, 56, 56);
   }
 
   &__group-2 {
-    position: absolute;
+    position: relative;
     right: 0;
   }
 
@@ -458,11 +457,11 @@ $h-small-icons-col: rgb(56, 56, 56);
 }
 
 .actTabName {
-
   &__box {
     width: min-content;
     position: relative;
     height: 30px;
+    max-width: 100%;
   }
 
   &__buffer {
@@ -486,26 +485,65 @@ $h-small-icons-col: rgb(56, 56, 56);
     width: 100%;
     height: 100%;
     text-align: left !important;
+    margin: 0 auto;
+    display: block;
+    border-radius: 5px;
+    padding: 0 5px;
+    border: none;
+    background: transparent;
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 
 .table-settings {
-  width: 20px;
+  width: 30px;
   display: flex;
+  z-index: 5;
+  width: 25px;
+  opacity: 1;
+  transition: all .2s;
+  position: relative;
+  left: 0;
+  margin: 0 5px;
 
-  & > svg {
-    height: 16px;
-    margin: auto;
+  &:hover svg{
     fill: $h-small-icons-col;
+  }
+  &_hidden {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+  }
+  & > svg {
+    height: 20px;
+    margin: auto;
+    fill: gray;
+    transition: fill .1s;
   }
 }
 
 .delTable {
-  width: 20px;
+  width: 25px;
   display: flex;
+  position: relative;
+  opacity: 1;
+  left: 0;
+  margin: 0 5;
+
+  transition: all 0.2s;
+
+  &_hidden {
+    left: -30px;
+    opacity: 0;
+    width: 0;
+    margin: 0;
+  }
 
   & > svg {
-    height: 16px;
+    height: 20px;
     margin: auto;
     fill: $h-small-icons-col;
   }

@@ -28,6 +28,7 @@ export const store = new Vuex.Store({
             tasksFB: [],
             activeTableIndex: 0,
             tableSettingsActive: false,
+            tableSettingsVisible: false,
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 

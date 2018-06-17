@@ -4,8 +4,10 @@
         <input type="text"
          class="one-task__text"
          v-model="task.text"
-         @focusout='changeText(task.text)'
-         @keyup.enter='changeText(task.text)'>
+         
+       >
+<!-- @focusout='changeText(task.text)'
+         @keyup.13='changeText(task.text)' -->
          <div class="check-box"
           @click="checkTask"></div>
          </div>

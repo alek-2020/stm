@@ -125,4 +125,11 @@ a {
   height: 100vh;
   z-index: -1;
 }
+
+@media all and (max-width: 480px) { 
+ .t-header__profile,
+ .btn-filter  {
+    display: none !important;
+  }
+ }
 </style>
