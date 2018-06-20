@@ -34,8 +34,7 @@
         <div class="t-header__desk-name"
           @mouseover="showSettings"
           @mouseout="hideSettings"
-          @click=""
-          @клик на любом элементк кроме текущего>
+          >
             <div class="t-header__desk-name-abs">
               <div class="actTabName__box">
                 <input class="actTabName__inp" type="text"
@@ -52,7 +51,7 @@
               
               <div class="delTable"
               v-html="deleteIcon"
-              :class="{ delTable_hidden: !tableSettingsActive }"
+              :class="{ 'delTable_hidden': !tableSettingsActive }"
               v-on:click="delTable()"              
               ></div>
               
@@ -74,11 +73,12 @@
           
           <div class="t-header__menu btn-bg-white mx-2"
             @click="ActivateDots"
-            v-html="menuIcon">
+            >
+            <img src="../../../img/icons/more-dots.svg">
               <!-- <img src="/img/icons/more-dots.svg" alt=""> -->
                  
                   <ThreeDotsMenu
-                  v-if="ThreeDotsActive">
+                  :class="{ 'header-menu_hidden': !ThreeDotsActive }">
                   </ThreeDotsMenu>
           </div>
 
@@ -145,14 +145,17 @@ export default {
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;
       var a = this.ThreeDotsActive;
-      console.log("рамка", a);
     },
 
     showSettings() {
          this.$store.state.tableSettingsVisible = true;
     },
     hideSettings() {
+         console.log('Срабатывает mouseout');
          this.$store.state.tableSettingsVisible = false;
+        //  this.$store.state.tableSettingsActive = false;
+
+
     },
 
     //Скроллим наш список столов в конец для добавления нового
@@ -188,6 +191,7 @@ export default {
       this.$store.dispatch("delActiveTable");
     },
     showTableSettings() {
+      console.log('Показали настроюшки');
       this.$store.state.tableSettingsActive = !this.$store.state
         .tableSettingsActive;
     }
@@ -370,12 +374,13 @@ $h-small-icons-col: rgb(56, 56, 56);
     border-radius: 7px;
     transition: background 0.3s;
     background: #0000000f;
+    position: relative;
 
     &:hover {
       background: rgba(255, 255, 255, 0.8);
     }
 
-    & svg {
+    & img {
       width: 15px;
       margin: auto;
       fill: $h-icons-col;
@@ -564,6 +569,15 @@ $h-small-icons-col: rgb(56, 56, 56);
     margin: auto;
     fill: $h-icons-col;
   }
+}
+
+.header-menu_hidden {
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: none !important;
 }
 </style>
 

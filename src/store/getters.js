@@ -6,12 +6,14 @@ export default {
     },
   
     getNewColId({ dispatch, commit, state, getters }) {
-        // let lastTableId = state.allTasks;
-        // console.log('Последний id', this.lastTableId);
-        // lastTableId = 1;
-        // const newTableCol = state.allTasks[lastTableId].colId;
-        // return newTableCol + 1;
-        return 3;
+        console.log('getcol Последний id');
+
+        let lastTableId = state.allTasks[state.allTasks.length-1].colId;
+        console.log('getcol Последний id', lastTableId);
+        const newTableCol = state.allTasks[lastTableId].colId + 1;
+        console.log('getcol Возвращаем ', newTableCol)
+        return newTableCol;
+        // return 3;
     },
     // activeTableName(state) {
     //        //и запишем название нашего стола для хедера

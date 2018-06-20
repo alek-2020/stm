@@ -63,12 +63,12 @@ export default {
         AddTableBtn({ dispatch, commit, state, rootState, getters }) {
             return new Promise((resolve, reject) => {
 
-                let lastColId = getters.getNewColId;
-
+                let colId = getters.getNewColId;
+                 console.log('getcol ', colId);
                 const newTableBtn = {
                     name: "Новый стол",
-                    colorOne: rootState.gradients[lastColId].colorOne,
-                    colorTwo: rootState.gradients[lastColId].colorTwo,
+                    colorOne: rootState.gradients[colId].colorOne,
+                    colorTwo: rootState.gradients[colId].colorTwo,
                     colorId: lastColId + 1,
                     taskLists: []
                 };
