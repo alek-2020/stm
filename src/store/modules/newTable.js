@@ -11,9 +11,13 @@ export default {
             // 1.Проверка 'если плюс активен'
             dispatch('checkTableInput')
                 .then(response => {
-                    console.log(response);
+                    console.log('Плюс активен ', response);
+                    //1.5 Получим цвет нового стола 
+                    return dispatch('getNewColId');
+                })
+                .then(newColor => {
                     // 2. Готовим параметры нового Раб. Ст.
-                    return dispatch('AddTableBtn');
+                    return dispatch('AddTableBtn', newColor);
                 })
                 .then(newTable => {
                     console.log('Новый стол готов ', newTable);
@@ -59,17 +63,38 @@ export default {
         },
 
 
+        // Узнаем цвет нового стола
+        getNewColId({ dispatch, commit, state, rootState, getters }) {
+            return new Promise((resolve, reject) => {
+                let lastTableId, newTableCol;
+                console.log('getcol Последний id');
+                
+                //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
+                if(rootState.allTasks.length > 0 || newTableCol > (rootState.gradients.length - 1)) {
+                    lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
+                    console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
+                    newTableCol = rootState.allTasks[lastTableId].colorId + 1;
+                } else {
+                    newTableCol = 0;
+                }
+        
+                console.log('getcol Последний id', lastTableId);
+                console.log('getcol Возвращаем ', newTableCol)
+                resolve(newTableCol);
+                // return 3;
+            })
+        },
+
         // Формируем формируем параметры стола 
-        AddTableBtn({ dispatch, commit, state, rootState, getters }) {
+        AddTableBtn({ dispatch, commit, state, rootState, getters }, colId) {
             return new Promise((resolve, reject) => {
 
-                let colId = getters.getNewColId;
-                 console.log('getcol ', colId);
+                console.log('getcol ', colId);
                 const newTableBtn = {
                     name: "Новый стол",
                     colorOne: rootState.gradients[colId].colorOne,
                     colorTwo: rootState.gradients[colId].colorTwo,
-                    colorId: lastColId + 1,
+                    colorId:  colId,
                     taskLists: []
                 };
 
