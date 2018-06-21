@@ -55,37 +55,37 @@ export const store = new Vuex.Store({
             //добавление рс
             gradients: [
                 {
-                    colId: 1,
+                    colId: 0,
                     colorOne: "#d24242",
                     colorTwo: "#af4242"
                 },
                 {
-                    colId: 2,
+                    colId: 1,
                     colorOne: "#f85725",
                     colorTwo: "#8a5e41"
                 },
                 {
-                    colId: 3,
+                    colId: 2,
                     colorOne: "#e15656",
                     colorTwo: "#825a5a"
                 },
                 {
-                    colId: 4,
+                    colId: 3,
                     colorOne: "#8fb554",
                     colorTwo: "#5b917d"
                 },
                 {
-                    colId: 5,
+                    colId: 4,
                     colorOne: "#2a2a39",
                     colorTwo: "#535472"
                 },
                 {
-                    colId: 6,
+                    colId: 5,
                     colorOne: "#535472",
                     colorTwo: "#2a2a39"
                 },
                 {
-                    colId: 7,
+                    colId: 6,
                     colorOne: "#582121",
                     colorTwo: "#bf3737"
                 }

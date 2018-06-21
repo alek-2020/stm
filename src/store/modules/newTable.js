@@ -7,7 +7,7 @@ export default {
         // УПРАВЛЯЮЩАЯ ФУНКЦИЯ
         ///////////////////////
 
-        addNewTable({ dispatch }) {
+        addNewTable({ dispatch, commit }) {
             // 1.Проверка 'если плюс активен'
             dispatch('checkTableInput')
                 .then(response => {
@@ -26,6 +26,10 @@ export default {
                 })
                 .then(newTableId => {
                     console.log('Запушили стол в локальный массив в Tables на серв. ', newTableId);
+                    //Послу пушв в локальный массив проскролим столы, что бы новый было видно
+                    commit('scrollButtonsToEnd');
+                    //Делаем новосозданный стол активным
+                    dispatch('makeLastTableActive');
                     // 4. Получим список столов из user/tables, что бы добавить туда новый id
                     return dispatch('getTablesList', newTableId);
                 })

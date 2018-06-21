@@ -18,7 +18,6 @@ export default {
             dispatch('altGetUserFB')
                 .then(response => {
                     console.log('getData. Получили данные по id из users', response);
-
                     // 2. Пишем рабочие столы из tables в allTasks
                     const settings = response.settings;
                     dispatch('getSettings', settings);
@@ -26,7 +25,6 @@ export default {
                 })
                 .then(allTables => {
                     console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
-
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
                     dispatch('getTaskLists');
                 })
@@ -218,6 +216,7 @@ export default {
 
                 console.log('getdata. Получили настройки ', settings);
                 rootState.currentBgImg = settings.bg;
+                rootState.activeTableIndex = settings.activeTable;
 
             })
         }

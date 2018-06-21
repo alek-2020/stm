@@ -2,7 +2,7 @@
 
 <button
   class="btn desk-btns__one"
-  v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colOne + ', ' + table.colTwo }"
+  v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colorOne + ', ' + table.colorTwo }"
   v-bind:class="{'desk-btns__last': ifLasBtn}"
   v-bind:id=" 'tableBtn-' + table.BtnId"
   v-on:click = 'changeActiveTable(index)'
@@ -93,6 +93,8 @@ export default Vue.extend({
 
     changeActiveTable(index) {
       this.$store.state.activeTableIndex = index;
+      //пишем на сервер index стола
+      this.$store.dispatch('updateActiveTable', index);
       //Стартуем подгрузку задач, я сказал стартуем
       this.$store.dispatch("startGetTasks");
     },

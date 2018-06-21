@@ -157,5 +157,28 @@ export default {
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);
             })
-          }
+          },
+
+      //Делает посделний стол активным
+      makeLastTableActive({ dispatch, commit, state }) {
+        console.log('Переключаем последний стол на активный');
+        const last =  state.allTasks.length - 1;
+        state.activeTableIndex = last;
+        dispatch('updateActiveTable', last);
+        
+      },
+
+      //Апдейт активного стола
+      updateActiveTable({ dispatch, commit, state }, index) {
+        firebase
+        .database()
+        .ref("users/" + state.userId + "/settings/activeTable")
+        .set(index)
+        .then(data => {
+            console.log("Записали активный рс ", data);
+        })
+        .catch(error => {
+            console.log("Не получили ", error);
+        });
+      }
 }
