@@ -74,13 +74,13 @@ export default {
                 console.log('getcol Последний id');
                 
                 //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
-                if(rootState.allTasks.length > 0 || newTableCol > (rootState.gradients.length - 1)) {
-                    lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
-                    console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
-                    newTableCol = rootState.allTasks[lastTableId].colorId + 1;
-                } else {
+                lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
+                console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
+                newTableCol = rootState.allTasks[lastTableId].colorId + 1;
+                
+                if(rootState.allTasks.length < 1 || newTableCol > (rootState.gradients.length - 1)) {
                     newTableCol = 0;
-                }
+                } 
         
                 console.log('getcol Последний id', lastTableId);
                 console.log('getcol Возвращаем ', newTableCol)
