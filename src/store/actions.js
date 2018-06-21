@@ -111,7 +111,7 @@ export default {
           ///УДАЛЕНИЕ АКТИВНОГО РАБОЧЕГО СТОЛА
           delActiveTable({ dispatch, commit, state }) {
   
-              let ind = state.activeTableIndex;
+              let ind = state.allTasks[state.activeTableIndex].tableIndex;
               const userId = state.userId;
   
               firebase
@@ -119,7 +119,8 @@ export default {
                       .ref("users/" + userId + "/tables/" + ind)
                       .remove()
                       .then(data => {
-  
+                          
+                          console.log('Удалили рабочий стол');
                           //Если все ок - вырезаем из локального массива
                           let allTables = state.allTasks;
                           allTables.splice(ind, 1);

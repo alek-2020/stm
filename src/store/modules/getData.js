@@ -111,7 +111,8 @@ export default {
                                 colorId: data.val().colorId,
                                 colorOne: data.val().colorOne,
                                 colorTwo: data.val().colorTwo,
-                                taskLists: []
+                                taskLists: [],
+                                tableIndex: data.val().tableIndex
                             })
 
                             if ((i + 1) == rootState.userData.tables.length) {

@@ -74,13 +74,19 @@ export default {
                 console.log('getcol Последний id');
                 
                 //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
-                lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
-                console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
-                newTableCol = rootState.allTasks[lastTableId].colorId + 1;
-                
-                if(rootState.allTasks.length < 1 || newTableCol > (rootState.gradients.length - 1)) {
+                          
+                if(rootState.allTasks.length < 1 ) {
+            
                     newTableCol = 0;
-                } 
+                } else {
+                    lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
+                    console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
+                    newTableCol = rootState.allTasks[lastTableId].colorId + 1;
+        
+                    if( newTableCol > (rootState.gradients.length - 1)) {
+                        newTableCol = 0;
+                    }
+                }
         
                 console.log('getcol Последний id', lastTableId);
                 console.log('getcol Возвращаем ', newTableCol)
@@ -93,13 +99,20 @@ export default {
         AddTableBtn({ dispatch, commit, state, rootState, getters }, colId) {
             return new Promise((resolve, reject) => {
 
+                let newTableIndex = 0;
+                //Получим id последнего рабочего стола массиве, если столов нет - оставим 0
+                if(rootState.allTasks.length > 0) {
+                    newTableIndex = rootState.allTasks[rootState.allTasks.length - 1].tableIndex + 1
+                }
+
                 console.log('getcol ', colId);
                 const newTableBtn = {
                     name: "Новый стол",
                     colorOne: rootState.gradients[colId].colorOne,
                     colorTwo: rootState.gradients[colId].colorTwo,
                     colorId:  colId,
-                    taskLists: []
+                    taskLists: [],
+                    tableIndex: newTableIndex
                 };
 
                 resolve(newTableBtn);
