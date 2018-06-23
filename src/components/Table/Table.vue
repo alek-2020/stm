@@ -22,7 +22,8 @@
     </TaskList>  
 
       <div class="add-list__bg"
-       @click="addList">
+       @click="addList"
+       v-if="haveTables">
       <img src="../../../img/icons/add-plus-button.svg"
        class='add-list__img'
        >
@@ -77,6 +78,13 @@ export default {
         console.log("получили индекс ", this.$store.state.allTasks[0]);
         console.log("получили индекс ", this.$store.state.allTasks);
         return this.$store.state.allTasks[this.activeTableIndex].taskLists;
+      }
+    },
+    haveTables() {
+      if(store.$state.allTasks.length > 0) {
+        return true
+      } else {
+        return false
       }
     }
   },

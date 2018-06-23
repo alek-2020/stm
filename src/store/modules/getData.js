@@ -21,7 +21,12 @@ export default {
                     // 2. Пишем рабочие столы из tables в allTasks
                     const settings = response.settings;
                     dispatch('getSettings', settings);
-                    return dispatch('altGetTables');
+                    //Продолжаем, если есть столы
+                    console.log('.getdata. просто тест');
+                    if(response.tables != null) {
+                        console.log('.getdata. столы есть получаем задачи');
+                        return dispatch('altGetTables');
+                    }
                 })
                 .then(allTables => {
                     console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
@@ -215,9 +220,11 @@ export default {
         getSettings({ dispatch, commit, state, rootState }, settings) {
             return new Promise((resolve, reject) => {
 
-                console.log('getdata. Получили настройки ', settings);
+                console.log('getdata. Получили настройкли ', settings);
                 rootState.currentBgImg = settings.bg;
                 rootState.activeTableIndex = settings.activeTable;
+                console.log('getdata. Получили настройкии ', settings);
+
 
             })
         }

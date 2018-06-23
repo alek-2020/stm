@@ -71,7 +71,7 @@ export default {
         getNewColId({ dispatch, commit, state, rootState, getters }) {
             return new Promise((resolve, reject) => {
                 let lastTableId, newTableCol;
-                console.log('getcol Последний id');
+                console.log('getcol Последний idd', rootState.allTasks.length);
                 
                 //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
                           
