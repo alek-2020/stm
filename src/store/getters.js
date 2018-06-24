@@ -6,11 +6,12 @@ export default {
     },
   
 
-    // activeTableName(state) {
-    //        //и запишем название нашего стола для хедера
-    //        return state.allTables[state.activeTableIndex].name;
-    //        console.log('активный стол тут', state.activeTableIndex);
-
+    activeTableName(state) {
+           //и запишем название нашего стола для хедера
+           console.log('get table name ', state.allTasks, state.activeTableIndex);
+           return state.allTasks[state.activeTableIndex].name;
+        //    console.log('активный стол тут', state.activeTableIndex);
+    },
 
 
     currentBgImg: state => state.currentBgImg

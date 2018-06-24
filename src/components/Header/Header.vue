@@ -107,7 +107,7 @@ export default {
       //    activeTableName: 'Стол Василия',
       SVGCross: "<svg></svg>",
       ThreeDotsActive: false,
-      actTabName: "Колбасный Стол",
+      // actTabName: "Колбасный Стол",
 
       tables: [
         {
@@ -228,7 +228,7 @@ export default {
     },
     tableSettingsVisible() {
       return this.$store.state.tableSettingsVisible;
-    }
+    },
     // visibleTables(){
     //     return this.tasks.filter( user => {
     //         return !tasks.visible
@@ -241,10 +241,9 @@ export default {
     // allTasks() {
     //   return this.$store.state.allTasks;
     // },
-    // activeTableName() {
-    //   const a = this.activeTableIndex;
-    //   this.actTabName = this.allTasks[a].name;
-    // }
+    actTabName() {
+      return this.$store.getters.activeTableName;
+    }
   },
   components: {
     HeaderSettings,
