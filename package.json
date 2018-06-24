@@ -12,6 +12,7 @@
   "dependencies": {
     "firebase": "^5.0.2",
     "vue": "^2.5.11",
+    "vue-perfect-scrollbar": "^0.1.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

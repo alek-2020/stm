@@ -23,7 +23,7 @@
 
       <div class="add-list__bg"
        @click="addList"
-       v-if="haveTables">
+       v-if="allTasks.length > 0">
       <img src="../../../img/icons/add-plus-button.svg"
        class='add-list__img'
        >
@@ -80,13 +80,7 @@ export default {
         return this.$store.state.allTasks[this.activeTableIndex].taskLists;
       }
     },
-    haveTables() {
-      if(store.$state.allTasks.length > 0) {
-        return true
-      } else {
-        return false
-      }
-    }
+
   },
   watch: {
     allTasks(val) {
@@ -97,19 +91,19 @@ export default {
   methods: {
     //Подтягиваем расчеты из хранилища
     //1 cпособ
-    showThing(Text) {
-      this.$store.commit("register", Text);
-    },
-    //2 способ
-    showMeMore() {
-      this.$store.commit({
-        //название
-        type: "register",
-        //передаваемые парам
-        table: "Всякая чухня"
-      });
-    },
-    //так вызываем action, он дает что то вроде асинхронной загрузки для mutation
+    // showThing(Text) {
+    //   this.$store.commit("register", Text);
+    // },
+    // //2 способ
+    // showMeMore() {
+    //   this.$store.commit({
+    //     //название
+    //     type: "register",
+    //     //передаваемые парам
+    //     table: "Всякая чухня"
+    //   });
+    // },
+    // //так вызываем action, он дает что то вроде асинхронной загрузки для mutation
     callAction() {
       this.$store.dispatch("register", user.id);
     },
@@ -220,7 +214,7 @@ export default {
   //////АCTIVE
 
   & .ps__scrollbar-x-rail {
-    botton: 0px;
+    bottom: 0px;
   }
   //область скролла
   & .ps:hover.ps--in-scrolling.ps--x > .ps__scrollbar-x-rail {

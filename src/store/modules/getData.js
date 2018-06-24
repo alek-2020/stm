@@ -23,11 +23,21 @@ export default {
                     dispatch('getSettings', settings);
                     //Продолжаем, если есть столы
                     console.log('.getdata. просто тест');
-                    if(response.tables != null) {
+                    if (response.tables != null) {
                         console.log('.getdata. столы есть получаем задачи');
-                        return dispatch('altGetTables');
+                        return dispatch('getDataSecondChain');
                     }
                 })
+                .catch(error => {
+                    console.log(error);
+                })
+
+        },
+
+        //Cледующая цепочка, которая выполняется тольк если у нас есть
+
+        getDataSecondChain({ dispatch }) {
+            dispatch('altGetTables')
                 .then(allTables => {
                     console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
@@ -38,7 +48,6 @@ export default {
                 })
 
         },
-
 
         ///Инициализация получения списка задач для активного Рабочего Стола, если он был загружен, то выводим из локальной переменную
         startGetTasks({ dispatch, state, rootState }) {
@@ -135,85 +144,92 @@ export default {
 
         ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
         getTaskLists({ dispatch, commit, state, rootState }) {
+            const ind = rootState.activeTableIndex;
 
-            //подтягиваем списки активного раб. ст.
-            rootState.userTables[rootState.activeTableIndex].taskLists.forEach((element, index) => {
-                firebase
-                    .database()
-                    .ref("taskLists/" + element)
-                    .once("value")
-                    .then(data => {
+            //Выполняем только если у нас есть привязанные к столу списки
+            if (rootState.userTables[ind].taskLists != null) {
+                //подтягиваем списки активного раб. ст.
+                rootState.userTables[ind].taskLists.forEach((element, index) => {
+                    firebase
+                        .database()
+                        .ref("taskLists/" + element)
+                        .once("value")
+                        .then(data => {
 
 
-                        rootState.taskLists.push(data.val());
+                            rootState.taskLists.push(data.val());
 
-                        //пишем список в супер JSON
-                        rootState.allTasks[rootState.activeTableIndex].taskLists.push({
-                            id: element,
-                            'name': data.val().name,
-                            'color': data.val().color,
-                            tasks: []
-                        });
+                            //пишем список в супер JSON
+                            rootState.allTasks[rootState.activeTableIndex].taskLists.push({
+                                id: element,
+                                'name': data.val().name,
+                                'color': data.val().color,
+                                tasks: []
+                            });
 
-                        console.log('.getdata. отправляем id-шники для получения', rootState.taskLists[index].tasks);
+                            console.log('.getdata. отправляем id-шники для получения', rootState.taskLists[index].tasks);
 
-                        // console.log('getdata. запушили список в локальный массив, инициализируем получение задач для него ', rootState.allTasks[rootState.activeTableIndex].taskLists);
-                        dispatch('getTasksInOneListFB', index);
+                            // console.log('getdata. запушили список в локальный массив, инициализируем получение задач для него ', rootState.allTasks[rootState.activeTableIndex].taskLists);
+                            dispatch('getTasksInOneListFB', index);
 
-                    })
-                    .catch(error => {
-                        console.log('Полный провал. Ошибка: ', error);
-                    })
-            });
+                        })
+                        .catch(error => {
+                            console.log('Полный провал. Ошибка: ', error);
+                        })
+                });
+            }
         },
 
 
         ///Получаем задачи очередного списка
         getTasksInOneListFB({ dispatch, commit, state, rootState }, i) {
-            rootState.taskLists[i].tasks.forEach(element => {
 
-                firebase
-                    .database()
-                    .ref("tasks/" + element)
-                    .once("value")
-                    .then(data => {
-                        console.log('.getdata. получили данные с БД по задаче', data.val());
+            //Выполняем если есть привязанные к списку задачи
+            if (rootState.taskLists[i].tasks != null) {
+                rootState.taskLists[i].tasks.forEach(element => {
+                    firebase
+                        .database()
+                        .ref("tasks/" + element)
+                        .once("value")
+                        .then(data => {
+                            console.log('.getdata. получили данные с БД по задаче', data.val());
 
-                        // rootState.tasksFB.push(data.val());
+                            // rootState.tasksFB.push(data.val());
 
-                        //Пишем нашу задачу в супер JSON
+                            //Пишем нашу задачу в супер JSON
 
-                        let dbTask = {
-                            'id': element,
-                            'text': data.val().text,
-                            'isDone': data.val().isDone
-                        }
+                            let dbTask = {
+                                'id': element,
+                                'text': data.val().text,
+                                'isDone': data.val().isDone
+                            }
 
-                        let bigJSON = rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks; 
+                            let bigJSON = rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks;
 
-                        console.log('.getdata. сформировали задачу для пуша ', dbTask, ' записали большой массив  ', bigJSON);
+                            console.log('.getdata. сформировали задачу для пуша ', dbTask, ' записали большой массив  ', bigJSON);
 
-                        //Если это первая задача - создадим под нее пустой массив
-                        if(bigJSON == null) { rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks = ['.,','jn'] }
+                            //Если это первая задача - создадим под нее пустой массив
+                            if (bigJSON == null) { rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks = ['.,', 'jn'] }
 
-                        console.log('.getdata. подготовили большой массив сделав там контейнер ', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
-
-
-                        console.log('.getdata. зашли в получение задач 4', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
-                        console.log('.getdata. зашли в получение задач 4', rootState.allTasks[rootState.activeTableIndex]);
+                            console.log('.getdata. подготовили большой массив сделав там контейнер ', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
 
 
-                        rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks.push(dbTask);
+                            console.log('.getdata. зашли в получение задач 4', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
+                            console.log('.getdata. зашли в получение задач 4', rootState.allTasks[rootState.activeTableIndex]);
 
-                        console.log('.getdata. большой массив после пуша', bigJSON);
-                        console.log('.getdata. большой массив  после пуша напрямую' , rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
 
-                    })
-                    .catch(error => {
-                        console.log('Полный провал. Ошибка: ', error);
-                    })
+                            rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks.push(dbTask);
 
-            });
+                            console.log('.getdata. большой массив после пуша', bigJSON);
+                            console.log('.getdata. большой массив  после пуша напрямую', rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks);
+
+                        })
+                        .catch(error => {
+                            console.log('Полный провал. Ошибка: ', error);
+                        })
+
+                });
+            }
         },
 
         //Записываем базовые настроки по юзеру
