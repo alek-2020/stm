@@ -39,12 +39,22 @@ export default {
                 let tableInd = rootState.activeTableIndex;
                 let TableLists = rootState.allTasks[tableInd].taskLists;
                 const tableId = rootState.allTasks[tableInd].id;
+                const lastTaskInd = rootState.allTasks[rootState.activeTableIndex].taskLists.length - 1;
 
+                //Получим уникальный id списка
+                let newListIndex = 0;
+                //Получим id последнего cписка, если списков нет - оставим 0
+                if(rootState.allTasks[rootState.activeTableIndex].taskLists.length > 0) {
+                    newListIndex = rootState.allTasks[rootState.activeTableIndex].taskLists[lastTaskInd].listIndex + 1
+                }
+
+                // console.log('.newTaskList. ', lastTaskInd, rootState.activeTableIndex, rootState.allTasks[rootState.activeTableIndex].taskLists.length, newListIndex);
                 //Формируем параметры нового списка
                 const newTaskList = {
                     'name': 'Введите название списка',
                     'color': 'black',
-                    'tasks': []
+                    'tasks': [],
+                    'listIndex': newListIndex
                 }
 
                 //если мы ещё не создавали списков, то будет undefined

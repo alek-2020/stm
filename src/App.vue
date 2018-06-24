@@ -80,7 +80,7 @@ export default {
 
 <style lang="scss">
 
-@import 'scss/bootsParts/bootsParts';
+@import 'scss/bootsParts/custom/stm-bootsParts';
 @import 'scss/normalize';
 
 #app {

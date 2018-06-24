@@ -27,6 +27,11 @@
 
             </div>
             
+            <div class="btn btn_icon_delete task-list__del"
+              v-if="TList.tasks.length < 1">
+              Удалить список
+            </div>
+
             <div class="task-list__add"
              @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
                 <div class="task-list__text"></div>
@@ -128,6 +133,8 @@ export default {
   background: rgba(255, 255, 255, 0.85);
   overflow: hidden;
   box-sizing: border-box;
+  height: min-content;
+  width: 350px;
 
   &__name {
     border: none;
@@ -161,6 +168,13 @@ export default {
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
 
+  }
+
+  &__del {
+    height: 40px;
+    width: 70%;
+    background: #cacaca;
+    font-family: Roboto;
   }
 }
 

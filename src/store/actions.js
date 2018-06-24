@@ -139,6 +139,36 @@ export default {
   
           },
 
+           ///УДАЛЕНИЕ СПИСКА ЗАДАЧ
+           delTaskList({ dispatch, commit, state }, listIndex) {
+  
+            let ind = state.allTasks[state.activeTableIndex].tableIndex;
+            const userId = state.userId;
+
+            firebase
+                    .database()
+                    .ref("users/" + userId + "/tables/" + ind)
+                    .remove()
+                    .then(data => {
+                        
+                        console.log('Удалили рабочий стол');
+                        //Если все ок - вырезаем из локального массива
+                        let allTables = state.allTasks;
+                        allTables.splice(ind, 1);
+                        //Понижаем tableIndex на 1, если он больше 0
+                    
+                    if(ind > 0) {
+                        state.activeTableIndex = ind - 1; 
+                        console.log( state.activeTableIndex );
+                    }
+
+                })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+        },
+
+
           saveBg({ dispatch, commit, state }) {
 
             console.log('Наш бг ', state.userId);

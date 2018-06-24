@@ -164,7 +164,8 @@ export default {
                                 id: element,
                                 'name': data.val().name,
                                 'color': data.val().color,
-                                tasks: []
+                                tasks: [],
+                                'listIndex': data.val().listIndex
                             });
 
                             console.log('.getdata. отправляем id-шники для получения', rootState.taskLists[index].tasks);
