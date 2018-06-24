@@ -26,6 +26,7 @@
       <!-- рамка для активной кнопки  -->
       <div 
       v-bind:class="{'desk-btns__one-active': actTableInd === index }"
+      :style="{'border-color': table.colorOne}"
       ></div>
 
 </button>

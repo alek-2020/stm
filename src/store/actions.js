@@ -142,12 +142,12 @@ export default {
            ///УДАЛЕНИЕ СПИСКА ЗАДАЧ
            delTaskList({ dispatch, commit, state }, listIndex) {
   
-            let ind = state.allTasks[state.activeTableIndex].tableIndex;
+            let activeTableInd = state.allTasks[state.activeTableIndex].tableIndex;
             const userId = state.userId;
 
             firebase
                     .database()
-                    .ref("users/" + userId + "/tables/" + ind)
+                    .ref("tables/" + activeTableInd + "/taskLists/" + ind)
                     .remove()
                     .then(data => {
                         

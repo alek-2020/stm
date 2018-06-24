@@ -35,9 +35,10 @@
               > </TableListOne>
                 
               <!--  добавление РС-->
-              <div class="desk-btns__add btn btn_icon_add-white btn_icon_only"
-              v-on:click="AddTableBtn"
-              v-bind:class = "{'desk-btns__apply': plusActive}"
+              <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
+                v-on:click="AddTableBtn"
+                v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + showAllTasks[showAllTasks.length - 1].colorOne + ', ' + showAllTasks[showAllTasks.length - 1].colorTwo }"
+                v-bind:class = "{'desk-btns__apply': plusActive}"
               ></div>
                             <!-- v-bind:style="{ 'background': lastTableColor() }" -->
 
@@ -171,7 +172,6 @@ export default Vue.extend({
 
 
 
-
     getTableBtnId: function() {
       let lastEl = this.tables.length - 1;
       let lastId = this.tables[lastEl].BtnId;
@@ -255,7 +255,6 @@ export default Vue.extend({
   position: relative;
 
   &__add {
-    background: rgb(134, 134, 134);
     height: 40px;
     width: 40px;
     margin-left: 10px;

@@ -29,6 +29,7 @@ export const store = new Vuex.Store({
             activeTableIndex: 0,
             tableSettingsActive: false,
             tableSettingsVisible: false,
+            lastColId: null,
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 
