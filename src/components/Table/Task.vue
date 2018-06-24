@@ -1,17 +1,24 @@
 <template>
-    <!-- <div class="one-task__box"> -->
+    <!-- <div class="one-task__box">  -->
         <div class="one-task__box">
-        <input type="text"
-         class="one-task__text"
-         v-model="task.text"
-         
-       >
-<!-- @focusout='changeText(task.text)'
-         @keyup.13='changeText(task.text)' -->
-         <div class="check-box"
-          @click="checkTask"></div>
-         </div>
+
+            <input type="text"
+            class="one-task__text"
+            v-model="task.text"
+            @focusout='changeText(task.text)'
+            @keyup.13='changeText(task.text)'
+        >
+
+        <div class="check-box"
+            @click="checkTask">
+        </div>
+       </div>
+
     <!-- </div> -->
+    <!-- <div> 
+        <input type="text"
+        v-model="task.text">
+    </div> -->
 </template>
 
 <script>
@@ -69,11 +76,10 @@ export default {
         width: 100%;
         border: none;
         box-sizing: border-box;
-        padding: 0 10px;
+        padding: 0 35px 0 10px;
         background-color: transparent;
         font-size: 16px;
         font-family: 'Open Sans', sans-serif;
-        
     }
   }
 

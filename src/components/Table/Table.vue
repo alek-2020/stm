@@ -18,7 +18,7 @@
        v-for="(TList, index) in thisTableTaskLists"
        :TList = 'TList'
        :taskListIndex = 'index'
-       :key='TList.name'>
+       :key='Math.random()'>
     </TaskList>  
 
       <div class="add-list__bg"

@@ -16,7 +16,7 @@
               
               <OneTask
                 v-for="(task, index) in doneTasks"
-                :key="task.text"
+                :key="Math.random()"
                 :task = 'task'
                 :Index = 'index'
                 :tableInd = 'activeTableIndex'
