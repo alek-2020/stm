@@ -251,7 +251,6 @@ export default {
       //  return this.$store.getters.activeTableName;
       
            //и запишем название нашего стола для хедера
-                          //  console.log('get table name ', this.allTasks, this.actTableIndex);
 
            if(this.allTasks.length > 0) {
                 console.log('get table name ', this.allTasks, this.actTableIndex, this.allTasks[0].name);
