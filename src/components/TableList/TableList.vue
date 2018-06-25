@@ -37,7 +37,7 @@
               <!--  добавление РС-->
               <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
                 v-on:click="AddTableBtn"
-                v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + showAllTasks[showAllTasks.length - 1].colorOne + ', ' + showAllTasks[showAllTasks.length - 1].colorTwo }"
+                v-bind:style="{ 'background' : addBtnBg }"
                 v-bind:class = "{'desk-btns__apply': plusActive}"
               ></div>
                             <!-- v-bind:style="{ 'background': lastTableColor() }" -->
@@ -242,8 +242,19 @@ export default Vue.extend({
     },
     lastTableColor() {
         return this.$store.dispatch('lastTableColor');
-    }
-  },
+    },
+    addBtnBg() {
+      if(this.showAllTasks.length > 0) {
+        return ('linear-gradient( to bottom, ' +
+           this.showAllTasks[this.showAllTasks.length - 1].colorOne +
+            ', ' +
+           this.showAllTasks[this.showAllTasks.length - 1].colorTwo +
+           ')');
+      } else {
+        return 'linear-gradient( to bottom, gray, gray)'
+      }
+  }
+},
   
 
 });

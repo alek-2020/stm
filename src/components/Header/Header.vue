@@ -241,8 +241,26 @@ export default {
     // allTasks() {
     //   return this.$store.state.allTasks;
     // },
+    allTasks() {
+        return this.$store.state.allTasks;
+    },
+    actTableIndex() {
+      return this.$store.state.activeTableIndex;
+    },
     actTabName() {
-      return this.$store.getters.activeTableName;
+      //  return this.$store.getters.activeTableName;
+      
+           //и запишем название нашего стола для хедера
+                          //  console.log('get table name ', this.allTasks, this.actTableIndex);
+
+           if(this.allTasks.length > 0) {
+                console.log('get table name ', this.allTasks, this.actTableIndex, this.allTasks[0].name);
+                return this.allTasks[this.actTableIndex].name;
+           } else {
+               return 'Название рабочего стола'
+           }
+           //    console.log('активный стол тут', state.activeTableIndex);
+    
     }
   },
   components: {

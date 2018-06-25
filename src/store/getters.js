@@ -8,9 +8,13 @@ export default {
 
     activeTableName(state) {
            //и запишем название нашего стола для хедера
-           console.log('get table name ', state.allTasks, state.activeTableIndex);
-           return state.allTasks[state.activeTableIndex].name;
-        //    console.log('активный стол тут', state.activeTableIndex);
+           if(state.allTasks != null) {
+                console.log('get table name ', state.allTasks, state.activeTableIndex);
+                return state.allTasks[state.activeTableIndex].name;
+           } else {
+               return 'Название рабочего стола'
+           }
+           //    console.log('активный стол тут', state.activeTableIndex);
     },
 
 
