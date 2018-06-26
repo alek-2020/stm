@@ -75,9 +75,12 @@ export default {
     },
     thisTableTaskLists() {
       if (this.$store.state.allTasks.length > 0) {
-        console.log("получили индекс ", this.$store.state.allTasks[0]);
         console.log("получили индекс ", this.$store.state.allTasks);
-        return this.$store.state.allTasks[this.activeTableIndex].taskLists;
+        console.log("получили индекс ", this.$store.state.allTasks[1]);
+       //Проверяем загрузку нужного стола
+       if(this.$store.state.allTasks[this.$store.state.activeTableIndex] != null) {
+          return this.$store.state.allTasks[this.$store.state.activeTableIndex].taskLists;
+       }
       }
     },
 

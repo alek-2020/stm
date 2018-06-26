@@ -254,7 +254,9 @@ export default {
 
            if(this.allTasks.length > 0) {
                 console.log('get table name ', this.allTasks, this.actTableIndex, this.allTasks[0].name);
-                return this.allTasks[this.actTableIndex].name;
+                if(this.allTasks[this.actTableIndex]) {
+                  return this.allTasks[this.actTableIndex].name;
+                }
            } else {
                return 'Название рабочего стола'
            }
