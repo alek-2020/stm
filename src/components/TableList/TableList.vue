@@ -218,7 +218,8 @@ export default Vue.extend({
       } else {
         LastBtn = false;
       }
-    }
+    },
+ 
   },
 
   components: {

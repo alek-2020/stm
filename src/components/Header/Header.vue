@@ -39,7 +39,9 @@
               <div class="actTabName__box">
                 <input class="actTabName__inp" type="text"
                   v-model="actTabName"
-                  placeholder="Стол">
+                  placeholder="Стол"
+                   @focusout='changeTableTitle(actTabName)'
+                   @keyup.enter='changeTableTitle(actTabName)'>
                 <span class="actTabName__buffer">{{ actTabName }}</span>
               </div>
 
@@ -102,6 +104,7 @@ export default {
   data() {
     return {
       hPlusActive: false,
+      activeTableName: 'Название стола',
       logoSVG:
         '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
       //    activeTableName: 'Стол Василия',
@@ -156,6 +159,11 @@ export default {
         //  this.$store.state.tableSettingsActive = false;
 
 
+    },
+
+     changeTableTitle(NewName) {
+      const TableId = this.$store.state.allTasks[this.$store.state.activeTableIndex].id;
+      this.$store.dispatch("changeTableTitle", { NewName, TableId });
     },
 
     //Скроллим наш список столов в конец для добавления нового
@@ -247,21 +255,24 @@ export default {
     actTableIndex() {
       return this.$store.state.activeTableIndex;
     },
-    actTabName() {
-      //  return this.$store.getters.activeTableName;
+    actTabName: {
       
            //и запишем название нашего стола для хедера
 
-           if(this.allTasks.length > 0) {
+     get: function() {
+            if(this.allTasks.length > 0) {
                 console.log('get table name ', this.allTasks, this.actTableIndex, this.allTasks[0].name);
                 if(this.allTasks[this.actTableIndex]) {
                   return this.allTasks[this.actTableIndex].name;
                 }
            } else {
                return 'Название рабочего стола'
-           }
-           //    console.log('активный стол тут', state.activeTableIndex);
-    
+           }      },
+
+      set: function(newValue) {
+       
+       this.allTasks[this.actTableIndex].name = newValue;
+      }
     }
   },
   components: {
