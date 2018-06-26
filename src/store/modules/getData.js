@@ -110,6 +110,9 @@ export default {
         altGetTables({ dispatch, commit, state, rootState }) {
             return new Promise((resolve, reject) => {
 
+
+
+
                 rootState.userData.tables.forEach((element, i) => {
                     firebase
                         .database()
@@ -117,7 +120,16 @@ export default {
                         .once('value')
                         .then(data => {
 
-                            rootState.userTables.push(data.val())
+                            //Преобразуем объекты в массивы
+                            let objLists = data.val().taskLists;
+                            let arrayLists = [];
+                            for (var prop in objLists) { 
+                              arrayLists.push(objLists[prop]);
+                            };
+                            
+                            rootState.userTables.push({
+                                taskLists: arrayLists
+                            })
 
                             rootState.allTasks.push({
                                 id: element,

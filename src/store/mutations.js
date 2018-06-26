@@ -25,5 +25,8 @@ export default {
         );
         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
       },
+
+     
+      
   
 }

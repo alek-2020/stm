@@ -14,15 +14,18 @@ export default {
                     console.log('newTaskList. Запушили список в локальный массив и в taskLists', response);
                     const tableId = response.tableId;
                     const newListId = response.newListId;
-                    // 2. Получим списки стола из table/taskLists
-                    return dispatch('getTaskListInTable', { tableId, newListId });
-                }).then(response => {
-                    console.log('newTaskList. Получили списки стола из table/taskLists ', response);
-                    const tableId = response.tableId;
-                    const newListId = response.newListId;
-                    const taskListsId = response.taskListsId;
+                   // // 2. Получим списки стола из table/taskLists
+                //     return dispatch('getTaskListInTable', { tableId, newListId });
+                // }).then(response => {
+                    // console.log('newTaskList. Получили списки стола из table/taskLists ', response);
+                    // const tableId = response.tableId;
+                    // const newListId = response.newListId;
+                    // const taskListsId = response.taskListsId;
+
+                    // 2 Запушим в список его id
+                    dispatch('pushKeyToTaskList', newListId);
                     // 3. Отправим обновленные списки на сервер
-                    return dispatch('addListIdToTable', { tableId, newListId, taskListsId });
+                    return dispatch('addListIdToTable', { tableId, newListId });
                 }).then(response => {
                     console.log();
                 }).catch(error => {
@@ -75,6 +78,7 @@ export default {
 
                         //теперь привяжем id списка к столу
                         const newListId = data.key;
+                        console.log('.newTaskList. data.key ', newListId, data.key);
                         // докинем наш ключ в  allTasks. Сначала нужно узнать его индекс
                         const ind = rootState.allTasks[tableInd].taskLists.length - 1;
                         rootState.allTasks[tableInd].taskLists[ind].id = newListId;
@@ -87,6 +91,20 @@ export default {
                     .catch(error => {
                         console.log('Полный провал. Ошибка: ', error);
                     })
+            })
+        },
+
+        pushKeyToTaskList({ dispatch, commit, state, rootState }, listKey) {
+            console.log('k ',listKey);
+            firebase
+            .database()
+            .ref("taskLists/" + listKey + "/id")
+            .set(listKey)
+            .then(data => { 
+               console.log('.newTaskList. запушили в список его id ', data);
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
             })
         },
 
@@ -109,25 +127,25 @@ export default {
             })
         },
 
-        addListIdToTable({ dispatch, commit, state, rootState }, { tableId, newListId, taskListsId }) {
+        addListIdToTable({ dispatch, commit, state, rootState }, { tableId, newListId }) {
             return new Promise((resolve, reject) => {
 
-                if (taskListsId == null) {
-                    // console.log('лист. переменная не попределена задач нема', taskListsId)
+                // if (taskListsId == null) {
+                //     // console.log('лист. переменная не попределена задач нема', taskListsId)
 
-                    taskListsId = [newListId]
-                } else {
-                    taskListsId.push(newListId);
-                    // console.log('Запушили лист');
-                }
+                //     taskListsId = [newListId]
+                // } else {
+                //     taskListsId.push(newListId);
+                //     // console.log('Запушили лист');
+                // }
 
                 firebase
                     .database()
-                    .ref("tables/" + tableId + "/taskLists")
-                    .set(taskListsId)
+                    .ref("tables/" + tableId + "/taskLists/" + newListId)
+                    .set(newListId)
                     .then(data => {
 
-                        resolve('newTaskList. Стол запушен. Все ОК!');
+                        resolve('newTaskList. Список запушен. Все ОК!');
                         //нужно получим заново наши столы
                         // dispatch('GetTablesOnly');
 

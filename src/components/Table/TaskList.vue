@@ -28,7 +28,8 @@
             </div>
             
             <div class="btn btn_icon_delete task-list__del"
-              v-if="TList.tasks.length < 1">
+              v-if="TList.tasks.length < 1"
+              @click="removeList(TList.id, taskListIndex, activeTableIndex)">
               Удалить список
             </div>
 
@@ -74,6 +75,10 @@ export default {
       const ListId = this.TList.id
 
       this.$store.dispatch('changeListTitle', { NewName, ListId });
+    },
+
+    removeList(id, taskListIndex, activeTableIndex) {
+      this.$store.dispatch('removeList', {id, taskListIndex, activeTableIndex});
     }
 
   },

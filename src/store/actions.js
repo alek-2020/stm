@@ -140,33 +140,33 @@ export default {
           },
 
            ///УДАЛЕНИЕ СПИСКА ЗАДАЧ
-           delTaskList({ dispatch, commit, state }, listIndex) {
+        //    delTaskList({ dispatch, commit, state }, listIndex) {
   
-            let activeTableInd = state.allTasks[state.activeTableIndex].tableIndex;
-            const userId = state.userId;
+        //     let activeTableInd = state.allTasks[state.activeTableIndex].tableIndex;
+        //     const userId = state.userId;
 
-            firebase
-                    .database()
-                    .ref("tables/" + activeTableInd + "/taskLists/" + ind)
-                    .remove()
-                    .then(data => {
+        //     firebase
+        //             .database()
+        //             .ref("tables/" + activeTableInd + "/taskLists/" + ind)
+        //             .remove()
+        //             .then(data => {
                         
-                        console.log('Удалили рабочий стол');
-                        //Если все ок - вырезаем из локального массива
-                        let allTables = state.allTasks;
-                        allTables.splice(ind, 1);
-                        //Понижаем tableIndex на 1, если он больше 0
+        //                 console.log('Удалили рабочий стол');
+        //                 //Если все ок - вырезаем из локального массива
+        //                 let allTables = state.allTasks;
+        //                 allTables.splice(ind, 1);
+        //                 //Понижаем tableIndex на 1, если он больше 0
                     
-                    if(ind > 0) {
-                        state.activeTableIndex = ind - 1; 
-                        console.log( state.activeTableIndex );
-                    }
+        //             if(ind > 0) {
+        //                 state.activeTableIndex = ind - 1; 
+        //                 console.log( state.activeTableIndex );
+        //             }
 
-                })
-            .catch(error => {
-                console.log('Полный провал. Ошибка: ', error);
-            })
-        },
+        //         })
+        //     .catch(error => {
+        //         console.log('Полный провал. Ошибка: ', error);
+        //     })
+        // },
 
 
           saveBg({ dispatch, commit, state }) {
@@ -207,6 +207,27 @@ export default {
         .set(index)
         .then(data => {
             console.log("Записали активный рс ", data);
+        })
+        .catch(error => {
+            console.log("Не получили ", error);
+        });
+      },
+
+      removeList({ dispatch, commit, state }, {id, taskListIndex, activeTableIndex}) {
+
+        let activeTableId = state.allTasks[activeTableIndex].id;
+        console.log('del table ', "tables/" + activeTableId + "/taskLists" + taskListIndex);
+        firebase
+        .database()
+        .ref("tables/" + activeTableId + "/taskLists/" + id)
+        .remove()
+        .then(data => {
+
+            //уберем список из локального массива
+            state.allTasks[activeTableIndex].taskLists.splice(taskListIndex, 1);
+
+            console.log("Удалили лист. Все. Его больше нет и не будет. ", data);
+            state.tableList = data;
         })
         .catch(error => {
             console.log("Не получили ", error);
