@@ -25,6 +25,8 @@ export default {
                     console.log('.getdata. просто тест');
                     if (response.tables != null) {
                         console.log('.getdata. столы есть получаем задачи');
+                        
+
                         return dispatch('getDataSecondChain');
                     }
                 })
@@ -40,6 +42,10 @@ export default {
             dispatch('altGetTables')
                 .then(allTables => {
                     console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
+                    
+                    //Запишем урл активного стола
+                    dispatch('pushActiveTableLink');
+                    
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
                     dispatch('getTaskLists');
                 })
@@ -120,6 +126,10 @@ export default {
                         .once('value')
                         .then(data => {
 
+                            //Получим адрес стола. Это будут последние 6 цифр от id
+                            let tableUrl = element.slice(element.length - 6);
+                            console.log('Вырезанный кусок id ', tableUrl, element);
+
                             //Преобразуем объекты в массивы
                             let objLists = data.val().taskLists;
                             let arrayLists = [];
@@ -138,7 +148,8 @@ export default {
                                 colorOne: data.val().colorOne,
                                 colorTwo: data.val().colorTwo,
                                 taskLists: [],
-                                tableIndex: data.val().tableIndex
+                                tableIndex: data.val().tableIndex,
+                                tableUrl: tableUrl
                             })
 
                             if ((i + 1) == rootState.userData.tables.length) {

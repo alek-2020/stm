@@ -23,7 +23,7 @@ const routes = [
   //   }
   // },
 
-  { path: '/table/:name/*', components: 
+  { path: '/table/:link', components: 
     {
       TableContent: Table
     }

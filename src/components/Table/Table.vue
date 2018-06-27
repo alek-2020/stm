@@ -14,12 +14,15 @@
     <!-- <router-view></router-view> -->
   <VuePerfectScrollbar class="table__taskList-box-rel">
   <div class="table__taskLists-box">
-     <TaskList
-       v-for="(TList, index) in thisTableTaskLists"
-       :TList = 'TList'
-       :taskListIndex = 'index'
-       :key='TList.id'>
-    </TaskList>  
+    
+    
+        <TaskList
+          v-for="(TList, index) in thisTableTaskLists"
+          :TList = 'TList'
+          :taskListIndex = 'index'
+          :key='TList.id'>
+        </TaskList> 
+
 
       <div class="add-list__bg"
        @click="addList"
@@ -89,8 +92,17 @@ export default {
     allTasks(val) {
       this.VarThisTableTaskLists = this.thisTableTaskLists;
       console.log("следим ", val);
-    }
+    },
+
+   //Отслеживаем url, что бы выводить нужный адрес
+    // '$route' (to, from) {
+    //    console.log('Изменился адрес', to, from);
+    //  }
   },
+  //  beforeRouteUpdate (to, from, next) {
+  //      console.log('Изменился адрес', to, from);
+  //   // не забываем вызвать next()
+  // },
   methods: {
     //Подтягиваем расчеты из хранилища
     //1 cпособ
@@ -115,6 +127,17 @@ export default {
     }
   },
 
+  mounted() {
+    console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
+    //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
+    
+    if(this.$route.params.link != null) {
+      console.log('Есть ссылка на стол');
+    } else {
+      console.log('Нет ссылка на стол');
+    }
+
+  },
   components: {
     TaskList,
     VuePerfectScrollbar
@@ -256,6 +279,9 @@ export default {
     scroll-behavior: smooth;
   }
 }
+
+
+
 </style>
 
 

@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+import router from './../Router.js'
 
 
 export default {
@@ -232,5 +233,12 @@ export default {
         .catch(error => {
             console.log("Не получили ", error);
         });
+      },
+
+      //Работа со ссылками на столы
+      pushActiveTableLink({ dispatch, commit, state }) {
+        console.log('Пушим ссылку, так как нет никакой', state.activeTableIndex, state.allTasks);
+        let url = state.allTasks[state.activeTableIndex].tableUrl;
+        router.push( {path: `/table/${url}` } );
       }
 }

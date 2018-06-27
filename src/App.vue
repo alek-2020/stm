@@ -16,9 +16,15 @@
     <!-- <SignIn></SignIn> -->
     <!-- <SignOut></SignOut> -->
     <!-- <router-view></router-view> -->
-    <router-view name="TableContent"></router-view>
     <router-view name="LogReg"></router-view>
-   <TableContent></TableContent> 
+    <transition
+      name="fade"
+      mode="out-in">
+    <router-view name="TableContent"></router-view>
+    </transition> 
+
+   <!-- <TableContent></TableContent>  -->
+
     <!-- <router-view name="NotFoundComponent"></router-view> -->
 
   <!-- <button
@@ -74,6 +80,17 @@ export default {
 
       this.$store.dispatch('startGetTasks');
 
+ },
+ mounted() {
+       console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
+    //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
+    
+    if(this.$route.params.link != null) {
+      console.log('Есть ссылка на стол');
+      // dispatch('checkLink');
+    } else {
+      console.log('Нет ссылки на стол');
+    }
  }
 }
 </script>
@@ -132,4 +149,17 @@ a {
     display: none !important;
   }
  }
+
+ ///Transition
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
+}
 </style>

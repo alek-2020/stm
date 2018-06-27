@@ -5,7 +5,7 @@
   v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colorOne + ', ' + table.colorTwo }"
   v-bind:class="{'desk-btns__last': ifLasBtn}"
   v-bind:id=" 'tableBtn-' + table.BtnId"
-  v-on:click = 'changeActiveTable(index)'
+  v-on:click = 'changeActiveTable(index); changeUrl(table.tableUrl)'
   >
 
       <!-- input для вывода названия -->
@@ -90,6 +90,12 @@ export default Vue.extend({
   methods: {
     test2() {
       console.log("Клик!");
+    },
+
+    changeUrl(url) {
+      console.log('Меняем урл на /table/'+url);
+      this.$router.push( {path: `/table/${url}` } );
+      // this.$router.link = url;
     },
 
     changeActiveTable(index) {
