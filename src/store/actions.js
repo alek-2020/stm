@@ -236,9 +236,47 @@ export default {
       },
 
       //Работа со ссылками на столы
+
+      
+    //   checkUrl({ dispatch, commit, state }) {
+    //     //   console.log('router', router);
+    //     //   if(route.params.link != null) {
+    //     //     console.log('Есть ссылка на стол');
+    //     //     // dispatch('checkLink');
+    //     //   } else {
+    //         dispatch('pushActiveTableLink')
+    //     //     console.log('Нет ссылки на стол');
+    //     //   }
+    //   },
+
       pushActiveTableLink({ dispatch, commit, state }) {
         console.log('Пушим ссылку, так как нет никакой', state.activeTableIndex, state.allTasks);
         let url = state.allTasks[state.activeTableIndex].tableUrl;
         router.push( {path: `/table/${url}` } );
+      },
+
+      //если в новой ссылке на стол есть значение
+      changeActiveTable({ dispatch, commit, state }, url) {
+         var obj = state.allTasks;
+         var correctUrl = false;
+         obj.forEach((element, index) => {
+                         console.log(index, element.tableUrl );
+                if(element.tableUrl == url) {
+                    console.log('Индексы сошлись');
+                    state.activeTableIndex = index;
+                    correctUrl = true;
+                }
+         });
+
+         if(!correctUrl) {
+             dispatch('pushActiveTableLink');
+         }
+
+        //  for (var prop in obj) {
+        //     console.log("obj." + prop + " = " + obj[prop].tableUrl);
+        //       if(obj[prop].tableUrl == url) {
+
+        //       }
+        // }
       }
 }

@@ -41,9 +41,11 @@
 
      <span style="color: white; font-weigth: 500; background: black;"
       >
+
      <!-- {{ allTasks }} -->
      </span>
-
+      <!-- <router-link :to="'/table/fdGb'"><button>b</button></router-link> -->
+     
   </div>
 </template>
 
@@ -95,9 +97,19 @@ export default {
     },
 
    //Отслеживаем url, что бы выводить нужный адрес
-    // '$route' (to, from) {
-    //    console.log('Изменился адрес', to, from);
-    //  }
+    '$route' (to, from) {
+       console.log('Изменился адрес', to.params.link);
+       
+        if(this.$route.params.link != null) {
+      console.log('Есть ссылка на стол');
+            this.$store.dispatch('changeActiveTable', this.$route.params.link );
+
+    } else {
+      console.log('Нет ссылка на стол');
+            this.$store.dispatch('pushActiveTableLink');
+
+    }   
+     }
   },
   //  beforeRouteUpdate (to, from, next) {
   //      console.log('Изменился адрес', to, from);
@@ -128,14 +140,14 @@ export default {
   },
 
   mounted() {
-    console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
-    //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
+//     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
+//     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
     
-    if(this.$route.params.link != null) {
-      console.log('Есть ссылка на стол');
-    } else {
-      console.log('Нет ссылка на стол');
-    }
+//  if(this.$route.params.link != null) {
+//       console.log('Есть ссылка на стол');
+//     } else {
+//       console.log('Нет ссылка на стол');
+//     }   
 
   },
   components: {

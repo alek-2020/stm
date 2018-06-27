@@ -82,15 +82,7 @@ export default {
 
  },
  mounted() {
-       console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
-    //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
-    
-    if(this.$route.params.link != null) {
-      console.log('Есть ссылка на стол');
-      // dispatch('checkLink');
-    } else {
-      console.log('Нет ссылки на стол');
-    }
+
  }
 }
 </script>
