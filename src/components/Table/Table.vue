@@ -143,11 +143,13 @@ export default {
 //     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
 //     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
     
-//  if(this.$route.params.link != null) {
-//       console.log('Есть ссылка на стол');
-//     } else {
-//       console.log('Нет ссылка на стол');
-//     }   
+ if(this.$route.params.link != null) {
+      console.log('Есть ссылка на стол', this.$route.params.link);
+      // this.$store.dispatch('checkUrl');
+    } else {
+      console.log('Нет ссылка на стол');
+    }   
+         console.log('Проверка route ', this.$route);
 
   },
   components: {

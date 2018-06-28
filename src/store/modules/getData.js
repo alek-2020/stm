@@ -2,6 +2,8 @@
 // Получаем столы, списки и задачи из БД
 /////////////////////////////////////////
 
+import router from './../../Router.js'
+
 
 import * as firebase from "firebase";
 
@@ -44,10 +46,19 @@ export default {
                     console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
                     
                     //Запишем урл активного стола
-                    dispatch('pushActiveTableLink');
+                    // dispatch('pushActiveTableLink');
                     
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
                     dispatch('getTaskLists');
+                }).then(() => {
+                    //Выполним побочные процессы, которым нужны загруженные данные
+                   
+                   
+                    console.log('чекаем наш урл', router.match(location) );
+
+                    dispatch('checkUrl');
+
+
                 })
                 .catch(error => {
                     console.log(error);
@@ -101,6 +112,8 @@ export default {
                         // dispatch('altGetTables');
                         resolve(data.val());
                         // dispatch('getSettings', data.val().settings);
+                  
+
                     })
 
                     .catch(error => {

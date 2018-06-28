@@ -238,18 +238,25 @@ export default {
       //Работа со ссылками на столы
 
       
-    //   checkUrl({ dispatch, commit, state }) {
-    //     //   console.log('router', router);
-    //     //   if(route.params.link != null) {
-    //     //     console.log('Есть ссылка на стол');
-    //     //     // dispatch('checkLink');
-    //     //   } else {
-    //         dispatch('pushActiveTableLink')
-    //     //     console.log('Нет ссылки на стол');
-    //     //   }
-    //   },
+      checkUrl({ dispatch, commit, state }) {
+          
+        let url = state.activeTableUrl;
+        console.log('смо записался ', url);
+        
+        if(url != null) {
+
+
+            console.log('Есть ссылка на стол(act)', url);
+
+            dispatch('changeActiveTable', url)
+           } else {
+            dispatch('pushActiveTableLink')
+            console.log('Нет ссылки на стол');
+          }
+      },
 
       pushActiveTableLink({ dispatch, commit, state }) {
+        console.log(router.match(location));
         console.log('Пушим ссылку, так как нет никакой', state.activeTableIndex, state.allTasks);
         let url = state.allTasks[state.activeTableIndex].tableUrl;
         router.push( {path: `/table/${url}` } );
@@ -262,7 +269,7 @@ export default {
          obj.forEach((element, index) => {
                          console.log(index, element.tableUrl );
                 if(element.tableUrl == url) {
-                    console.log('Индексы сошлись');
+                    console.log('Индексы сошлись', url);
                     state.activeTableIndex = index;
                     correctUrl = true;
                 }
@@ -270,6 +277,7 @@ export default {
 
          if(!correctUrl) {
              dispatch('pushActiveTableLink');
+             console.log('Ссылка фигня пушим активный стол');
          }
 
         //  for (var prop in obj) {

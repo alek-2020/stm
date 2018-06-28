@@ -27,6 +27,7 @@ export const store = new Vuex.Store({
             taskLists: [],
             tasksFB: [],
             activeTableIndex: 0,
+            activeTableUrl: '',
             tableSettingsActive: false,
             tableSettingsVisible: false,
             lastColId: null,

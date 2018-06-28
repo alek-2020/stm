@@ -77,7 +77,9 @@ export default {
   created() {
     //  this.getAllTasks
           //  this.$store.dispatch('testbro');
-
+      console.log('смотрим адрес', this.$route.params.link);
+      let url = this.$route.params.link;
+      this.$store.state.activeTableUrl = url;
       this.$store.dispatch('startGetTasks');
 
  },
