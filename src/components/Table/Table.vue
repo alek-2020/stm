@@ -37,6 +37,21 @@
   </VuePerfectScrollbar>
  
 
+<!-- Окна сообщений -->
+  <transition 
+     name="fade">
+
+     <div class="goodNews"
+        v-if="goodNewsMes.length > 1">
+       {{ goodNewsMes }}
+     </div>
+
+     <div class="badNews"
+        v-if="badNewsMes.length > 1">
+        {{ badNewsMes }}
+     </div>
+
+   </transition>
 
 
      <span style="color: white; font-weigth: 500; background: black;"
@@ -61,7 +76,8 @@ export default {
   data() {
     return {
       Text: "Всякая чухня",
-      VarThisTableTaskLists: []
+      VarThisTableTaskLists: [],
+      goodNewsMess: "hello"
     };
   },
   computed: {
@@ -71,6 +87,12 @@ export default {
     }),
     allTasks() {
       return this.$store.state.allTasks;
+    },
+    goodNewsMes() {
+      return this.$store.state.goodNewsMes;
+    },
+    badNewsMes() {
+      return this.$store.state.badNewsMes;
     },
     activeTableIndex() {
       return this.$store.state.activeTableIndex;
@@ -82,13 +104,15 @@ export default {
       if (this.$store.state.allTasks.length > 0) {
         console.log("получили индекс ", this.$store.state.allTasks);
         console.log("получили индекс ", this.$store.state.allTasks[1]);
-       //Проверяем загрузку нужного стола
-       if(this.$store.state.allTasks[this.$store.state.activeTableIndex] != null) {
-          return this.$store.state.allTasks[this.$store.state.activeTableIndex].taskLists;
-       }
+        //Проверяем загрузку нужного стола
+        if (
+          this.$store.state.allTasks[this.$store.state.activeTableIndex] != null
+        ) {
+          return this.$store.state.allTasks[this.$store.state.activeTableIndex]
+            .taskLists;
+        }
       }
-    },
-
+    }
   },
   watch: {
     allTasks(val) {
@@ -96,20 +120,18 @@ export default {
       console.log("следим ", val);
     },
 
-   //Отслеживаем url, что бы выводить нужный адрес
-    '$route' (to, from) {
-       console.log('Изменился адрес', to.params.link);
-       
-        if(this.$route.params.link != null) {
-      console.log('Есть ссылка на стол');
-            this.$store.dispatch('changeActiveTable', this.$route.params.link );
+    //Отслеживаем url, что бы выводить нужный адрес
+    $route(to, from) {
+      console.log("Изменился адрес", to.params.link);
 
-    } else {
-      console.log('Нет ссылка на стол');
-            this.$store.dispatch('pushActiveTableLink');
-
-    }   
-     }
+      if (this.$route.params.link != null) {
+        console.log("Есть ссылка на стол");
+        this.$store.dispatch("changeActiveTable", this.$route.params.link);
+      } else {
+        console.log("Нет ссылка на стол");
+        this.$store.dispatch("pushActiveTableLink");
+      }
+    }
   },
   //  beforeRouteUpdate (to, from, next) {
   //      console.log('Изменился адрес', to, from);
@@ -140,17 +162,16 @@ export default {
   },
 
   mounted() {
-//     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
-//     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
-    
- if(this.$route.params.link != null) {
-      console.log('Есть ссылка на стол', this.$route.params.link);
+    //     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
+    //     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
+
+    if (this.$route.params.link != null) {
+      console.log("Есть ссылка на стол", this.$route.params.link);
       // this.$store.dispatch('checkUrl');
     } else {
-      console.log('Нет ссылка на стол');
-    }   
-         console.log('Проверка route ', this.$route);
-
+      console.log("Нет ссылка на стол");
+    }
+    console.log("Проверка route ", this.$route);
   },
   components: {
     TaskList,
@@ -294,8 +315,48 @@ export default {
   }
 }
 
+.goodNews {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  padding-right: 35px;
+  padding: 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  right: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
+.badNews {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  padding-right: 35px;
+  padding: 15px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  right: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
+//анимация
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
 </style>
 
 

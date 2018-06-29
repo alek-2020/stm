@@ -255,6 +255,9 @@ export default {
     actTableIndex() {
       return this.$store.state.activeTableIndex;
     },
+    // activeTableId() {
+    //   return this.$store.state.allTasks[this.$store.state.activeTableIndex].id;
+    // },
     actTabName: {
       
            //и запишем название нашего стола для хедера

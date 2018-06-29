@@ -68,12 +68,14 @@ export default {
                   .then(data => {
   
                       console.log('Поменяли текст в задаче');
-  
+                      //покажем сообщение
+                      dispatch('showGoodNews', 'Задача отредактирована');
   
                   })
                   .catch(error => {
                       console.log('Полный провал. Ошибка: ', error);
-                  })
+                      dispatch('showBadNews', 'Ошибка редактирования задачи');
+                    })
   
           },
   
@@ -112,12 +114,14 @@ export default {
           ///УДАЛЕНИЕ АКТИВНОГО РАБОЧЕГО СТОЛА
           delActiveTable({ dispatch, commit, state }) {
   
+              const activeTableId = state.allTasks[state.activeTableIndex].id;
+
               let ind = state.allTasks[state.activeTableIndex].tableIndex;
               const userId = state.userId;
   
               firebase
                       .database()
-                      .ref("users/" + userId + "/tables/" + ind)
+                      .ref("users/" + userId + "/tables/" + activeTableId)
                       .remove()
                       .then(data => {
                           
@@ -286,5 +290,20 @@ export default {
 
         //       }
         // }
+      },
+
+      showGoodNews({ dispatch, commit, state }, mes) {
+          state.goodNewsMes = mes;
+          console.log('Наш текст' , state.goodNewsMes);
+          setTimeout(function() {
+            state.goodNewsMes = [];
+          }, 1500)
+      },
+      showBadNews({ dispatch, commit, state }, mes) {
+          state.badNewsMes = mes;
+          console.log('Наш текст' , state.badNewsMes);
+          setTimeout(function() {
+            state.badNewsMes = [];
+          }, 1500)
       }
 }

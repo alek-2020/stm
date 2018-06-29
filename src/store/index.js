@@ -31,6 +31,9 @@ export const store = new Vuex.Store({
             tableSettingsActive: false,
             tableSettingsVisible: false,
             lastColId: null,
+
+            goodNewsMes: '',
+            badNewsMes: '',
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 
