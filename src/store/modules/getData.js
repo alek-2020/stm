@@ -77,7 +77,9 @@ export default {
                 } else {
                     console.log('getdata. хотя бы одни стол есть в локальтом массиве', rootState.allTasks[rootState.activeTableIndex].taskLists);
 
+                    //Чистим побочные массивы 
                     rootState.tasksFB = [];
+                    rootState.taskLists = [];
 
                     if (rootState.allTasks[rootState.activeTableIndex].taskLists.length < 1) {
                         //если есть загруженные , но текущий не загружен
@@ -113,7 +115,6 @@ export default {
                          for (var prop in objLists) { 
                            arrayLists.push(objLists[prop]);
                          };
-
                         
                         rootState.userData = {
                           tables: arrayLists,
@@ -205,7 +206,16 @@ export default {
                         .then(data => {
 
 
-                            rootState.taskLists.push(data.val());
+                         //Преобразуем объекты задач в массивы
+                         let objLists = data.val().tasks;
+                         let arrayLists = [];
+                         for (var prop in objLists) { 
+                           arrayLists.push(objLists[prop]);
+                         };
+
+                            rootState.taskLists.push({
+                                tasks: arrayLists
+                            });
 
                             //пишем список в супер JSON
                             rootState.allTasks[rootState.activeTableIndex].taskLists.push({
