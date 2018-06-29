@@ -107,7 +107,19 @@ export default {
                     .once("value")
                     .then(data => {
 
-                        rootState.userData = data.val();
+                         //Преобразуем объекты столов в массивы
+                         let objLists = data.val().tables;
+                         let arrayLists = [];
+                         for (var prop in objLists) { 
+                           arrayLists.push(objLists[prop]);
+                         };
+
+                        
+                        rootState.userData = {
+                          tables: arrayLists,
+                          settings:  data.val().settings
+                        };
+
                         console.log("getdata. первый запрос на сервер. получили данные по userId ", rootState.userData);
                         // dispatch('altGetTables');
                         resolve(data.val());
