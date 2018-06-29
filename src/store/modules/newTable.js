@@ -26,18 +26,23 @@ export default {
                 })
                 .then(newTableId => {
                     console.log('Запушили стол в локальный массив в Tables на серв. ', newTableId);
+                    //Пушим ключ стола в него же 
+                    dispatch('pushKeyToTable', newTableId);
                     //Послу пушв в локальный массив проскролим столы, что бы новый было видно
                     commit('scrollButtonsToEnd');
                     //Делаем новосозданный стол активным
                     dispatch('makeLastTableActive');
-                    // 4. Получим список столов из user/tables, что бы добавить туда новый id
-                    return dispatch('getTablesList', newTableId);
-                })
-                .then(response => {
-                    console.log('newTable. Получили из user/tables', response.allTables);
-                    // 5. Апдейтим столы уже вместе с новым в user/tables
+               
+                // 4. Получим список столов из user/tables, что бы добавить туда новый id
+                //     return dispatch('getTablesList', newTableId);
+                // })
+                // .then(response => {
+                //     console.log('newTable. Получили из user/tables', response.allTables);
+                   
+                // 5. Пушим новый стол в список столовs
                     const allTables = response.allTables;
                     const userId = response.userId;
+
                     return dispatch('apdateTablesList', { allTables, userId });
                 })
                 .then(response => {
@@ -151,6 +156,20 @@ export default {
         },
 
 
+        // 1.5 Допушиваем в стол его же id
+        pushKeyToTable({ dispatch, commit, state, rootState }, TableKey) {
+            console.log('kk ',TableKey);
+            firebase
+            .database()
+            .ref("tables/" + TableKey + "/id")
+            .set(TableKey)
+            .then(data => { 
+               console.log('.newTable. запушили в стол его id ', data);
+            })
+            .catch(error => {
+                console.log('Полный провал. Ошибка: ', error);
+            })
+        },
 
         // 2. получим список столов из user/tables
         getTablesList({ dispatch, commit, state, rootState }, newTableId) {
@@ -185,7 +204,7 @@ export default {
             })
         },
 
-        // 3. Апдейтим новый список
+        // 3. Пушим новый стол в список столов
         apdateTablesList({ dispatch, commit, state, rootState }, { allTables, userId }) {
             return new Promise((resolve, reject) => {
                 firebase
