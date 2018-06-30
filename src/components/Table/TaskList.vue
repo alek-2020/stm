@@ -12,20 +12,22 @@
               @focusout='changeListTitle(TList.name)'
               @keyup.enter='changeListTitle(TList.name)'>
 
-            <div class="task-list__inputs-container">
-              
-              <OneTask
-                v-for="(task, index) in doneTasks"
-                :key="task.id"
-                :task = 'task'
-                :Index = 'index'
-                :tableInd = 'activeTableIndex'
-                :taskInd = 'taskListIndex'> 
-              </OneTask> 
+              <VuePerfectScrollbar class="task-list__scroll-box"
+                :style="{height: taskBoxHeight}">
+                  <div class="task-list__inputs-container"
+                    ref="inputsContainer">
+                    
+                    <OneTask
+                      v-for="(task, index) in doneTasks"
+                      :key="task.id"
+                      :task = 'task'
+                      :Index = 'index'
+                      :tableInd = 'activeTableIndex'
+                      :taskInd = 'taskListIndex'> 
+                    </OneTask> 
 
-
-
-            </div>
+                  </div>
+              </VuePerfectScrollbar>
             
             <div class="btn btn_icon_delete task-list__del"
               v-if="TList.tasks.length < 1"
@@ -48,12 +50,14 @@
 <script>
 import listMenu from "./ListMenu.vue";
 import OneTask from "./Task.vue";
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
 
 
 export default {
   data: function() {
     return {
-      themeColor: "#528a52"
+      themeColor: "#528a52",
+      taskBoxHeight: 0
     };
   },
   methods: {
@@ -85,7 +89,8 @@ export default {
   props: ['TList', 'taskListIndex'],
   components: {
     listMenu,
-    OneTask
+    OneTask,
+    VuePerfectScrollbar
   },
 
   computed: {
@@ -112,13 +117,37 @@ export default {
              return !task.isDone
            });
           //  .filterBy(t.isDone);
-        }
+        },
+
+      //   taskBoxHeight() {
+      //     if(this.$refs.inputsContainer != null) {
+      //     console.log('Получили высоту элемента ', this.$refs);
+      //     // console.log('Получили высоту элемента ', this.$refs.inputsContainer.clientHeight);
+      //     return this.$refs.inputsContainer.clientHeight;
+      //  }
+      //  return '10px';
+      //     }
+        
 
   },
 
+  updated: function () {
+  this.$nextTick(function () {
+    // Code that will run only after the
+    // entire view has been re-rendered
+       console.log('Элемент ', this.$refs);
+       this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + 'px';
+
+  })
+},
+
+  mounted() {
+  //  console.log('Элемент ', this.$refs);
+  },
   filters: {
 
-  }
+  },
+
 };
 </script>
 
@@ -140,6 +169,7 @@ export default {
   box-sizing: border-box;
   height: min-content;
   width: 350px;
+  max-height: 100%;
 
   &__name {
     border: none;
@@ -154,6 +184,17 @@ export default {
 
   &__inputs-container {
     width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    // padding-right: 15px;
+  }
+
+  &__scroll-box {
+    width: 100%;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
   }
 
   &__add {

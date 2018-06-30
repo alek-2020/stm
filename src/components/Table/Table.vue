@@ -29,9 +29,8 @@
        v-if="allTasks.length > 0">
       <img src="../../../img/icons/add-plus-button.svg"
        class='add-list__img'
-       >
-       
-     </div> 
+       > 
+       </div> 
        
   </div> 
   </VuePerfectScrollbar>
@@ -215,6 +214,11 @@ export default {
     top: 0;
     left: 0;
     padding-right: 15px;
+    max-height: 100%;
+    overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 25px;
   }
 
   &__taskList-box-rel {
