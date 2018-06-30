@@ -3,7 +3,8 @@
 <template id="task-list-temp" :themeColor="themeColor">
            
             <div class="task-list" id="list-%id%" 
-             v-bind:style="{ borderColor: themeColor }">
+             v-bind:style="{ borderColor: themeColor }"
+             ref="taskBox">
             
             <!-- <listMenu></listMenu> -->
             
@@ -29,21 +30,22 @@
                   </div>
               </VuePerfectScrollbar>
             
-            <div class="btn btn_icon_delete task-list__del"
-              v-if="TList.tasks.length < 1"
-              @click="removeList(TList.id, taskListIndex, activeTableIndex)">
-              Удалить список
-            </div>
+                <div class="btn btn_icon_delete task-list__del"
+                  v-if="TList.tasks.length < 1"
+                  @click="removeList(TList.id, taskListIndex, activeTableIndex)">
+                  Удалить список
+                </div>
 
-            <div class="task-list__add"
-             @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
-                <div class="task-list__text"></div>
-            </div>
+            <div class="task-list__bottom-box">
+                <div class="task-list__add"
+                @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
+                    <div class="task-list__text"></div>
+                </div>
 
-            <div class="task-list__checked">
-              Выполненные
+                <div class="task-list__checked">
+                  Выполненные
+                </div>
             </div>
-            
         </div>    
 </template>
 
@@ -57,7 +59,8 @@ export default {
   data: function() {
     return {
       themeColor: "#528a52",
-      taskBoxHeight: 0
+      taskBoxHeight: 0,
+      maxBoxHeight: 0
     };
   },
   methods: {
@@ -94,6 +97,9 @@ export default {
   },
 
   computed: {
+        maxBoxHeightFunc() {
+          return this.$store.state.taskListBoxHeight -  92 + 'px';
+        },
         allTasks() {
             return this.$store.state.allTasks;
         },
@@ -138,7 +144,11 @@ export default {
        console.log('Элемент ', this.$refs);
        this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + 'px';
 
-  })
+
+    //  if(this.$store.state.taskListBoxHeight != null) {
+    //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';
+    //  }
+})
 },
 
   mounted() {

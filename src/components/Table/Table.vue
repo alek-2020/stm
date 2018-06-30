@@ -13,7 +13,9 @@
       lljlkj -->
     <!-- <router-view></router-view> -->
   <VuePerfectScrollbar class="table__taskList-box-rel">
-  <div class="table__taskLists-box">
+  <div class="table__taskLists-box"
+   ref="taskListBox"
+   >
     
     
         <TaskList
@@ -70,13 +72,14 @@ import { mapGetters } from "vuex";
 
 //скролл
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
+import { functions } from "firebase";
 
 export default {
   data() {
     return {
       Text: "Всякая чухня",
       VarThisTableTaskLists: [],
-      goodNewsMess: "hello"
+      goodNewsMess: "hello",
     };
   },
   computed: {
@@ -84,6 +87,10 @@ export default {
     ...mapGetters({
       visibleTables: "visibleTables"
     }),
+
+    listBoxH() {
+       return this.$store.state.taskListBoxHeight;
+    },
     allTasks() {
       return this.$store.state.allTasks;
     },
@@ -119,6 +126,8 @@ export default {
       console.log("следим ", val);
     },
 
+ 
+
     //Отслеживаем url, что бы выводить нужный адрес
     $route(to, from) {
       console.log("Изменился адрес", to.params.link);
@@ -137,6 +146,10 @@ export default {
   //   // не забываем вызвать next()
   // },
   methods: {
+
+    testtest() {
+      console.log('resize');
+    },
     //Подтягиваем расчеты из хранилища
     //1 cпособ
     // showThing(Text) {
@@ -157,12 +170,63 @@ export default {
     },
     addList() {
       this.$store.dispatch("addTaskList");
+    },
+
+        ttest() {
+             console.log("RRRResource conscious resize callback!", this.listBoxH);
+
     }
   },
+
+  updated: function () {
+  this.$nextTick(function () {
+    // Code that will run only after the
+    // entire view has been re-rendered
+      
+
+  // console.log('Высота поменялась updated ', this.$refs.taskListBox.clientHeight);
+
+
+})
+},
 
   mounted() {
     //     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
     //     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
+   
+//    var t = this;
+//    //при изменении арзмера окна пишем высота бокса в стор для адаптивных списков
+//    window.addEventListener("resize", function() {
+//     console.log("Resource conscious resize callback!", t.listBoxH);
+//     t.$store.state.taskListBoxHeight = t.$refs.taskListBox.clientHeight;
+// // this.ttest;
+//    console.log('ресайз', t.goodNewsMess);
+// });
+
+   //Отслеживаем изменение высоты блоки, для адаптивных списков задач
+   //watch задан императивным путем https://ru.vuejs.org/v2/api/#vm-watch
+    // this.$watch(
+    //     () => {
+    //       return this.$refs.taskListBox.clientHeight;
+    //     },
+    //     (val) => {
+    //       console.log("высота поменялась watch2", val);
+    //     }
+    // );
+
+    // this.$watch(this.listBoxH, function() {
+    //       console.log("высота поменялась blabla ", val);
+    //     });
+
+
+//  this.$watch(
+//     	() => {
+//     		return this.$refs.counter.i
+//     	},
+//       (val) => {
+//         alert('App $watch $refs.counter.i: ' + val)
+//       }
+//     )
 
     if (this.$route.params.link != null) {
       console.log("Есть ссылка на стол", this.$route.params.link);
@@ -171,6 +235,10 @@ export default {
       console.log("Нет ссылка на стол");
     }
     console.log("Проверка route ", this.$route);
+
+    //Запишем в хранилице высоту блока для расчетов
+    console.log('Высота блока ', this.$refs.taskListBox.clientHeight);
+    this.$store.state.taskListBoxHeight = this.$refs.taskListBox.clientHeight;
   },
   components: {
     TaskList,

@@ -34,6 +34,9 @@ export const store = new Vuex.Store({
 
             goodNewsMes: '',
             badNewsMes: '',
+
+            //Высота бокса со списками для расчетов
+            taskListBoxHeight: '0px',
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 
