@@ -97,15 +97,17 @@ export default {
 #app {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
 }
 
 html {
   min-width: 300px;
+  height: 100%;
 }
 body {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 h1,
