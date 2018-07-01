@@ -16,7 +16,7 @@ export default {
                     const Key = response.Key;
                     const tableInd = response.tableInd;
                     const taskListId = response.taskListId;
-
+                    const newTask = response.task;
 
                     dispatch('pushIdInTask', Key );
                     // 2. Получаем у листа id-шники задач
@@ -26,7 +26,7 @@ export default {
                 //     const taskId = response.taskId;
                 //     const tasks = response.tasks;
                     // 3. Отправим обновленные ключи задач
-                    return dispatch('addTaskInTasksNext', { Key, taskListId });
+                    return dispatch('addTaskInTasksNext', { Key, taskListId, tableInd, taskListInd, newTask });
                 }).then(response => {
                     console.log(response);
                 }).catch(error => {
@@ -38,7 +38,6 @@ export default {
         addTask({ dispatch, commit, state, rootState }, { tableInd, taskListInd }) {
             return new Promise((resolve, reject) => {
 
-                const mas = rootState.allTasks[tableInd].taskLists[taskListInd].tasks;
                 const tableId = rootState.allTasks[tableInd].id;
                 const taskListId = rootState.allTasks[tableInd].taskLists[taskListInd].id;
                 const taskColor = "gray";
@@ -51,7 +50,7 @@ export default {
                     isDone: false
                 };
 
-                mas.push(task);
+                // mas.push(task);
 
                 firebase
                     .database()
@@ -62,7 +61,7 @@ export default {
                         // console.log('Готовехонько', data.key);
                         const Key = data.key;
                         // dispatch('addTaskInTasks', { Key, tableInd, taskListInd });
-                        resolve({Key, tableInd, taskListId});
+                        resolve({Key, tableInd, taskListId, task});
 
                     })
                     .catch(error => {
@@ -95,7 +94,7 @@ export default {
             })
         },
 
-        addTaskInTasksNext({ dispatch, commit, state, rootState }, { Key, taskListId} ) {
+        addTaskInTasksNext({ dispatch, commit, state, rootState }, { Key, taskListId, tableInd, taskListInd, newTask} ) {
             return new Promise((resolve, reject) => {
 
                 firebase
@@ -103,6 +102,10 @@ export default {
                     .ref("taskLists/" + taskListId + "/tasks/" + Key)
                     .set(Key)
                     .then(data => {
+
+                        const mas = rootState.allTasks[tableInd].taskLists[taskListInd].tasks;
+                        newTask.id = Key;
+                        mas.push(newTask);
 
                         // console.log('Привязали задачу к списку', data);
                         resolve('newTask. Задача добавлена. Это успех!');

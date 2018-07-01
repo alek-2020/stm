@@ -410,6 +410,8 @@ export default Vue.extend({
 .ps__scrollbar-x {
     background-color: rgba(255, 255, 255, 0.6);
     opacity: 1;
+       height: 10px;
+
 }
 
 //Сделано через родителя, потому что иначе перебиваются настройки плагина

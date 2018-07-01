@@ -18,20 +18,35 @@
                   <div class="task-list__inputs-container"
                     ref="inputsContainer">
                     
-                    <OneTask
-                      v-for="(task, index) in doneTasks"
-                      :key="task.id"
-                      :task = 'task'
-                      :Index = 'index'
-                      :tableInd = 'activeTableIndex'
-                      :taskInd = 'taskListIndex'> 
-                    </OneTask> 
+                    <transition-group
+                      name="tasks"
+                      v-on:after-leave="afterLeave">
+                      <OneTask
+                        v-for="(task, index) in currentTasks"
+                        v-if="!onlyDoneTasks"
+                        :key="task.id"
+                        :task = 'task'
+                        :Index = 'index'
+                        :tableInd = 'activeTableIndex'
+                        :taskInd = 'taskListIndex'> 
+                      </OneTask> 
+
+                      <OneDoneTask
+                        v-for="(task, index) in doneTasks"
+                        v-if="onlyDoneTasks"
+                        :key="task.id"
+                        :task = 'task'
+                        :Index = 'index'
+                        :tableInd = 'activeTableIndex'
+                        :taskInd = 'taskListIndex'>
+                      </OneDoneTask>
+                    </transition-group>
 
                   </div>
               </VuePerfectScrollbar>
             
                 <div class="btn btn_icon_delete task-list__del"
-                  v-if="TList.tasks.length < 1"
+                  v-if="currentTasks.length < 1 && !onlyDoneTasks"
                   @click="removeList(TList.id, taskListIndex, activeTableIndex)">
                   Удалить список
                 </div>
@@ -42,9 +57,14 @@
                     <div class="task-list__text"></div>
                 </div>
 
-                <div class="task-list__checked">
-                  Выполненные
+                <div class="task-list__checked"
+                  @click="showDoneTasks">
+                  
+                  <span v-if="!onlyDoneTasks">Выполненные</span>
+                  <span v-if="onlyDoneTasks">Текущие</span>
+
                 </div>
+
             </div>
         </div>    
 </template>
@@ -52,112 +72,136 @@
 <script>
 import listMenu from "./ListMenu.vue";
 import OneTask from "./Task.vue";
+import OneDoneTask from "./DoneTask.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
-
 
 export default {
   data: function() {
     return {
       themeColor: "#528a52",
       taskBoxHeight: 0,
-      maxBoxHeight: 0
+      maxBoxHeight: 0,
+      onlyDoneTasks: false,
     };
   },
   methods: {
+    afterLeave() {
+       this.changeHeightOfList();
+       console.log('Пересчет высоты при завершении анимации');
+    },
+    changeHeightOfList() {
+       
+      this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
+      console.log('Пересчет высоты', this.taskBoxHeight);
+    },
+    showDoneTasks() {
+       this.onlyDoneTasks = !this.onlyDoneTasks;
+      //  this.changeHeightOfList();
+       console.log('Пересчет высоты при переключении');
+    },
+
     a: function() {
       console.log(this.themeColor);
     },
 
     //Добавляем новую задачу (пока что просто пустой инпут)
     AddEmptyInp(taskListInd, tableInd) {
-
-
-       this.$store.dispatch( 'addNewTask', {tableInd, taskListInd})
-  
-
+      this.$store.dispatch("addNewTask", { tableInd, taskListInd });
     },
 
     changeListTitle(NewName) {
-      
-      const ListId = this.TList.id
+      const ListId = this.TList.id;
 
-      this.$store.dispatch('changeListTitle', { NewName, ListId });
+      this.$store.dispatch("changeListTitle", { NewName, ListId });
     },
 
     removeList(id, taskListIndex, activeTableIndex) {
-      this.$store.dispatch('removeList', {id, taskListIndex, activeTableIndex});
+      this.$store.dispatch("removeList", {
+        id,
+        taskListIndex,
+        activeTableIndex
+      });
     }
-
   },
-  props: ['TList', 'taskListIndex'],
+  props: ["TList", "taskListIndex"],
   components: {
     listMenu,
     OneTask,
+    OneDoneTask,
     VuePerfectScrollbar
   },
 
   computed: {
-        maxBoxHeightFunc() {
-          return this.$store.state.taskListBoxHeight -  92 + 'px';
-        },
-        allTasks() {
-            return this.$store.state.allTasks;
-        },
-        activeTableIndex() {
-          return this.$store.state.activeTableIndex;
-        },
-        getListName() {
-          const TLName = allTasks[activeTableIndex ].taskLists[taskListIndex].name
-          console.log('можно и отсюда вывести ', TLName)
-         if (TLName) {
-            return TLName
-          } else {
-            return Hello
-          }
-        },
+    maxBoxHeightFunc() {
+      return this.$store.state.taskListBoxHeight - 92 + "px";
+    },
+    allTasks() {
+      return this.$store.state.allTasks;
+    },
+    activeTableIndex() {
+      return this.$store.state.activeTableIndex;
+    },
+    getListName() {
+      const TLName = allTasks[activeTableIndex].taskLists[taskListIndex].name;
+      console.log("можно и отсюда вывести ", TLName);
+      if (TLName) {
+        return TLName;
+      } else {
+        return Hello;
+      }
+    },
 
-        //фильтруем список по сделанным задачам
-        doneTasks() {
-           const t = this.allTasks[this.activeTableIndex ].taskLists[this.taskListIndex].tasks;
-           return t.filter(function(task){
-             return !task.isDone
-           });
-          //  .filterBy(t.isDone);
-        },
+    //фильтруем список по сделанным задачам
+    currentTasks() {
+      const t = this.allTasks[this.activeTableIndex].taskLists[
+        this.taskListIndex
+      ].tasks;
+      return t.filter(function(task) {
+        return !task.isDone;
+      });
+      //  .filterBy(t.isDone);
+    },
 
-      //   taskBoxHeight() {
-      //     if(this.$refs.inputsContainer != null) {
-      //     console.log('Получили высоту элемента ', this.$refs);
-      //     // console.log('Получили высоту элемента ', this.$refs.inputsContainer.clientHeight);
-      //     return this.$refs.inputsContainer.clientHeight;
-      //  }
-      //  return '10px';
-      //     }
-        
+    doneTasks() {
+      const t = this.allTasks[this.activeTableIndex].taskLists[
+        this.taskListIndex
+      ].tasks;
+      return t.filter(function(task) {
+        return task.isDone;
+      });
+      //  .filterBy(t.isDone);
+    }
 
+
+    //   taskBoxHeight() {
+    //     if(this.$refs.inputsContainer != null) {
+    //     console.log('Получили высоту элемента ', this.$refs);
+    //     // console.log('Получили высоту элемента ', this.$refs.inputsContainer.clientHeight);
+    //     return this.$refs.inputsContainer.clientHeight;
+    //  }
+    //  return '10px';
+    //     }
   },
 
-  updated: function () {
-  this.$nextTick(function () {
-    // Code that will run only after the
-    // entire view has been re-rendered
-       console.log('Элемент ', this.$refs);
-       this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + 'px';
+  updated: function() {
+    this.$nextTick(function() {
+      // Code that will run only after the
+      // entire view has been re-rendered
+      console.log("Элемент ", this.$refs);
+      // this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
+      this.changeHeightOfList();
+      console.log('Пересчет высоты при изменении древа');
 
-
-    //  if(this.$store.state.taskListBoxHeight != null) {
-    //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';
-    //  }
-})
-},
+      //  if(this.$store.state.taskListBoxHeight != null) {
+      //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';
+      //  }
+    });
+  },
 
   mounted() {
-  //  console.log('Элемент ', this.$refs);
+    //  console.log('Элемент ', this.$refs);
   },
-  filters: {
-
-  },
-
+  filters: {}
 };
 </script>
 
@@ -188,7 +232,7 @@ export default {
     font-size: 18px;
     color: #1a1919;
     font-weight: 500;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     margin-bottom: 10px;
   }
 
@@ -211,7 +255,7 @@ export default {
     height: 17px;
     width: 17px;
     // background: gray;
-    background-image: url( ../../../img/icons/add-task.svg );
+    background-image: url(../../../img/icons/add-task.svg);
     background-size: 100%;
     margin-top: 10px;
   }
@@ -221,9 +265,8 @@ export default {
     right: 20px;
     bottom: 10px;
     text-decoration: underline;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 13px;
-
   }
 
   &__del {
@@ -231,6 +274,100 @@ export default {
     width: 70%;
     background: #cacaca;
     font-family: Roboto;
+  }
+}
+
+.task-list {
+  /////////////////////////
+  // КАСТОМИЗАЦИЯ СКРОЛЛА
+  /////////////////////////
+
+  ////////ОБЫЧНОЕ СОТОЯНИЕ
+
+  //Область скролла
+  & .ps.ps--active-y > .ps__scrollbar-y-rail {
+    display: block;
+    background-color: transparent;
+    width: 6px;
+    transition: height 0.3s;
+    opacity: 1;
+    border-radius: 0;
+  }
+
+  //скроллбар
+  & .ps.ps--active-y > .ps__scrollbar-y-rail > .ps__scrollbar-y {
+    background-color: #b7b7b7f8;
+    width: 6px;
+    transition: height 0.3s;
+    opacity: 1;
+    border-radius: 3;
+    bottom: 0;
+  }
+
+  ////////HOVER
+
+  //Область скролла
+  & .ps.ps--active-y > .ps__scrollbar-y-rail:hover {
+    width: 6px;
+    transition: height 0.2s;
+    background-color: transparent;
+  }
+
+  //скроллбар
+  & .ps:hover > .ps__scrollbar-y-rail:hover > .ps__scrollbar-y {
+    width: 6px;
+    // padding: 0;
+    background-color: #b7b7b7f8;
+    opacity: 1;
+    // border-radius: 0;
+    bottom: 0;
+  }
+
+  //////АCTIVE
+
+  & .ps__scrollbar-y-rail {
+    right: 0px;
+    background-color: #b7b7b7f8;
+    width: 6px;
+  }
+  //область скролла
+  & .ps:hover.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail {
+    background-color: transparent;
+    opacity: 1;
+    width: 6px;
+  }
+
+  //скроллбар
+
+  &
+    .ps:hover.ps--in-scrolling.ps--y
+    > .ps__scrollbar-y-rail
+    > .ps__scrollbar-y {
+    background-color: #b7b7b7f8;
+    opacity: 1;
+    width: 6px;
+  }
+
+  //////АCTIVE NOT HOVER
+
+  //область скролла
+  & .ps.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail {
+    background-color: transparent;
+    opacity: 1;
+    width: 6px;
+  }
+
+  //скроллбар
+
+  & .ps.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail > .ps__scrollbar-y {
+    width: 6px;
+    opacity: 1;
+    background-color: #b7b7b7f8;
+  }
+
+  //Сделано через родителя, потому что иначе перебиваются настройки плагина
+  & .smoothScroll .desk-btns__rel-cont {
+    scroll-behavior: smooth;
   }
 }
 
@@ -244,8 +381,6 @@ export default {
 // @media screen and (min-width: 550px) {
 //   .task-list {
 
-
-    
 //     // min-width: 200px;
 //     // max-width: 500px;
 //     // flex-grow: 1;
@@ -267,4 +402,17 @@ export default {
 //      width: calc( 85% / 4 );
 //   }
 // }
+
+//Анимация для списка задач
+.tasks-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.tasks-enter-active, .tasks-leave-active {
+  transition: all 1s;
+}
+.tasks-enter, .tasks-leave-to /* .list-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
 </style>

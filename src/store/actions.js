@@ -9,12 +9,23 @@ export default {
       
   
           //Отметить задачу как сделанную
-          checkTask({ dispatch, commit, state }, { task, taskInd, tableInd, taskListInd }) {
-              console.log('ДЛЯ ОТМЕТКИ ЗАДАЧИ ПОЛУЧАЕМ ', task, taskInd, tableInd, taskListInd);
-              //    tableInd =+ 1
-              const taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
+          checkTask({ dispatch, commit, state }, { task, tableInd, taskListInd, taskId }) {
+            // taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
   
-  
+            console.log('ДЛЯ ОТМЕТКИ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
+
+            /*
+            т.к. список задач фильтрован по isDone индексы расходятся, поэтому нам нужно определить
+            по id задачи её индекс, что бы удалить её из локального массива
+            */
+            let taskInd;
+            const tasksInList = state.allTasks[tableInd].taskLists[taskListInd].tasks;
+            tasksInList.forEach( (element, index) => {
+               if(element.id == taskId) {
+                   taskInd = index;
+               }
+            })            
+
               firebase
                   .database()
                   .ref("tasks/" + taskId + "/isDone")
@@ -25,11 +36,13 @@ export default {
                       const taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
   
                       console.log('Задачка готова!');
-  
+                      dispatch('showGoodNews', 'Задача выполнена!');
   
                   })
                   .catch(error => {
                       console.log('Полный провал. Ошибка: ', error);
+                      dispatch('showBadNews', 'Ошибка. Задача не откорректированна(');
+
                   })
           },
   
