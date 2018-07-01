@@ -17,11 +17,14 @@
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
                     ref="inputsContainer">
-                    
+                      
                     <transition-group
+                      mode="out-in"
                       name="tasks"
+                      class="tasks-list__transition-box"
                       v-on:after-leave="afterLeave">
                       <OneTask
+                        style="{display: flex; transition: all .5s;}"
                         v-for="(task, index) in currentTasks"
                         v-if="!onlyDoneTasks"
                         :key="task.id"
@@ -51,17 +54,29 @@
                   Удалить список
                 </div>
 
-            <div class="task-list__bottom-box">
-                <div class="task-list__add"
-                @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
-                    <div class="task-list__text"></div>
+                <div class="btn task-list__del"
+                  v-if="doneTasks.length < 1 && onlyDoneTasks">
+                  Выполненных пока нет
                 </div>
+
+            <div class="task-list__bottom-box">
+                <transition name="doneBtn"> 
+                  <div class="task-list__add"
+                  v-show="!onlyDoneTasks"
+                  @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
+                      <div class="task-list__text"></div>
+                  </div>
+               </transition>
 
                 <div class="task-list__checked"
                   @click="showDoneTasks">
-                  
-                  <span v-if="!onlyDoneTasks">Выполненные</span>
-                  <span v-if="onlyDoneTasks">Текущие</span>
+                
+                <transition name="doneBtn" 
+                 mode="out-in">
+                  <span :key="onlyDoneTasks">
+                    {{ onlyDoneTasks ? 'Текущие' : 'Выполненные' }}
+                  </span>
+                </transition>
 
                 </div>
 
@@ -200,6 +215,8 @@ export default {
 
   mounted() {
     //  console.log('Элемент ', this.$refs);
+    //При первичной загрузке считаем высоту
+    this.changeHeightOfList();
   },
   filters: {}
 };
@@ -250,6 +267,7 @@ export default {
     height: 100px;
     position: relative;
     overflow: hidden;
+    transition: height .3s;
   }
 
   &__add {
@@ -275,6 +293,11 @@ export default {
     width: 70%;
     background: #cacaca;
     font-family: Roboto;
+  }
+
+  &__bottom-box {
+    height: 28px;
+    min-height: 28px;
   }
 }
 
@@ -405,15 +428,60 @@ export default {
 // }
 
 //Анимация для списка задач
-.tasks-item {
-  display: inline-block;
-  margin-right: 10px;
-}
-.tasks-enter-active, .tasks-leave-active {
+// .tasks-item {
+//     transition: all 1s;
+// }
+
+// .tasks-enter-active, .tasks-leave-active {
+//   opacity: 0;
+// }
+
+.tasks-list__transition-box {
   transition: all 1s;
 }
-.tasks-enter, .tasks-leave-to /* .list-leave-active до версии 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(30px);
+
+.tasks-enter-active,
+.tasks-leave-active {
+  // opacity: 0;
+  // transform: translateX(-130%);
+  // transition: all .5s;
 }
+
+.tasks-leave-active {
+  position: absolute;
+}
+//стартовая точка
+.tasks-enter {
+  transform: translateX(-130%);
+  opacity: 0;
+}
+
+//Конечная точка
+.tasks-leave-to {
+  opacity: 0;
+  transform: translateX(130%);
+}
+
+///
+// .tasks-move {
+//   transition: all 1s;
+// }
+
+// .list-complete-leave-active {
+//   position: absolute;
+// }
+
+
+
+//Анимация кнопки на списке
+.doneBtn-enter, 
+.doneBtn-leave-to {
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.doneBtn-enter-to {
+  transition: opacity .5s;
+}
+
 </style>

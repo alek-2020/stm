@@ -12,10 +12,10 @@
 
             <div class="log__title-block">
                 <span class="log__title">
-                    Login
+                    Авторизация
                 </span>
                 <span class="log__or">
-                    or <router-link to="/registration/">Registration</router-link>
+                    или <router-link to="/registration/">Регистрация</router-link>
                 </span>  
             </div>
       <form class="log__form" action="" @submit.prevent="onSignIn">
@@ -41,7 +41,7 @@
 
 
         <button type="submit">
-            Login
+            Вход
         </button>
 
       </form>
@@ -59,35 +59,45 @@ export default {
       password: "",
       id: "",
       logActive: true,
-      blabla: ''
+      blabla: ""
     };
   },
   methods: {
     onSignIn() {
       // vuex
 
-      console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
-        //Создаем юзера в файрбазе
+      console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
+        const t = this;
+        //Перед авторизацией делаем сессию бесконечной
         firebase
           .auth()
-          .signInWithEmailAndPassword(this.email, this.password)
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+          .then(function() {
+            return firebase
+              .auth()
+              .signInWithEmailAndPassword(t.email, t.password);
+          })
           .then(user => {
             const newUser = {
               id: user.user.uid
               //this.registerelM
             };
-            console.log("Авторизовались, все ОК", newUser.id );
-            this.$store.state.userIdBro = newUser.id;
-            console.log('Получили UserData по Id ', this.getUserData);
-         })
+            console.log("Авторизовались, все ОК", newUser.id);
+            this.$store.state.userId = newUser.id;
+            console.log("Получили UserData по Id ");
+
+            //Раз все ок грузим данные и переходим в столы
+            this.$store.dispatch("startGetTasks");
+            this.$route.push("/table/");
+            console.log('Авторизашка после авторизашки', firebase);
+
+          })
           .catch(error => {
             console.log("Это провал. Ошибка: ", error);
           });
     },
-    goBack () {
-      window.history.length > 1
-        ? this.$router.go(-1)
-        : this.$router.push('/')
+    goBack() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     }
   },
   computed: {
@@ -95,7 +105,7 @@ export default {
       return this.$store.state.userIdBro;
     },
     getUserData() {
-      return this.store.commit('getUser')
+      return this.store.commit("getUser");
     }
   }
 };
@@ -127,7 +137,7 @@ export default {
     padding: 15px;
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
-    color:#3c3c3c;
+    color: #3c3c3c;
     position: relative;
   }
 
@@ -167,21 +177,25 @@ export default {
   }
 
   &__cancel {
-      height: 15px;
-      width: 15px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 
-      & svg {
-          height: 100%;
-          width: 100%;
-          fill: #808080;
-      }
+    & svg {
+      height: 100%;
+      width: 100%;
+      fill: #808080;
+    }
 
-      &:hover svg {
-          fill: #a1a1a1;
-      }
+    &:hover svg {
+      fill: #a1a1a1;
+    }
+  }
+
+  &__or {
+    margin-top: 6px;
   }
 }
 
@@ -200,7 +214,7 @@ export default {
   &:hover {
     border: solid 1px gray;
   }
-  
+
   &:focus {
     border: solid 1px gray;
   }

@@ -43,15 +43,16 @@ import stmHeader from "./components/Header/Header.vue";
 import SignOut from "./components/UserPage/LogOut.vue";
 import TableContent from "./components/Table/Table.vue";
 
+import * as firebase from "firebase";
+
 // import test from "./OtherSrc/svg";
 
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "app",
   data() {
-    return {
-    };
+    return {};
   },
   components: {
     tableList,
@@ -64,35 +65,42 @@ export default {
   },
 
   computed: {
-     ...mapGetters({
-      currentBgImg: 'currentBgImg'
-    }),
-  // getAllTasks() {
-  //   // this.$store.dispatch('altGetUserFB')
-  //  }
+    ...mapGetters({
+      currentBgImg: "currentBgImg"
+    })
+    // getAllTasks() {
+    //   // this.$store.dispatch('altGetUserFB')
+    //  }
   },
-  methods: {
-
-  },
+  methods: {},
   created() {
     //  this.getAllTasks
-          //  this.$store.dispatch('testbro');
-      console.log('смотрим адрес', this.$route.params.link);
-      let url = this.$route.params.link;
-      this.$store.state.activeTableUrl = url;
-      this.$store.dispatch('startGetTasks');
+    //  this.$store.dispatch('testbro');
+    const t = this;
+    //Проверяем юзера на наличие авторизации
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("User is signed in", firebase.auth().currentUser.uid);
 
- },
- mounted() {
-
- }
-}
+        t.$store.state.userId = firebase.auth().currentUser.uid;
+        console.log("User is signed in", firebase.auth().currentUser.uid);
+      } else {
+        console.log("No user is signed in");
+      }
+    });
+   
+   
+    let url = this.$route.params.link;
+    this.$store.state.activeTableUrl = url;
+    this.$store.dispatch("startGetTasks");
+  },
+  mounted() {}
+};
 </script>
 
 <style lang="scss">
-
-@import 'scss/bootsParts/custom/stm-bootsParts';
-@import 'scss/normalize';
+@import "scss/bootsParts/custom/stm-bootsParts";
+@import "scss/normalize";
 
 *,
 *:after,
@@ -100,10 +108,15 @@ export default {
   box-sizing: border-box;
 }
 
+button,
+input {
+  outline: none;
+}
+
 #app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 html {
@@ -145,14 +158,14 @@ a {
   z-index: -1;
 }
 
-@media all and (max-width: 480px) { 
- .t-header__profile,
- .btn-filter  {
+@media all and (max-width: 480px) {
+  .t-header__profile,
+  .btn-filter {
     display: none !important;
   }
- }
+}
 
- ///Transition
+///Transition
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 0.3s;
@@ -162,6 +175,6 @@ a {
 
 .fade-enter,
 .fade-leave-active {
-  opacity: 0
+  opacity: 0;
 }
 </style>

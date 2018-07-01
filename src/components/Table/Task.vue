@@ -66,6 +66,7 @@ export default {
         box-sizing: border-box;
         position: relative;
         background: rgba(255, 255, 255, .7);
+        transition: all .5s;
 
         &:not(:first-child) {
             margin-top: 10px;

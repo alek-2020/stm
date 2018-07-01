@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
             //Активно ли поле ввода имени стола
             plusActive: false,
             //Для баз данных
-            userId: '2WYp1c7czxXAwSLSCwwatUzABhf1',
+            userId: '',
             allTasks: [],
             userData: [],
             userTables: [],
