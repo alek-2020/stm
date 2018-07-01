@@ -212,7 +212,7 @@ export default {
   // max-width: 400px;
   border: solid 3px #c6c6c6ad;
   margin-left: 15px;
-  padding: 10px;
+  padding: 10px 1px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -234,6 +234,7 @@ export default {
     font-weight: 500;
     font-family: "Roboto", sans-serif;
     margin-bottom: 10px;
+    width: 90%;
   }
 
   &__inputs-container {

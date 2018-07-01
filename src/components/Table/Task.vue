@@ -61,8 +61,8 @@ export default {
         border: solid 2px rgb(170, 169, 169);
         border-radius: 7px;
         height: 44px;
-        width: 85%;
-        margin: auto;
+        width: auto;
+        margin: auto 12px;
         box-sizing: border-box;
         position: relative;
         background: rgba(255, 255, 255, .7);

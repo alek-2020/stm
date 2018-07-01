@@ -33,7 +33,7 @@ export default {
                   .then(data => {
   
                       //Если успех внесем изменения в локальный массив
-                      const taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
+                      state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
   
                       console.log('Задачка готова!');
                       dispatch('showGoodNews', 'Задача выполнена!');
@@ -42,6 +42,47 @@ export default {
                   .catch(error => {
                       console.log('Полный провал. Ошибка: ', error);
                       dispatch('showBadNews', 'Ошибка. Задача не откорректированна(');
+
+                  })
+          },
+
+
+          //Удалить задачу
+          delTask({ dispatch, commit, state }, { task, tableInd, taskListInd, taskId }) {
+            // taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
+  
+            console.log('ДЛЯ УДАЛЕНИЯ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
+            const taskListId = task.taskListId;
+            /*
+            т.к. список задач фильтрован по isDone индексы расходятся, поэтому нам нужно определить
+            по id задачи её индекс, что бы удалить её из локального массива
+            */
+            let taskInd;
+            const tasksInList = state.allTasks[tableInd].taskLists[taskListInd].tasks;
+            tasksInList.forEach( (element, index) => {
+               if(element.id == taskId) {
+                   taskInd = index;
+               }
+            })            
+
+            console.log('Удаляем задачу ', "tasksLists/" + taskListId + "/tasks/" + taskId);
+              firebase
+                  .database()
+                  .ref("taskLists/" + taskListId + "/tasks/" + taskId)
+                  .remove()
+                  .then(data => {
+  
+                      //Если успех внесем изменения в локальный массив
+                      state.allTasks[tableInd].taskLists[taskListInd].tasks.splice(taskInd, 1);
+                      
+
+                      console.log('Задачка готова!');
+                      dispatch('showGoodNews', 'Задача удалена!');
+  
+                  })
+                  .catch(error => {
+                      console.log('Полный провал. Ошибка: ', error);
+                      dispatch('showBadNews', 'Ошибка. Ошибка удаления задачи(');
 
                   })
           },

@@ -260,7 +260,8 @@ export default {
                             let dbTask = {
                                 'id': element,
                                 'text': data.val().text,
-                                'isDone': data.val().isDone
+                                'isDone': data.val().isDone,
+                                'taskListId': data.val().taskListId,
                             }
 
                             let bigJSON = rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks;
