@@ -65,11 +65,12 @@
         </div> -->
      <div class="desk-btns__group-2">
           
-          <router-link to="/login" 
+          <div to="/login"
+           @click="logOut()" 
             class="t-header__profile btn-bg-white"
             v-html="loginIcon">
             <!-- <img src="/img/icons/log-in.svg" alt=""> -->
-          </router-link>
+          </div>
 
           <!-- <div class="t-header__star"><img src="/img/icons/star.svg" alt=""></div> -->
           
@@ -98,7 +99,7 @@ import ThreeDotsMenu from "./ThreeDotsMenu.vue";
 
 import { svgHeader } from "../../OtherSrc/svg.js";
 
-//   console.log(test);
+import * as firebase from 'firebase'
 
 export default {
   data() {
@@ -145,6 +146,23 @@ export default {
     };
   },
   methods: {
+    //Выход
+    logOut() {
+      firebase.auth().signOut()
+      .then(data => {
+        console.log('Вышли из учетки ', data);
+        this.$store.dispatch('showGoodNews', 'Вышли из учетной записи');
+        this.$store.state.authorised = false;
+        //чистим все данные 
+        this.$store.state.allTasks = [];
+        this.$store.state.allTables = [];
+        this.$store.state.userData = [];
+        this.$store.state.taskLists = [];
+      })
+      .catch(error => {
+        this.$store.dispatch('showBadNews', 'Ошибка выхода из учетнои записи. ' + error);
+      })
+    },
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;
       var a = this.ThreeDotsActive;

@@ -462,10 +462,12 @@ export default {
   transform: translateX(130%);
 }
 
-///
-// .tasks-move {
-//   transition: all 1s;
-// }
+
+.tasks-move {
+  transition: all 1s;
+  background: red !important;
+  border: solid !important;
+}
 
 // .list-complete-leave-active {
 //   position: absolute;

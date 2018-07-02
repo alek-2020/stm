@@ -17,6 +17,8 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state() {
         return {
+            //Авторизован
+            authorised: false,
             //Активно ли поле ввода имени стола
             plusActive: false,
             //Для баз данных
@@ -40,7 +42,7 @@ export const store = new Vuex.Store({
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 
-            currentBgImg: '',
+            currentBgImg: '/img/bg/stm-bg-2.jpg',
             tables: [],
             tasks: [
                 // {

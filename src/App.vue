@@ -10,9 +10,9 @@
     >
     </div>
 
-    <stmHeader></stmHeader>
-    <tableList></tableList>
-    <TestFirebase></TestFirebase>  
+    <stmHeader v-if="authorised"></stmHeader>
+    <tableList v-if="authorised"></tableList>
+    <!-- <TestFirebase></TestFirebase>   -->
     <!-- <SignIn></SignIn> -->
     <!-- <SignOut></SignOut> -->
     <!-- <router-view></router-view> -->
@@ -20,7 +20,7 @@
     <transition
       name="fade"
       mode="out-in">
-    <router-view name="TableContent"></router-view>
+    <router-view name="TableContent"  v-if="authorised"></router-view>
     </transition> 
 
    <!-- <TableContent></TableContent>  -->
@@ -67,7 +67,10 @@ export default {
   computed: {
     ...mapGetters({
       currentBgImg: "currentBgImg"
-    })
+    }),
+    authorised() {
+      return this.$store.state.authorised;
+    }
     // getAllTasks() {
     //   // this.$store.dispatch('altGetUserFB')
     //  }
@@ -83,16 +86,17 @@ export default {
         console.log("User is signed in", firebase.auth().currentUser.uid);
 
         t.$store.state.userId = firebase.auth().currentUser.uid;
+        let url = t.$route.params.link;
+        t.$store.state.activeTableUrl = url;
+        t.$store.dispatch("startGetTasks");
+        t.$store.state.authorised = true;
         console.log("User is signed in", firebase.auth().currentUser.uid);
-      } else {
+     
+     } else {
         console.log("No user is signed in");
+        t.$router.replace('/login/');
       }
     });
-   
-   
-    let url = this.$route.params.link;
-    this.$store.state.activeTableUrl = url;
-    this.$store.dispatch("startGetTasks");
   },
   mounted() {}
 };
