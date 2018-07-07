@@ -42,7 +42,7 @@ export const store = new Vuex.Store({
             // activeTableName: 'Колбаса',        
             //Для баз данных//
 
-            currentBgImg: '/img/bg/stm-bg-2.jpg',
+            currentBgImg: '',
             tables: [],
             tasks: [
                 // {

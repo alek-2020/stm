@@ -13,7 +13,7 @@
 
             <div class="log__title-block">
                 <span class="log__title">
-                    Registration
+                    Регистрация
                 </span>
                 <span class="log__or">
                     or <router-link to="/login/">Login</router-link>
@@ -72,16 +72,16 @@ export default {
         console.log({email: this.email, ConfirmPassword: this.confirmPassword}),
         //Создаем юзера в файрбазе
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(
-            user => {
-            const newUser = {
-                id: user.uid,
-                //this.registerelM
-              }
+        .then( user => {
               console.log('Это успех. id юзера ', this.id);
 
-            }
-        )
+              this.$store.state.userId = user.uid;
+              console.log("Получили id ", user.uid);
+
+              //Раз все ок грузим данные и переходим в столы
+              this.$store.dispatch("startGetTasks");
+              this.$router.push("/table/");
+            })
         .catch(
             error => {
              console.log('Полный провал. Ошибка: ', error)

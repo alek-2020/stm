@@ -14,6 +14,7 @@
               @keyup.enter='changeListTitle(TList.name)'>
 
               <VuePerfectScrollbar class="task-list__scroll-box"
+                v-once :settings="scrollSettings"
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
                     ref="inputsContainer">
@@ -97,6 +98,9 @@ export default {
       taskBoxHeight: 0,
       maxBoxHeight: 0,
       onlyDoneTasks: false,
+      scrollSettings: {
+        suppressScrollY: true
+      }
     };
   },
   methods: {
@@ -306,6 +310,7 @@ export default {
   // КАСТОМИЗАЦИЯ СКРОЛЛА
   /////////////////////////
 
+  ////////СКРОЕМ СКРОЛЛ ПО ДРУГОЙ ОСИ
   ////////ОБЫЧНОЕ СОТОЯНИЕ
 
   //Область скролла

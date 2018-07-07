@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
     
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
     
     <div
       :style="{ 'background': 'url(' + currentBgImg + ')'}"
@@ -31,6 +30,9 @@
    @click="test">
       test
   </button> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
+
   </div>
 </template>
 
@@ -94,6 +96,7 @@ export default {
      
      } else {
         console.log("No user is signed in");
+        t.$store.state.currentBgImg = '/img/bg/stm-bg-2.jpg';
         t.$router.replace('/login/');
       }
     });

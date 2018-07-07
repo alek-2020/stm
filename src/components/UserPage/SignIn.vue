@@ -89,8 +89,8 @@ export default {
 
             //Раз все ок грузим данные и переходим в столы
             this.$store.dispatch("startGetTasks");
-            this.$route.push("/table/");
-            console.log('Авторизашка после авторизашки', firebase);
+            this.$router.push("/table/");
+            // console.log('Авторизашка после авторизашки', firebase);
 
           })
           .catch(error => {
