@@ -19,6 +19,7 @@
 
 <script>
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
+//Директива клик снаружи элемента
 
 export default {
   data() {
@@ -40,7 +41,7 @@ export default {
     },
     saveBg() {
       this.$store.dispatch("saveBg");
-    }
+    },
   },
   computed: {
     tableSettingsActive() {
@@ -50,7 +51,8 @@ export default {
 
   components: {
     VuePerfectScrollbar
-  }
+  },
+
 };
 </script>
 

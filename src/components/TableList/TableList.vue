@@ -22,10 +22,11 @@
               v-on:click="altDragTableList">BRO
               </button> -->
 
-              <transition-group
+              <!-- <transition-group
+                class="desk-btns__cont"
                 name="tablesList"
                 mode="in-out"
-                > 
+                >  -->
                   <!-- кнопка привязанная к РС -->
                   <TableListOne
                   v-for="(table, index) in showAllTasks"
@@ -35,7 +36,7 @@
 
                   :ifLasBtn = 'LastBtn'
                   > </TableListOne>
-              </transition-group>
+              <!-- </transition-group> -->
   
                   <!--  добавление РС-->
                   <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"

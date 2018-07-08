@@ -1,5 +1,6 @@
 <template>
-  <div class="table__main-box">
+  <div class="table__main-box"
+  @click="deactivateSettings">
       <!-- {{ $route.params.name }} -->
       <!-- Получаем через mapGetters -->
       <!-- {{ visibleTables }} -->
@@ -146,6 +147,13 @@ export default {
   //   // не забываем вызвать next()
   // },
   methods: {
+
+    deactivateSettings() {
+      if(this.$store.state.tableSettingsActive) {
+        this.$store.state.tableSettingsActive = false;
+        console.log('Table settings. Click outside');
+       }
+    }, 
 
     testtest() {
       console.log('resize');

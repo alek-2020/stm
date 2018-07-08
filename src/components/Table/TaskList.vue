@@ -23,6 +23,7 @@
                       name="tasks"
                       class="tasks-list__transition-box"
                       v-on:after-leave="afterLeave">
+
                       <OneTask
                         style="{display: flex; transition: all .5s;}"
                         v-for="(task, index) in currentTasks"
@@ -43,6 +44,7 @@
                         :tableInd = 'activeTableIndex'
                         :taskInd = 'taskListIndex'>
                       </OneDoneTask>
+                      
                     </transition-group>
 
                   </div>
@@ -116,7 +118,7 @@ export default {
     showDoneTasks() {
        this.onlyDoneTasks = !this.onlyDoneTasks;
       //  this.changeHeightOfList();
-       console.log('Пересчет высоты при переключении');
+      //  console.log('Пересчет высоты при переключении');
     },
 
     a: function() {
