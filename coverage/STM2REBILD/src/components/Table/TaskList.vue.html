@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">11.43% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/35</span>
+        <span class='fraction'>0/36</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>0/4</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>0/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">11.43% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/35</span>
+        <span class='fraction'>0/36</span>
       </div>
     </div>
     <p class="quiet">
@@ -626,33 +626,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1054,7 +1054,6 @@
                     ref="inputsContainer"&gt;
                       
                     &lt;transition-group
-                      mode="out-in"
                       name="tasks"
                       class="tasks-list__transition-box"
                       v-on:after-leave="afterLeave"&gt;
@@ -1120,10 +1119,10 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-import listMenu from "./ListMenu.vue";
-import OneTask from "./Task.vue";
-import OneDoneTask from "./DoneTask.vue";
-import VuePerfectScrollbar from "vue-perfect-scrollbar";
+<span class="cstat-no" title="statement not covered" >import listMenu from "./ListMenu.vue";</span>
+<span class="cstat-no" title="statement not covered" >import OneTask from "./Task.vue";</span>
+<span class="cstat-no" title="statement not covered" >import OneDoneTask from "./DoneTask.vue";</span>
+<span class="cstat-no" title="statement not covered" >import VuePerfectScrollbar from "vue-perfect-scrollbar";</span>
 &nbsp;
 export default {
 <span class="fstat-no" title="function not covered" >  data: function() {</span>
@@ -1143,10 +1142,11 @@ export default {
 <span class="cstat-no" title="statement not covered" >       console.log('Пересчет высоты при завершении анимации');</span>
     },
 <span class="fstat-no" title="function not covered" >    changeHeightOfList() {</span>
-       
-<span class="cstat-no" title="statement not covered" >      this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";</span>
-<span class="cstat-no" title="statement not covered" >      console.log('Пересчет высоты', this.taskBoxHeight);</span>
-    },
+<span class="cstat-no" title="statement not covered" >       if(this.$refs.inputsContainer != null) {</span>
+<span class="cstat-no" title="statement not covered" >          this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";</span>
+<span class="cstat-no" title="statement not covered" >          console.log('Пересчет высоты', this.taskBoxHeight);</span>
+       }
+   },
 <span class="fstat-no" title="function not covered" >    showDoneTasks() {</span>
 <span class="cstat-no" title="statement not covered" >       this.onlyDoneTasks = !this.onlyDoneTasks;</span>
       //  this.changeHeightOfList();
@@ -1531,7 +1531,7 @@ export default {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 14:25:10 GMT+0300 (RTZ 2 (зима))
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 21:58:20 GMT+0300 (RTZ 2 (зима))
 </div>
 </div>
 <script src="..\..\..\..\prettify.js"></script>

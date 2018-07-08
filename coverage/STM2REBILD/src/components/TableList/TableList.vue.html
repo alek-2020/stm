@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>5/50</span>
+        <span class='fraction'>0/50</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>0/21</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">10% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>5/50</span>
+        <span class='fraction'>0/50</span>
       </div>
     </div>
     <p class="quiet">
@@ -470,7 +470,11 @@
 <a name='L422'></a><a href='#L422'>422</a>
 <a name='L423'></a><a href='#L423'>423</a>
 <a name='L424'></a><a href='#L424'>424</a>
-<a name='L425'></a><a href='#L425'>425</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L425'></a><a href='#L425'>425</a>
+<a name='L426'></a><a href='#L426'>426</a>
+<a name='L427'></a><a href='#L427'>427</a>
+<a name='L428'></a><a href='#L428'>428</a>
+<a name='L429'></a><a href='#L429'>429</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -547,17 +551,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -902,12 +910,11 @@
      &gt;
      &lt;!-- mousemove нужно сделать по докменту, что бы перетаскивание на сбрабывалось при выходе из области элемента --&gt;
       &lt;div class="desk-btns__cont"
-      @mousedown="mDownOnTableList"
-      @mousemove="mMoveOnTableList"
-      @mouseout="stopScroll"
-      @mouseup="stopScroll"
-&nbsp;
-&gt;
+        @mousedown="mDownOnTableList"
+        @mousemove="mMoveOnTableList"
+        @mouseout="stopScroll"
+        @mouseup="stopScroll"
+        &gt;
                         
               &lt;!-- удаление активного РС --&gt;
               &lt;!-- &lt;button
@@ -919,23 +926,28 @@
               v-on:click="altDragTableList"&gt;BRO
               &lt;/button&gt; --&gt;
 &nbsp;
-               
-              &lt;!-- кнопка привязанная к РС --&gt;
-              &lt;TableListOne
-              v-for="(table, index) in showAllTasks"
-              :key="index"
-              :index = 'index'
-              :table = 'table'
+              &lt;transition-group
+                name="tablesList"
+                mode="in-out"
+                &gt; 
+                  &lt;!-- кнопка привязанная к РС --&gt;
+                  &lt;TableListOne
+                  v-for="(table, index) in showAllTasks"
+                  :key="index"
+                  :index = 'index'
+                  :table = 'table'
 &nbsp;
-              :ifLasBtn = 'LastBtn'
-              &gt; &lt;/TableListOne&gt;
-                
-              &lt;!--  добавление РС--&gt;
-              &lt;div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
-                v-on:click="AddTableBtn"
-                v-bind:style="{ 'background' : addBtnBg }"
-                v-bind:class = "{'desk-btns__apply': plusActive}"
-              &gt;&lt;/div&gt;
+                  :ifLasBtn = 'LastBtn'
+                  &gt; &lt;/TableListOne&gt;
+              &lt;/transition-group&gt;
+  
+                  &lt;!--  добавление РС--&gt;
+                  &lt;div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
+                    v-on:click="AddTableBtn"
+                    v-bind:style="{ 'background' : addBtnBg }"
+                  &gt;&lt;/div&gt;
+                    &lt;!-- v-bind:class = "{'desk-btns__apply': plusActive}" --&gt;
+&nbsp;
                             &lt;!-- v-bind:style="{ 'background': lastTableColor() }" --&gt;
 &nbsp;
               
@@ -971,17 +983,17 @@
 &nbsp;
 &nbsp;
 &lt;script&gt;
-import Vue from "vue";
+<span class="cstat-no" title="statement not covered" >import Vue from "vue";</span>
 &nbsp;
 //скролл
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+<span class="cstat-no" title="statement not covered" >import VuePerfectScrollbar from 'vue-perfect-scrollbar'</span>
 &nbsp;
 &nbsp;
 //vuex
-import { store } from "../../store";
+<span class="cstat-no" title="statement not covered" >import { store } from "../../store";</span>
 &nbsp;
-import TableListOne from "./TableListOneBtn.vue";
-import { functions } from "firebase";
+<span class="cstat-no" title="statement not covered" >import TableListOne from "./TableListOneBtn.vue";</span>
+<span class="cstat-no" title="statement not covered" >import { functions } from "firebase";</span>
 // import * as firebase from "firebase";
 &nbsp;
 export default Vue.extend({
@@ -1112,7 +1124,7 @@ export default Vue.extend({
 <span class="cstat-no" title="statement not covered" >      if (this.tables.length === index + 1 &amp;&amp; !this.plusActive) {</span>
 <span class="cstat-no" title="statement not covered" >        LastBtn = true;</span>
       } else {
-<span class="cstat-no" title="statement not covered" >        LastBtn = false;</span>
+<span class="cstat-no" title="statement not covered" >        LastBtn = true;</span>
       }
     },
  
@@ -1148,7 +1160,7 @@ export default Vue.extend({
            this.showAllTasks[this.showAllTasks.length - 1].colorTwo +
            ')');
       } else {
-<span class="cstat-no" title="statement not covered" >        return 'linear-gradient( to bottom, gray, gray)'</span>
+<span class="cstat-no" title="statement not covered" >        return 'linear-gradient( to bottom, #86c0dc, #bb7272)'</span>
       }
   }
 },
@@ -1324,7 +1336,7 @@ export default Vue.extend({
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 14:25:10 GMT+0300 (RTZ 2 (зима))
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 21:58:20 GMT+0300 (RTZ 2 (зима))
 </div>
 </div>
 <script src="..\..\..\..\prettify.js"></script>

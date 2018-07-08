@@ -25,8 +25,9 @@
 
       </div>
               <!-- v-bind:style="{ 'background': lastTableColor() }" -->
-      <div class="btn-filter btn-bg-white ml-2" v-html="filterIcon">
-      </div>
+      <!-- Кнопка фильтра -->
+      <!-- <div class="btn-filter btn-bg-white ml-2" v-html="filterIcon">
+      </div> -->
 </div>
 
         <!-- <input class="t-header__search" placeholder="Search"> -->
@@ -63,7 +64,7 @@
         <!-- <div class="t-header__logout">
             EXIT
         </div> -->
-     <div class="desk-btns__group-2">
+     <div class="desk-btns__group-2 mr-2">
           
           <div to="/login"
            @click="logOut()" 
@@ -74,16 +75,15 @@
 
           <!-- <div class="t-header__star"><img src="/img/icons/star.svg" alt=""></div> -->
           
-          <div class="t-header__menu btn-bg-white mx-2"
+          <!-- <div class="t-header__menu btn-bg-white mx-2"
             @click="ActivateDots"
             >
             <img src="../../../img/icons/more-dots.svg">
-              <!-- <img src="/img/icons/more-dots.svg" alt=""> -->
                  
                   <ThreeDotsMenu
                   :class="{ 'header-menu_hidden': !ThreeDotsActive }">
                   </ThreeDotsMenu>
-          </div>
+          </div> -->
 
        </div>
     </div>
@@ -311,7 +311,7 @@ export default {
 
 $h-icons-col: rgb(82, 82, 82);
 
-$h-icons-bg-col: rgba(255, 255, 255, 0.65);
+$h-icons-bg-col: rgba(255, 255, 255, 0.45);
 
 $h-small-icons-col: rgb(56, 56, 56);
 //-----------------//
@@ -379,11 +379,13 @@ $h-small-icons-col: rgb(56, 56, 56);
     position: relative;
     // left: 50%;
     // transform: translateX(-50%);
-    width: calc(100% - 90px);
+    // width: calc(100vw - 120px);
+    overflow: hidden;
     text-align: center;
+
     // margin: 0 100px;
     text-align: center;
-    margin: 0 20px;
+    margin: 0 10px;
     height: 100%;
 
     &-abs {
@@ -524,7 +526,7 @@ $h-small-icons-col: rgb(56, 56, 56);
     left: 0;
     padding: 0 5px;
     font-family: "Roboto", sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
     height: 0;
     opacity: 0;
@@ -534,6 +536,7 @@ $h-small-icons-col: rgb(56, 56, 56);
     border-radius: 6px;
     transition: all 0.2s;
     overflow: hidden;
+    text-overflow: ellipsis;
     position: absolute;
     top: 0;
     left: 0;
@@ -547,7 +550,7 @@ $h-small-icons-col: rgb(56, 56, 56);
     border: none;
     background: transparent;
     font-family: "Roboto", sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     max-width: 100%;
     box-sizing: border-box;
   }
@@ -609,7 +612,7 @@ $h-small-icons-col: rgb(56, 56, 56);
   width: 30px;
   height: 30px;
   background: $h-icons-bg-col;
-  border-radius: 7px;
+  border-radius: 4px;
   display: flex;
 }
 

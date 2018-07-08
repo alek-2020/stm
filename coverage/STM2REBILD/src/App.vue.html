@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">39.13% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/23</span>
+        <span class='fraction'>0/23</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>0/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">39.13% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>9/23</span>
+        <span class='fraction'>0/23</span>
       </div>
     </div>
     <p class="quiet">
@@ -240,7 +240,13 @@
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
 <a name='L194'></a><a href='#L194'>194</a>
-<a name='L195'></a><a href='#L195'>195</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -294,17 +300,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -347,6 +353,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -488,17 +500,17 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-import tableList from "./components/TableList/TableList.vue";
-import SignUp from "./components/UserPage/SignUp.vue";
-import SignIn from "./components/UserPage/SignIn.vue";
-import TestFirebase from "./components/ServerData/TestFirebase.vue";
-import stmHeader from "./components/Header/Header.vue";
-import SignOut from "./components/UserPage/LogOut.vue";
-import TableContent from "./components/Table/Table.vue";
+<span class="cstat-no" title="statement not covered" >import tableList from "./components/TableList/TableList.vue";</span>
+<span class="cstat-no" title="statement not covered" >import SignUp from "./components/UserPage/SignUp.vue";</span>
+<span class="cstat-no" title="statement not covered" >import SignIn from "./components/UserPage/SignIn.vue";</span>
+<span class="cstat-no" title="statement not covered" >import TestFirebase from "./components/ServerData/TestFirebase.vue";</span>
+<span class="cstat-no" title="statement not covered" >import stmHeader from "./components/Header/Header.vue";</span>
+<span class="cstat-no" title="statement not covered" >import SignOut from "./components/UserPage/LogOut.vue";</span>
+<span class="cstat-no" title="statement not covered" >import TableContent from "./components/Table/Table.vue";</span>
 &nbsp;
-import * as firebase from "firebase";
+<span class="cstat-no" title="statement not covered" >import * as firebase from "firebase";</span>
 &nbsp;
-import { mapGetters } from "vuex";
+<span class="cstat-no" title="statement not covered" >import { mapGetters } from "vuex";</span>
 &nbsp;
 export default {
   name: "app",
@@ -608,8 +620,14 @@ a {
   z-index: -1;
 }
 &nbsp;
+// @media all and (max-width: 480px) {
+//   .t-header__profile,
+//   .btn-filter {
+//     display: none !important;
+//   }
+// }
+&nbsp;
 @media all and (max-width: 480px) {
-  .t-header__profile,
   .btn-filter {
     display: none !important;
   }
@@ -634,7 +652,7 @@ a {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 14:25:10 GMT+0300 (RTZ 2 (зима))
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 21:58:20 GMT+0300 (RTZ 2 (зима))
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

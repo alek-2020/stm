@@ -6,12 +6,11 @@
      >
      <!-- mousemove нужно сделать по докменту, что бы перетаскивание на сбрабывалось при выходе из области элемента -->
       <div class="desk-btns__cont"
-      @mousedown="mDownOnTableList"
-      @mousemove="mMoveOnTableList"
-      @mouseout="stopScroll"
-      @mouseup="stopScroll"
-
->
+        @mousedown="mDownOnTableList"
+        @mousemove="mMoveOnTableList"
+        @mouseout="stopScroll"
+        @mouseup="stopScroll"
+        >
                         
               <!-- удаление активного РС -->
               <!-- <button
@@ -23,23 +22,28 @@
               v-on:click="altDragTableList">BRO
               </button> -->
 
-               
-              <!-- кнопка привязанная к РС -->
-              <TableListOne
-              v-for="(table, index) in showAllTasks"
-              :key="index"
-              :index = 'index'
-              :table = 'table'
+              <transition-group
+                name="tablesList"
+                mode="in-out"
+                > 
+                  <!-- кнопка привязанная к РС -->
+                  <TableListOne
+                  v-for="(table, index) in showAllTasks"
+                  :key="index"
+                  :index = 'index'
+                  :table = 'table'
 
-              :ifLasBtn = 'LastBtn'
-              > </TableListOne>
-                
-              <!--  добавление РС-->
-              <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
-                v-on:click="AddTableBtn"
-                v-bind:style="{ 'background' : addBtnBg }"
-                v-bind:class = "{'desk-btns__apply': plusActive}"
-              ></div>
+                  :ifLasBtn = 'LastBtn'
+                  > </TableListOne>
+              </transition-group>
+  
+                  <!--  добавление РС-->
+                  <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
+                    v-on:click="AddTableBtn"
+                    v-bind:style="{ 'background' : addBtnBg }"
+                  ></div>
+                    <!-- v-bind:class = "{'desk-btns__apply': plusActive}" -->
+
                             <!-- v-bind:style="{ 'background': lastTableColor() }" -->
 
               
@@ -216,7 +220,7 @@ export default Vue.extend({
       if (this.tables.length === index + 1 && !this.plusActive) {
         LastBtn = true;
       } else {
-        LastBtn = false;
+        LastBtn = true;
       }
     },
  
@@ -252,7 +256,7 @@ export default Vue.extend({
            this.showAllTasks[this.showAllTasks.length - 1].colorTwo +
            ')');
       } else {
-        return 'linear-gradient( to bottom, gray, gray)'
+        return 'linear-gradient( to bottom, #86c0dc, #bb7272)'
       }
   }
 },

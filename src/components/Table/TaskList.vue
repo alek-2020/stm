@@ -20,7 +20,6 @@
                     ref="inputsContainer">
                       
                     <transition-group
-                      mode="out-in"
                       name="tasks"
                       class="tasks-list__transition-box"
                       v-on:after-leave="afterLeave">
@@ -109,10 +108,11 @@ export default {
        console.log('Пересчет высоты при завершении анимации');
     },
     changeHeightOfList() {
-       
-      this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
-      console.log('Пересчет высоты', this.taskBoxHeight);
-    },
+       if(this.$refs.inputsContainer != null) {
+          this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
+          console.log('Пересчет высоты', this.taskBoxHeight);
+       }
+   },
     showDoneTasks() {
        this.onlyDoneTasks = !this.onlyDoneTasks;
       //  this.changeHeightOfList();
