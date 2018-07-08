@@ -18,6 +18,7 @@ export default {
     },
 
 
-    currentBgImg: state => state.currentBgImg
+    currentBgImg: state => state.currentBgImg,
+    authorised: state => state.authorised,
 
 }

@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">37.5% </span>
+        <span class="strong">39.13% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>9/24</span>
+        <span class='fraction'>9/23</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/5</span>
+        <span class='fraction'>0/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">37.5% </span>
+        <span class="strong">39.13% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>9/24</span>
+        <span class='fraction'>9/23</span>
       </div>
     </div>
     <p class="quiet">
@@ -233,7 +233,29 @@
 <a name='L185'></a><a href='#L185'>185</a>
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,8 +303,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -301,12 +321,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -424,24 +438,39 @@
   &lt;div id="app"&gt;
     &lt;meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no"&gt;
     
-    
-    &lt;div
-      :style="{ 'background': 'url(' + currentBgImg + ')'}"
-      class="bg" 
-    &gt;
-    &lt;/div&gt;
+    &lt;!-- Фон --&gt;
+    &lt;transition
+    name="fade"
+    mode="out-in"&gt;
+      &lt;div
+        :style="{ 'background': 'url(' + currentBgImg + ')'}"
+        class="bg" 
+      &gt;&lt;/div&gt;
+    &lt;/transition&gt;
 &nbsp;
-    &lt;stmHeader v-if="authorised"&gt;&lt;/stmHeader&gt;
-    &lt;tableList v-if="authorised"&gt;&lt;/tableList&gt;
-    &lt;!-- &lt;TestFirebase&gt;&lt;/TestFirebase&gt;   --&gt;
-    &lt;!-- &lt;SignIn&gt;&lt;/SignIn&gt; --&gt;
-    &lt;!-- &lt;SignOut&gt;&lt;/SignOut&gt; --&gt;
-    &lt;!-- &lt;router-view&gt;&lt;/router-view&gt; --&gt;
-    &lt;router-view name="LogReg"&gt;&lt;/router-view&gt;
     &lt;transition
       name="fade"
       mode="out-in"&gt;
-    &lt;router-view name="TableContent"  v-if="authorised"&gt;&lt;/router-view&gt;
+       &lt;stmHeader v-if="authorised"&gt;&lt;/stmHeader&gt;
+    &lt;/transition&gt;
+&nbsp;
+    &lt;transition
+      name="fade"
+      mode="out-in"&gt;
+        &lt;tableList v-if="authorised"&gt;&lt;/tableList&gt;
+    &lt;/transition&gt;
+&nbsp;
+    &lt;!-- Авторизация --&gt;
+    &lt;transition
+    name="fade"
+    mode="out-in"&gt;
+      &lt;router-view name="LogReg"&gt;&lt;/router-view&gt;
+    &lt;/transition&gt;
+&nbsp;
+    &lt;transition
+      name="fade"
+      mode="out-in"&gt;
+       &lt;router-view name="TableContent"  v-if="authorised"&gt;&lt;/router-view&gt;
     &lt;/transition&gt; 
 &nbsp;
    &lt;!-- &lt;TableContent&gt;&lt;/TableContent&gt;  --&gt;
@@ -469,8 +498,6 @@ import TableContent from "./components/Table/Table.vue";
 &nbsp;
 import * as firebase from "firebase";
 &nbsp;
-// import test from "./OtherSrc/svg";
-&nbsp;
 import { mapGetters } from "vuex";
 &nbsp;
 export default {
@@ -490,19 +517,13 @@ export default {
 &nbsp;
   computed: {
     ...mapGetters({
-      currentBgImg: "currentBgImg"
+      currentBgImg: "currentBgImg",
+      authorised: "authorised"
     }),
-<span class="fstat-no" title="function not covered" >    authorised() {</span>
-<span class="cstat-no" title="statement not covered" >      return this.$store.state.authorised;</span>
-    }
-    // getAllTasks() {
-    //   // this.$store.dispatch('altGetUserFB')
-    //  }
+&nbsp;
   },
   methods: {},
 <span class="fstat-no" title="function not covered" >  created() {</span>
-    //  this.getAllTasks
-    //  this.$store.dispatch('testbro');
 <span class="cstat-no" title="statement not covered" >    const t = this;</span>
     //Проверяем юзера на наличие авторизации
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    firebase.auth().onAuthStateChanged(function(user) {</span></span>
@@ -613,7 +634,7 @@ a {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 11:43:52 GMT+0300 (RTZ 2 (зима))
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 08 2018 14:25:10 GMT+0300 (RTZ 2 (зима))
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

@@ -2,24 +2,39 @@
   <div id="app">
     <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
     
-    
-    <div
-      :style="{ 'background': 'url(' + currentBgImg + ')'}"
-      class="bg" 
-    >
-    </div>
+    <!-- Фон -->
+    <transition
+    name="fade"
+    mode="out-in">
+      <div
+        :style="{ 'background': 'url(' + currentBgImg + ')'}"
+        class="bg" 
+      ></div>
+    </transition>
 
-    <stmHeader v-if="authorised"></stmHeader>
-    <tableList v-if="authorised"></tableList>
-    <!-- <TestFirebase></TestFirebase>   -->
-    <!-- <SignIn></SignIn> -->
-    <!-- <SignOut></SignOut> -->
-    <!-- <router-view></router-view> -->
-    <router-view name="LogReg"></router-view>
     <transition
       name="fade"
       mode="out-in">
-    <router-view name="TableContent"  v-if="authorised"></router-view>
+       <stmHeader v-if="authorised"></stmHeader>
+    </transition>
+
+    <transition
+      name="fade"
+      mode="out-in">
+        <tableList v-if="authorised"></tableList>
+    </transition>
+
+    <!-- Авторизация -->
+    <transition
+    name="fade"
+    mode="out-in">
+      <router-view name="LogReg"></router-view>
+    </transition>
+
+    <transition
+      name="fade"
+      mode="out-in">
+       <router-view name="TableContent"  v-if="authorised"></router-view>
     </transition> 
 
    <!-- <TableContent></TableContent>  -->
@@ -47,8 +62,6 @@ import TableContent from "./components/Table/Table.vue";
 
 import * as firebase from "firebase";
 
-// import test from "./OtherSrc/svg";
-
 import { mapGetters } from "vuex";
 
 export default {
@@ -68,19 +81,13 @@ export default {
 
   computed: {
     ...mapGetters({
-      currentBgImg: "currentBgImg"
+      currentBgImg: "currentBgImg",
+      authorised: "authorised"
     }),
-    authorised() {
-      return this.$store.state.authorised;
-    }
-    // getAllTasks() {
-    //   // this.$store.dispatch('altGetUserFB')
-    //  }
+
   },
   methods: {},
   created() {
-    //  this.getAllTasks
-    //  this.$store.dispatch('testbro');
     const t = this;
     //Проверяем юзера на наличие авторизации
     firebase.auth().onAuthStateChanged(function(user) {
