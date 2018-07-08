@@ -1,8 +1,8 @@
 .DS_Store
 node_modules/
-dist/
-public/
-coverage/
+/dist/
+/public/
+/coverage/
 npm-debug.log
 yarn-error.log
 
