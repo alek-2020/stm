@@ -1,4 +1,10 @@
-# stm
+# Simple Task Manager builded on Vue.js
+
+I working on it now and it's not ready.
+
+##You can look at builded version there:
+##https://stm-14898.firebaseapp.com
+
 
 > A Vue.js project
 
