@@ -149,10 +149,8 @@ export default {
   methods: {
 
     deactivateSettings() {
-      if(this.$store.state.tableSettingsActive) {
         this.$store.state.tableSettingsActive = false;
-        console.log('Table settings. Click outside');
-       }
+        this.$store.state.addMenuActive = false;
     }, 
 
     testtest() {

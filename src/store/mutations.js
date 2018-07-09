@@ -15,8 +15,8 @@ export default {
     },
 
     scrollButtonsToEnd() {
-        const container = document.querySelector(".ps-container");
-        const bigDiv = document.querySelector(".desk-btns__cont");
+        let container = document.querySelector(".desk-btns__rel-cont");
+        let bigDiv = document.querySelector(".desk-btns__cont");
         console.log(
           "скролл",
           container.scrollLeft,
@@ -26,7 +26,16 @@ export default {
         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
       },
 
-     
+    //   let container = document.querySelector(".desk-btns__rel-cont");
+    //   let bigDiv = document.querySelector(".desk-btns__cont");
+    //   console.log(
+    //     "скролл",
+    //     container.scrollLeft,
+    //     bigDiv.clientWidth,
+    //     container.offsetWidth
+    //   );
+    //         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
+
       
   
 }

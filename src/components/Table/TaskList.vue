@@ -13,8 +13,9 @@
               @focusout='changeListTitle(TList.name)'
               @keyup.enter='changeListTitle(TList.name)'>
 
+                <!-- v-once :settings="settings" -->
+
               <VuePerfectScrollbar class="task-list__scroll-box"
-                v-once :settings="scrollSettings"
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
                     ref="inputsContainer">
@@ -44,7 +45,7 @@
                         :tableInd = 'activeTableIndex'
                         :taskInd = 'taskListIndex'>
                       </OneDoneTask>
-                      
+
                     </transition-group>
 
                   </div>
@@ -100,7 +101,7 @@ export default {
       maxBoxHeight: 0,
       onlyDoneTasks: false,
       scrollSettings: {
-        suppressScrollY: true
+        suppressScrollY: false
       }
     };
   },
@@ -447,12 +448,12 @@ export default {
   transition: all 1s;
 }
 
-.tasks-enter-active,
-.tasks-leave-active {
-  // opacity: 0;
-  // transform: translateX(-130%);
-  // transition: all .5s;
-}
+// .tasks-enter-active,
+// .tasks-leave-active {
+//   // opacity: 0;
+//   // transform: translateX(-130%);
+//   // transition: all .5s;
+// }
 
 .tasks-leave-active {
   position: absolute;

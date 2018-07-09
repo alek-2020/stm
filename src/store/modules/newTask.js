@@ -107,11 +107,17 @@ export default {
                         newTask.id = Key;
                         mas.push(newTask);
 
+                        dispatch('showGoodNews', 'Задача добавлена');
+                        dispstch('scrollListDown', taskListId);
                         // console.log('Привязали задачу к списку', data);
+                       
                         resolve('newTask. Задача добавлена. Это успех!');
+                    
                     })
                     .catch(error => {
                         console.log('newTask. Полный провал. Ошибка: ', error);
+                        dispatch('showBadNews', 'Ошибка добаления задачи');
+
                     })
 
             })

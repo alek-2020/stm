@@ -20,6 +20,7 @@
            @click="HeaderAdd();"
           >Новый стол</div>
           <div class="btn btn btn_hover_gray text"
+          @click="addList()"
           > Список задач</div>
         </div>
 
@@ -104,7 +105,7 @@ import * as firebase from 'firebase'
 export default {
   data() {
     return {
-      hPlusActive: false,
+      // hPlusActive: false,
       activeTableName: 'Название стола',
       logoSVG:
         '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
@@ -146,6 +147,10 @@ export default {
     };
   },
   methods: {
+    //Новый список
+    addList() {
+      this.$store.dispatch('addTaskList');
+    },
     //Выход
     logOut() {
       firebase.auth().signOut()
@@ -175,8 +180,6 @@ export default {
          console.log('Срабатывает mouseout');
          this.$store.state.tableSettingsVisible = false;
         //  this.$store.state.tableSettingsActive = false;
-
-
     },
 
      changeTableTitle(NewName) {
@@ -187,21 +190,15 @@ export default {
     //Скроллим наш список столов в конец для добавления нового
     //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
     HeaderAdd() {
-      const container = document.querySelector(".ps-container");
-      const bigDiv = document.querySelector(".desk-btns__cont");
-      console.log(
-        "скролл",
-        container.scrollLeft,
-        bigDiv.clientWidth,
-        container.offsetWidth
-      );
-      container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
-    },
+    
+      this.$store.dispatch('addNewTable');
+   },
 
     //добавление рс
     AddTableBtn: function() {
-      // this.$store.state.plusActive = !this.$store.state.plusActive;
-      this.hPlusActive = !this.hPlusActive;
+    // this.$store.state.plusActive = !this.$store.state.plusActive;
+    //  this.HeaderAdd();
+     this.$store.state.addMenuActive = !this.hPlusActive;
     },
 
     //     lastTableColor() {
@@ -223,6 +220,9 @@ export default {
     }
   },
   computed: {
+    hPlusActive() {
+      return this.$store.state.addMenuActive;
+    },
     //Получим svg
     filterIcon() {
       return svgHeader.filter;
@@ -499,9 +499,10 @@ $h-small-icons-col: rgb(56, 56, 56);
     top: 0;
     left: 0;
     margin-top: 35px;
+    opacity: .95;
     // background: $h-icons-bg-col;
     background: #efefef;
-    border-radius: 7px;
+    border-radius: 4px;
     font-family: Roboto, sans-serif;
     z-index: 100;
     line-height: 1.8;

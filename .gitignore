@@ -3,6 +3,7 @@ node_modules/
 /dist/
 /public/
 /coverage/
+.vscode/
 npm-debug.log
 yarn-error.log
 

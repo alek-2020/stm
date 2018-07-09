@@ -62,12 +62,15 @@ export default {
         checkTableInput({ dispatch, commit, state, rootState }) {
             return new Promise((resolve, reject) => {
 
-                if (rootState.plusActive) {
-                    resolve('newTable. Плюс активен');
-                }
+                // if (rootState.plusActive) {
+                //     resolve('newTable. Плюс активен');
+                // }
 
-                rootState.plusActive = !rootState.plusActive;
-                reject('newTable. Плюс не активен');
+                // rootState.plusActive = !rootState.plusActive;
+                // reject('newTable. Плюс не активен');
+
+                resolve('newTable. Плюс активен');
+
             })
         },
 

@@ -17,6 +17,8 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state() {
         return {
+            //меню добавить
+            addMenuActive: false,
             //Авторизован
             authorised: false,
             //Активно ли поле ввода имени стола
