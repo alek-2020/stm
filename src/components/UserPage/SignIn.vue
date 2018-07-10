@@ -17,10 +17,12 @@
                 </span>
                 <span class="log__or">
                     или <router-link to="/registration/"
-                         @keypress="wipeErrors">Регистрация</router-link>
+                         @keypress="wipeErrors(); stopSpinner();"
+                         >Регистрация</router-link>
                 </span>  
             </div>
-      <form class="log__form" action="" @submit.prevent="onSignIn">
+      <form class="log__form" action="" 
+       @submit.prevent="onSignIn(); runSpinner();">
         <input 
         name="email"
         label="Mail"
@@ -45,7 +47,11 @@
 
 
         <button type="submit">
-            Вход
+            <span
+             v-if="!spinnerActive">Вход</span>
+            <img
+             v-else
+             height="30px" src='../../../img/spinners/load-spinner-white.svg'>
         </button>
 
       <RegAuthError>
@@ -63,6 +69,7 @@ import RegAuthError from "./RegAuthError.vue";
 export default {
   data() {
     return {
+      spinnerActive: false,
       email: "",
       password: "",
       id: "",
@@ -71,6 +78,14 @@ export default {
     };
   },
   methods: {
+    //включаем спиннер
+    runSpinner() {
+      this.spinnerActive = true;
+    },
+
+    stopSpinner() {
+      this.spinnerActive = false;
+    },
     //Убираем ошибку
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
@@ -105,8 +120,10 @@ export default {
         })
         .catch(error => {
           this.$store.state.authErrorMessage = error.message;
-          console.log("Это провал. Ошибка: ", error);
-        });
+          this.stopSpinner();
+         console.log("Это провал. Ошибка: ", error);
+       
+       });
     },
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");

@@ -16,11 +16,14 @@
                     Регистрация
                 </span>
                 <span class="log__or">
-                    or <router-link to="/login/">Login</router-link>
+                    or <router-link to="/login/"
+                        @keypress="wipeErrors(); stopSpinner();
+                        ">Login</router-link>
                 </span>  
             </div>
 
-      <form class="log__form" action="" @submit.prevent="onSignup">
+      <form class="log__form" action="" 
+      @submit.prevent="onSignup(); runSpinner();">
 
         <input 
         name="email"
@@ -46,7 +49,11 @@
 
 
         <button type="submit">
-            Registation
+           <span
+             v-if="!spinnerActive">Регистрация</span>
+            <img
+             v-else
+             height="30px" src='../../../img/spinners/load-spinner-white.svg'>
         </button>
 
       <RegAuthError>
@@ -65,6 +72,7 @@ import RegAuthError from "./RegAuthError.vue";
 export default {
   data() {
     return {
+      spinnerActive: false,
       email: "",
       password: "",
       confirmPassword: "",
@@ -72,6 +80,14 @@ export default {
     };
   },
   methods: {
+     //включаем спиннер
+    runSpinner() {
+      this.spinnerActive = true;
+    },
+
+    stopSpinner() {
+      this.spinnerActive = false;
+    },
     //Убираем ошибку
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
@@ -97,7 +113,9 @@ export default {
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
             this.$store.state.authErrorMessage = error.message;
-          });
+            this.stopSpinner();
+
+         });
     },
 
     goBack() {
