@@ -1,4 +1,4 @@
-# Simple Task Manager builded on Vue.js
+# Simple Task Manager on Vue.js
 
 I working on it now and it's not ready.
 
