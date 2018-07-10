@@ -113,8 +113,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "scss/bootsParts/custom/stm-bootsParts";
-@import "scss/normalize";
+@import 'scss/main.scss';
 
 *,
 *:after,

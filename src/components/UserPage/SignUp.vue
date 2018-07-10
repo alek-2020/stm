@@ -2,7 +2,7 @@
 
   <div class="log__bg"
  > 
-
+    <transition>
       <div class="log__form-block">
 
             <div class="log__cancel"
@@ -30,7 +30,8 @@
         type="email"
         required
         class="inp__mail"
-        placeholder="Enter your mail">
+        placeholder="Enter your mail"
+        @keypress="wipeErrors">
 
 
         <input 
@@ -40,70 +41,81 @@
         id="password"
         type="password"
         class="inp__pass"
-        placeholder="Your password">
+        placeholder="Your password"
+        @keypress="wipeErrors">
 
 
         <button type="submit">
             Registation
         </button>
 
+      <RegAuthError>
+      </RegAuthError>
+  
       </form>
       </div>
+    </transition>
   </div>
 </template>
 
 <script>
-import * as firebase from 'firebase'
-
+import * as firebase from "firebase";
+import RegAuthError from "./RegAuthError.vue";
 
 export default {
   data() {
-      return {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      id: ''
-   }
+    return {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      id: ""
+    };
   },
   methods: {
-      onSignup () {
-        // vuex
+    //Убираем ошибку
+    wipeErrors() {
+      this.$store.state.authErrorMessage = "";
+    },
+    onSignup() {
+      // vuex
 
-        console.log({email: this.email, ConfirmPassword: this.confirmPassword}),
+      console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
         //Создаем юзера в файрбазе
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then( user => {
-              console.log('Это успех. id юзера ', this.id);
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(user => {
+            console.log("Это успех. id юзера ", this.id);
 
-              this.$store.state.userId = user.uid;
-              console.log("Получили id ", user.uid);
+            this.$store.state.userId = user.uid;
+            console.log("Получили id ", user.uid);
 
-              //Раз все ок грузим данные и переходим в столы
-              this.$store.dispatch("startGetTasks");
-              this.$router.push("/table/");
-            })
-        .catch(
-            error => {
-             console.log('Полный провал. Ошибка: ', error)
-            }
-        )
-     },
+            //Раз все ок грузим данные и переходим в столы
+            this.$store.dispatch("startGetTasks");
+            this.$router.push("/table/");
+          })
+          .catch(error => {
+            console.log("Полный провал. Ошибка: ", error);
+            this.$store.state.authErrorMessage = error.message;
+          });
+    },
 
-     goBack () {
-      window.history.length > 1
-        ? this.$router.go(-1)
-        : this.$router.push('/')
-     }
+    goBack() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+    }
   },
   computed: {
-      comparePasswords () {
-        return this.password !== this.confirmPassword  
-      },
+    comparePasswords() {
+      return this.password !== this.confirmPassword;
+    },
     authorised() {
       return this.$store.state.authorised;
     }
+  },
+  components: {
+    RegAuthError
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -122,7 +134,9 @@ export default {
   &__form-block {
     background: #fff;
     width: 450px;
-    height: 300px;
+    max-width: 95%;
+    min-width: 300px;
+    height: auto;
     display: flex;
     margin: auto;
     border-radius: 3px;
@@ -132,8 +146,9 @@ export default {
     padding: 15px;
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
-    color:#3c3c3c;
+    color: #3c3c3c;
     position: relative;
+    transition: height 2s;
   }
 
   &__form {
@@ -172,21 +187,21 @@ export default {
   }
 
   &__cancel {
-      height: 15px;
-      width: 15px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
+    height: 15px;
+    width: 15px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 
-      & svg {
-          height: 100%;
-          width: 100%;
-          fill: #808080;
-      }
+    & svg {
+      height: 100%;
+      width: 100%;
+      fill: #808080;
+    }
 
-      &:hover svg {
-          fill: #a1a1a1;
-      }
+    &:hover svg {
+      fill: #a1a1a1;
+    }
   }
 }
 
@@ -205,7 +220,7 @@ export default {
   &:hover {
     border: solid 1px gray;
   }
-  
+
   &:focus {
     border: solid 1px gray;
   }

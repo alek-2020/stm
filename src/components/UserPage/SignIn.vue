@@ -16,7 +16,8 @@
                     Авторизация
                 </span>
                 <span class="log__or">
-                    или <router-link to="/registration/">Регистрация</router-link>
+                    или <router-link to="/registration/"
+                         @keypress="wipeErrors">Регистрация</router-link>
                 </span>  
             </div>
       <form class="log__form" action="" @submit.prevent="onSignIn">
@@ -28,7 +29,8 @@
         type="email"
         required
         class="inp__mail"
-        placeholder="Enter your mail">
+        placeholder="Enter your mail"
+        @keypress="wipeErrors">
 
 
         <input 
@@ -38,12 +40,16 @@
         id="password"
         type="password"
         class="inp__pass"
-        placeholder="Your password">
+        placeholder="Your password"
+        @keypress="wipeErrors">
 
 
         <button type="submit">
             Вход
         </button>
+
+      <RegAuthError>
+      </RegAuthError>
 
       </form>
       </div>
@@ -52,6 +58,7 @@
 
 <script>
 import * as firebase from "firebase";
+import RegAuthError from "./RegAuthError.vue";
 
 export default {
   data() {
@@ -64,38 +71,42 @@ export default {
     };
   },
   methods: {
+    //Убираем ошибку
+    wipeErrors() {
+      this.$store.state.authErrorMessage = "";
+    },
     onSignIn() {
       // vuex
 
       console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
-        const t = this;
-        //Перед авторизацией делаем сессию бесконечной
-        firebase
-          .auth()
-          .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-          .then(function() {
-            return firebase
-              .auth()
-              .signInWithEmailAndPassword(t.email, t.password);
-          })
-          .then(user => {
-            const newUser = {
-              id: user.user.uid
-              //this.registerelM
-            };
-            console.log("Авторизовались, все ОК", newUser.id);
-            this.$store.state.userId = newUser.id;
-            console.log("Получили UserData по Id ");
+      const t = this;
+      //Перед авторизацией делаем сессию бесконечной
+      firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(function() {
+          return firebase
+            .auth()
+            .signInWithEmailAndPassword(t.email, t.password);
+        })
+        .then(user => {
+          const newUser = {
+            id: user.user.uid
+            //this.registerelM
+          };
+          console.log("Авторизовались, все ОК", newUser.id);
+          this.$store.state.userId = newUser.id;
+          console.log("Получили UserData по Id ");
 
-            //Раз все ок грузим данные и переходим в столы
-            this.$store.dispatch("startGetTasks");
-            this.$router.push("/table/");
-            // console.log('Авторизашка после авторизашки', firebase);
-
-          })
-          .catch(error => {
-            console.log("Это провал. Ошибка: ", error);
-          });
+          //Раз все ок грузим данные и переходим в столы
+          this.$store.dispatch("startGetTasks");
+          this.$router.push("/table/");
+          // console.log('Авторизашка после авторизашки', firebase);
+        })
+        .catch(error => {
+          this.$store.state.authErrorMessage = error.message;
+          console.log("Это провал. Ошибка: ", error);
+        });
     },
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
@@ -111,6 +122,9 @@ export default {
     authorised() {
       return this.$store.state.authorised;
     }
+  },
+  components: {
+    RegAuthError
   }
 };
 </script>
@@ -131,7 +145,9 @@ export default {
   &__form-block {
     background: #fff;
     width: 450px;
-    height: 300px;
+    max-width: 95%;
+    min-width: 300px;
+    height: auto;
     display: flex;
     margin: auto;
     border-radius: 3px;
@@ -143,6 +159,7 @@ export default {
     font-family: "Open Sans", sans-serif;
     color: #3c3c3c;
     position: relative;
+    transition: height 2s;
   }
 
   &__form {
@@ -196,10 +213,6 @@ export default {
     &:hover svg {
       fill: #a1a1a1;
     }
-  }
-
-  &__or {
-    margin-top: 6px;
   }
 }
 

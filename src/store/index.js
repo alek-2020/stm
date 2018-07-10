@@ -17,6 +17,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state() {
         return {
+            authErrorMessage: '',
             //меню добавить
             addMenuActive: false,
             //Авторизован
