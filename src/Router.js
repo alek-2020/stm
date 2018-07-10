@@ -27,8 +27,13 @@ const routes = [
     {
       TableContent: Table
     }
-  }
+  },
 
+  // { path: '/table/', components: 
+  //   {
+  //     TableContent: Table
+  //   }
+  // }
 
 
 

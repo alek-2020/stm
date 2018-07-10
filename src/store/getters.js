@@ -1,10 +1,14 @@
 export default {
+
     visibleTables(state) {
         return state.tasks.filter(task => {
             return task.visible
         })
     },
   
+    GetAllTasks(state) {
+        return state.allTasks;
+    },
 
     activeTableName(state) {
            //и запишем название нашего стола для хедера

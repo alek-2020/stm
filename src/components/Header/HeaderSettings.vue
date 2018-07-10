@@ -37,7 +37,7 @@ export default {
     changeBg(index) {
       console.log("Работает");
       this.$store.state.currentBgImg = this.imgForBg[index];
-      console.log("ВАСЯ!!!!!!!", this.$store.state.currentBgImg);
+      // console.log("ВАСЯ!!!!!!!", this.$store.state.currentBgImg);
     },
     saveBg() {
       this.$store.dispatch("saveBg");

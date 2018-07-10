@@ -25,15 +25,14 @@
           :taskListIndex = 'index'
           :key='TList.id'>
         </TaskList> 
-
+<!-- v-if="GetAllTasks.length" -->
 
       <div class="add-list__bg"
-       @click="addList"
-       v-if="allTasks.length > 0">
-      <img src="../../../img/icons/add-plus-button.svg"
-       class='add-list__img'
-       > 
-       </div> 
+        @click="addList"
+        >
+          <img src="../../../img/icons/add-plus-button.svg"
+            class='add-list__img'> 
+      </div> 
        
   </div> 
   </VuePerfectScrollbar>
@@ -86,7 +85,8 @@ export default {
   computed: {
     //три точки переводят значения в обьект или как то так, короче только так работает
     ...mapGetters({
-      visibleTables: "visibleTables"
+      visibleTables: "visibleTables",
+      GetAllTasks : "GetAllTasks"
     }),
 
     listBoxH() {
@@ -104,9 +104,9 @@ export default {
     activeTableIndex() {
       return this.$store.state.activeTableIndex;
     },
-    allTasks() {
-      return this.$store.state.allTasks;
-    },
+    // allTasks() {
+    //   return this.$store.state.allTasks;
+    // },
     thisTableTaskLists() {
       if (this.$store.state.allTasks.length > 0) {
         console.log("получили индекс ", this.$store.state.allTasks);
@@ -122,9 +122,10 @@ export default {
     }
   },
   watch: {
-    allTasks(val) {
+    GetAllTasks(val) {
       this.VarThisTableTaskLists = this.thisTableTaskLists;
       console.log("следим ", val);
+      console.log('Отсдеживание allTasks из table ', this.allTasks)
     },
 
  

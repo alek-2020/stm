@@ -147,7 +147,12 @@ export default {
                         newTableBtn.id = newTableId;
 
                         rootState.allTasks.push(newTableBtn);
-
+                        
+                        //Пушим урл
+                        //Нужно запушить урл нового стола в адресную стр.
+                        console.log('Пушим в роутер');
+                        let fouCharId = 'kjl';
+                        this.$router.push('/table/' + fouCharId);
                         resolve(newTableId);
 
                     })
@@ -220,6 +225,7 @@ export default {
                     .then(data => {
                         console.log('.newTable. Закинули стол в user');
                         resolve(data);
+                        
                     })
                     .catch(error => {
                         console.log('Полный провал. Ошибка: ', error);

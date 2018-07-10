@@ -257,8 +257,11 @@ export default Vue.extend({
            this.showAllTasks[this.showAllTasks.length - 1].colorTwo +
            ')');
       } else {
-        return 'linear-gradient( to bottom, #86c0dc, #bb7272)'
+          return 'linear-gradient( to bottom, ' + this.gradients[1].colorOne + ', ' + this.gradients[1].colorTwo + ')'
       }
+  },
+  gradients() {
+    return this.$store.state.gradients;
   }
 },
   

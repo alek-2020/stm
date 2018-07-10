@@ -104,6 +104,8 @@ export default {
      } else {
         console.log("No user is signed in");
         t.$store.state.currentBgImg = '/img/bg/stm-bg-2.jpg';
+        //Засейвим фон
+        t.$store.dispatch("saveBg");
         t.$router.replace('/login/');
       }
     });
