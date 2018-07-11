@@ -25,9 +25,9 @@
           :taskListIndex = 'index'
           :key='TList.id'>
         </TaskList> 
-<!-- v-if="GetAllTasks.length" -->
 
       <div class="add-list__bg"
+        v-if="GetAllTasks.length"
         @click="addList"
         >
           <img src="../../../img/icons/add-plus-button.svg"
@@ -59,6 +59,8 @@
       >
 
      <!-- {{ allTasks }} -->
+     <!-- {{ activeTableIndex }}
+     {{ userData }} -->
      </span>
       <!-- <router-link :to="'/table/fdGb'"><button>b</button></router-link> -->
      
@@ -104,6 +106,7 @@ export default {
     activeTableIndex() {
       return this.$store.state.activeTableIndex;
     },
+    userData(){return this.$store.state.userData},
     // allTasks() {
     //   return this.$store.state.allTasks;
     // },
@@ -198,6 +201,7 @@ export default {
 },
 
   mounted() {
+    // this.$store.dispatch('updateActiveTable', 1);
     //     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
     //     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
    

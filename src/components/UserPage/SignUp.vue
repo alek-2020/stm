@@ -105,10 +105,13 @@ export default {
 
             this.$store.state.userId = user.uid;
             console.log("Получили id ", user.uid);
+            //Сейвим стандартный бг
+            this.$store.dispatch("saveBg");
 
             //Раз все ок грузим данные и переходим в столы
             this.$store.dispatch("startGetTasks");
             this.$router.push("/table/");
+          
           })
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
@@ -128,10 +131,19 @@ export default {
     },
     authorised() {
       return this.$store.state.authorised;
-    }
+    },
+    userId() { return this.$store.state.userId },
+    // currentBg() {
+
+    // }
   },
   components: {
     RegAuthError
+  },
+  watch: {
+    userId(val) {
+       console.log('отслеживаем userId ', val);
+    }
   }
 };
 </script>

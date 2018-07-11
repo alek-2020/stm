@@ -90,22 +90,18 @@ export default {
   created() {
     const t = this;
     //Проверяем юзера на наличие авторизации
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log("User is signed in", firebase.auth().currentUser.uid);
-
         t.$store.state.userId = firebase.auth().currentUser.uid;
         let url = t.$route.params.link;
         t.$store.state.activeTableUrl = url;
         t.$store.dispatch("startGetTasks");
         t.$store.state.authorised = true;
         console.log("User is signed in", firebase.auth().currentUser.uid);
-     
      } else {
         console.log("No user is signed in");
         t.$store.state.currentBgImg = '/img/bg/stm-bg-2.jpg';
         //Засейвим фон
-        t.$store.dispatch("saveBg");
         t.$router.replace('/login/');
       }
     });

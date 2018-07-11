@@ -1,4 +1,7 @@
 import * as firebase from "firebase";
+import router from './../../Router.js';
+
+
 
 export default {
     actions: {
@@ -151,10 +154,10 @@ export default {
                         //Пушим урл
                         //Нужно запушить урл нового стола в адресную стр.
                         console.log('Пушим в роутер');
-                        let fouCharId = 'kjl';
-                        this.$router.push('/table/' + fouCharId);
+                        let fourCharId = newTableId.slice(newTableId.length - 6);
+                        router.push('/table/' + fourCharId);
                         resolve(newTableId);
-
+                        // TODO: undefined при создании нового стола новым юзером
                     })
                     .catch(error => {
                         console.log('Полный провал. Ошибка: ', error);

@@ -22,6 +22,7 @@ export default {
                     console.log('getData. Получили данные по id из users', response);
                     // 2. Пишем рабочие столы из tables в allTasks
                     const settings = response.settings;
+                    // const obj = new Object();
                     dispatch('getSettings', settings);
                     //Продолжаем, если есть столы
                     console.log('.getdata. просто тест');
@@ -110,20 +111,29 @@ export default {
                     .then(data => {
 
                          //Преобразуем объекты столов в массивы
-                         let objLists = data.val().tables;
                          let arrayLists = [];
-                         for (var prop in objLists) { 
-                           arrayLists.push(objLists[prop]);
-                         };
-                        
+                         let objLists = {};
+                         let obj = data.val();
+
+                         //Если получили пустой массив-невыполняем часть операций
+                         //И заменяем на пустой объет
+                         if(data.val() != null) {
+                            let objLists = data.val().tables;
+                            for (var prop in objLists) { 
+                              arrayLists.push(objLists[prop]);
+                            };
+                         } else {
+                            obj = {}
+                         }
+
                         rootState.userData = {
                           tables: arrayLists,
-                          settings:  data.val().settings
+                          settings:  obj.settings
                         };
 
                         console.log("getdata. первый запрос на сервер. получили данные по userId ", rootState.userData);
                         // dispatch('altGetTables');
-                        resolve(data.val());
+                        resolve(obj);
                         // dispatch('getSettings', data.val().settings);
                   
 
@@ -295,11 +305,29 @@ export default {
         //Записываем базовые настроки по юзеру
         getSettings({ dispatch, commit, state, rootState }, settings) {
             return new Promise((resolve, reject) => {
+                console.log('Получаем наши настройки ', settings);
+                let localSettings = settings;
+                //проверим входные данные на undefined, это на тот случай, когда у юзера первый вход в лк
+                // if(typeof settings == 'undefined') {
+                //     console.log('Настройки не пришли');
+                //     localSettings = {};
+                //     localSettings.bg = '/img/bg/stm-bg-2.jpg';
+                //     localSettings.activeTable = -1;
+                // }
+                // console.log('getdata. Получили настройкли ', settings);
+                if(typeof settings == 'undefined') {
+                   localSettings = {}
+                }
 
-                console.log('getdata. Получили настройкли ', settings);
-                rootState.currentBgImg = settings.bg;
-                rootState.activeTableIndex = settings.activeTable;
-                console.log('getdata. Получили настройкии ', settings);
+                let bgImg = localSettings.bg;
+                if(typeof localSettings.bg == 'undefined') {
+                    console.log('фона нема ', typeof localSettings.bg);
+                    bgImg = '/img/bg/stm-bg-2.jpg';
+                }
+                
+                rootState.currentBgImg = bgImg;
+                rootState.activeTableIndex = localSettings.activeTable;
+                console.log('getdata. Получили настройкии ', localSettings, settings);
 
 
             })

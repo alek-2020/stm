@@ -34,7 +34,6 @@ export default {
   
                       //Если успех внесем изменения в локальный массив
                       state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
-  
                       console.log('Задачка готова!');
                       dispatch('showGoodNews', 'Задача выполнена!');
   
@@ -46,6 +45,8 @@ export default {
                   })
           },
 
+// TODO: HI
+// FIXME: HI
 
           //Удалить задачу
           delTask({ dispatch, commit, state }, { task, tableInd, taskListInd, taskId }) {
@@ -230,10 +231,15 @@ export default {
 
           saveBg({ dispatch, commit, state }) {
 
-            console.log('Наш бг ', state.userId);
+            console.log('Наш фон ', state.userId);
 
             const userId = state.userId;
-            const bgImg = state.currentBgImg;
+            let bgImg = state.currentBgImg;
+
+            // if(typeof bgImg == undefined) {
+                // bgImg = '/img/bg/stm-bg-2.jpg';
+                // console.log('Фон пустой, пишем стандартный');
+            // }
 
             firebase
             .database()
@@ -316,7 +322,8 @@ export default {
       pushActiveTableLink({ dispatch, commit, state }) {
         console.log(router.match(location));
         console.log('Пушим ссылку, так как нет никакой', state.activeTableIndex, state.allTasks);
-        let url = state.allTasks[state.activeTableIndex].tableUrl;
+        let id = state.allTasks[state.activeTableIndex].id;
+        let url = id.slice(id.length - 6);
         router.push( {path: `/table/${url}` } );
       },
 
