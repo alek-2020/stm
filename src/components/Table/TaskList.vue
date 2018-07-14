@@ -205,8 +205,9 @@ export default {
     //     }
   },
 
-  updated: function() {
-    this.$nextTick(function() {
+  //Изменение dom
+  updated() {
+    this.$nextTick(() => {
       // Code that will run only after the
       // entire view has been re-rendered
       console.log("Элемент ", this.$refs);

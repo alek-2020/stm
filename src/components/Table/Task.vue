@@ -8,7 +8,6 @@
             @focusout='changeText(task.text)'
             @keyup.13='changeText(task.text)'
         >
-
         <div class="check-box"
             @click="checkTask">
         </div>
@@ -28,6 +27,7 @@ export default {
     //   saveTask() {
     //     console.log('фокус ушел((((((')
     //   },
+ 
        checkTask () {
         const task = this.task
         // const taskInd = this.Index
@@ -49,7 +49,9 @@ export default {
       }
     },
     computed: {
-
+      testFunctionForJest(val) {
+         return val/2;
+       },
     }
 }
 </script>
@@ -71,6 +73,11 @@ export default {
         &:not(:first-child) {
             margin-top: 10px;
         }
+
+        &:hover .check-box {
+            right: 8px;
+            opacity: 1;
+        }
     }
 
     &__text {
@@ -86,14 +93,20 @@ export default {
   }
 
     .check-box {
-        height: 18px;
-        width: 18px;
+        height: 20px;
+        width: 20px;
         border: solid 2px rgb(170, 169, 169);
         border-radius: 5px;
         position: absolute;
         top: 50%;
-        right: 8px;
+        // right: 8px;
+        right: 5px;
+        opacity: 5px;
+        opacity: 0;
         transform: translateY(-50%);
+        // transition-delay: .3s;
+        transition: all cubic-bezier(0, 0, 0.2, 1) .3s;
+        transition-delay: .2s;
     }
 
 </style>

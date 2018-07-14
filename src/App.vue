@@ -1,3 +1,8 @@
+// FIXME: Поправить ширину назавния рс в хедере, что бы значки не уезжали за границы узкого экрана
+// FIXME: После добавления каждой задачи вылезаем ошибка добаления задачи
+// FIXME: Изменить надписи в инпутах, поставить placeholders
+
+
 <template>
   <div id="app">
     <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
@@ -83,8 +88,7 @@ export default {
     ...mapGetters({
       currentBgImg: "currentBgImg",
       authorised: "authorised"
-    }),
-
+    })
   },
   methods: {},
   created() {
@@ -98,11 +102,11 @@ export default {
         t.$store.dispatch("startGetTasks");
         t.$store.state.authorised = true;
         console.log("User is signed in", firebase.auth().currentUser.uid);
-     } else {
+      } else {
         console.log("No user is signed in");
-        t.$store.state.currentBgImg = '/img/bg/stm-bg-2.jpg';
+        t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
         //Засейвим фон
-        t.$router.replace('/login/');
+        t.$router.replace("/login/");
       }
     });
   },
@@ -111,7 +115,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'scss/main.scss';
+@import "scss/main.scss";
 
 *,
 *:after,

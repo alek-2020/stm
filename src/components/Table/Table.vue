@@ -1,3 +1,5 @@
+// TODO: Сделать проверку на undefined у адреса запроса к firebase, что бы не появлялось элементов с названием undefined 
+
 <template>
   <div class="table__main-box"
   @click="deactivateSettings">
@@ -38,21 +40,11 @@
   </VuePerfectScrollbar>
  
 
-<!-- Окна сообщений -->
-  <transition 
-     name="fade">
+    <!-- Окна сообщений -->
+    <GoodBadNewsMessage>
+    </GoodBadNewsMessage>
 
-     <div class="goodNews"
-        v-if="goodNewsMes.length > 1">
-       {{ goodNewsMes }}
-     </div>
 
-     <div class="badNews"
-        v-if="badNewsMes.length > 1">
-        {{ badNewsMes }}
-     </div>
-
-   </transition>
 
 
      <span style="color: white; font-weigth: 500; background: black;"
@@ -68,20 +60,21 @@
 </template>
 
 <script>
-import TaskList from "./TaskList.vue";
+import TaskList from "./TaskList.vue"
+import GoodBadNewsMessage from  "./GoodBadNewsMessage.vue"
 
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
 
 //скролл
-import VuePerfectScrollbar from "vue-perfect-scrollbar";
-import { functions } from "firebase";
+import VuePerfectScrollbar from "vue-perfect-scrollbar"
+import { functions } from "firebase"
 
 export default {
   data() {
     return {
       Text: "Всякая чухня",
       VarThisTableTaskLists: [],
-      goodNewsMess: "hello",
+      // goodNewsMess: "hello",
     };
   },
   computed: {
@@ -97,12 +90,7 @@ export default {
     allTasks() {
       return this.$store.state.allTasks;
     },
-    goodNewsMes() {
-      return this.$store.state.goodNewsMes;
-    },
-    badNewsMes() {
-      return this.$store.state.badNewsMes;
-    },
+
     activeTableIndex() {
       return this.$store.state.activeTableIndex;
     },
@@ -253,7 +241,8 @@ export default {
   },
   components: {
     TaskList,
-    VuePerfectScrollbar
+    VuePerfectScrollbar,
+    GoodBadNewsMessage
   }
 };
 </script>
@@ -396,40 +385,6 @@ export default {
   & .smoothScroll .desk-btns__rel-cont {
     scroll-behavior: smooth;
   }
-}
-
-.goodNews {
-  color: #3c763d;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  padding-right: 35px;
-  padding: 15px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  position: absolute;
-  bottom: 20px;
-  left: 10px;
-  right: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.badNews {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-  padding-right: 35px;
-  padding: 15px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  position: absolute;
-  bottom: 20px;
-  left: 10px;
-  right: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 //анимация
