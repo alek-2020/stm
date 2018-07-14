@@ -1,5 +1,6 @@
 <!-- СПИСОК ЗАДАЧ -->
-  
+// TODO: что бы каждый раз при смене фокуса из инпута не появлялось окно "отредактировано " и не оправлялся запрос на сервер нужно сравнить инпут при фокусе и при его уходе с инпута, если они разные то постим изменения, если нет то ничего не делаем
+
 <template id="task-list-temp" :themeColor="themeColor">
            
             <div class="task-list" 
@@ -7,15 +8,17 @@
              ref="taskBox">
             
             <div class="task-list__header-box">
-                  <Emoji></Emoji>
+                  <Emoji class="task-list__emoji"></Emoji>
                   <input class="task-list__name" type="text"  
                   v-model="TList.name"
                   @focusout='changeListTitle(TList.name)'
                   @keyup.enter='changeListTitle(TList.name)'>
-                  <listMenu></listMenu>
+                  <listMenu class="task-list__menu"
+                    @newColor="changeMainColor"
+                    ></listMenu>
+            </div>
+                                 <!-- v-once :settings="settings" -->
 
-                    <!-- v-once :settings="settings" -->
-             </div>
               <VuePerfectScrollbar class="task-list__scroll-box"
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
@@ -107,7 +110,16 @@ export default {
       }
     };
   },
+  //   events: {
+  //   newColor: function (argument) {
+  //          console.log(argument);
+  //    },
+  // },
   methods: {
+    //Принимает новый цвет из палитны и меняем
+    changeMainColor(col) {
+      console.log('Новый цвет брат ', col);
+    },
     afterLeave() {
       this.changeHeightOfList();
       console.log("Пересчет высоты при завершении анимации");
@@ -227,6 +239,7 @@ export default {
     //  console.log('Элемент ', this.$refs);
     //При первичной загрузке считаем высоту
     this.changeHeightOfList();
+    // this.$on('newColor', function(newCol) {changeMainColor(newCOl)});
   },
   filters: {}
 };
@@ -239,7 +252,7 @@ export default {
   // max-width: 400px;
   border: solid 3px #c6c6c6ad;
   margin-left: 15px;
-  padding: 10px 1px;
+  padding: 0 1px 10px 1px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -252,23 +265,13 @@ export default {
   width: 350px;
   max-height: 100%;
 
-  &__name {
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-size: 18px;
-    color: #1a1919;
-    font-weight: 500;
-    font-family: "Roboto", sans-serif;
-    margin-bottom: 10px;
-    width: 90%;
-  }
-
   &__inputs-container {
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
+    // что бы не обрезался кусок последнего инпута
+    padding-bottom: 2px;
     // padding-right: 15px;
   }
 
@@ -308,6 +311,49 @@ export default {
   &__bottom-box {
     height: 28px;
     min-height: 28px;
+  }
+}
+
+//Header box
+.task-list {
+  &__header-box {
+    // display: flex;
+    // justify-content: space-between;
+    position: relative;
+    width: 100%;
+    top: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+  &__emoji {
+    position: absolute;
+    left: 12px;
+    // top: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__name {
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 18px;
+    color: #1a1919;
+    font-weight: 500;
+    font-family: "Roboto", sans-serif;
+    // margin-bottom: 10px;
+    width: 100%;
+    padding: 0 50px;
+    text-overflow: elipsis;
+    overflow: hidden;
+  }
+
+  &__menu {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
