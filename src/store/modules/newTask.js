@@ -107,7 +107,7 @@ export default {
                         mas.push(newTask);
 
                         dispatch('showGoodNews', 'Задача добавлена');
-                        dispstch('scrollListDown', taskListId);
+                        dispatch('scrollListDown', taskListId);
                         // console.log('Привязали задачу к списку', data);
                        
                         resolve('newTask. Задача добавлена. Это успех!');

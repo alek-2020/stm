@@ -12,7 +12,7 @@ export default {
 
     activeTableName(state) {
            //и запишем название нашего стола для хедера
-           if(state.allTasks != null) {
+           if(state.allTasks != null && state.allTasks[state.activeTableIndex] != null) {
                 console.log('get table name ', state.allTasks, state.activeTableIndex);
                 return state.allTasks[state.activeTableIndex].name;
            } else {

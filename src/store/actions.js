@@ -366,5 +366,25 @@ export default {
           setTimeout(function() {
             state.badNewsMes = [];
           }, 1500)
-      }
+      },
+
+      //Меняем цвет списка задач
+      pushListColor({ dispatch, commit, state }, allData) {
+        console.log('Данные для изменения цвета ', allData);
+     //    const userId = state.userId;
+        const taskListId = state.allTasks[allData.actTableInd].taskLists[allData.taskListInd].id;
+ 
+        firebase
+        .database()
+        .ref('taskLists/' + taskListId + '/color')
+        .set(allData.colIndex)
+        .then(data => {
+            console.log("Записали цвет таскЛиста ", data);
+            dispatch('showGoodNews', 'Цвет записан');
+         })
+        .catch(error => {
+            dispatch('showBadNews', 'Ошибка изменения цвета');
+        });
+    
+     } 
 }

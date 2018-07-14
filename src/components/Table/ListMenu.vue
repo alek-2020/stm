@@ -29,11 +29,11 @@
             class="list-menu__colors"
             name="fade">
             <div class="list-menu__colors-item"
-              v-for="color in paletteColors"
-              :key="color"
-              v-bind:style="{ background: color.color }"
+              v-for="(color, index) in paletteColors"
+              :key="index"
+              v-bind:style="{ background: color.colorOne }"
               v-show="isActive"
-              @click="pushNewColor(color.color)"
+              @click="pushNewColor(index)"
             ></div>
           </transition-group>             
       <!-- </div> -->
@@ -58,30 +58,30 @@ export default {
     return {
       emojiSVG: "",
       taskList: "",
-      isActive: true,
+      isActive: false,
       persTimerId: -1,
 
       colDots: {
         activeDotsCol: true
       },
-      paletteColors: [
-        {
-          color: "#a02a2a",
-          name: "beuty"
-        },
-        {
-          color: "#1b60ce",
-          name: "beuty"
-        },
-        {
-          color: "#0e8432",
-          name: "beuty"
-        },
-        {
-          color: "#db1edb",
-          name: "beuty"
-        }
-      ]
+      // paletteColors: [
+      //   {
+      //     color: "#a02a2a",
+      //     name: "beuty"
+      //   },
+      //   {
+      //     color: "#1b60ce",
+      //     name: "beuty"
+      //   },
+      //   {
+      //     color: "#0e8432",
+      //     name: "beuty"
+      //   },
+      //   {
+      //     color: "#db1edb",
+      //     name: "beuty"
+      //   }
+      // ]
     };
   },
 
@@ -89,7 +89,8 @@ export default {
     /*переключакт состояние кнопки*/
     activeDots: function() {
       this.isActive = !this.isActive;
-      console.log(this.themeColor);
+      this.$emit('listMenuOpen', this.isActive);
+      // console.log(this.themeColor);
     },
 
     /*запускает таймер*/
@@ -119,10 +120,15 @@ export default {
     },
 
     //Отправляет новый цвет в родительский компонент
-    pushNewColor(newColor) {
-      this.$emit('newColor', newColor)
+    pushNewColor(index) {
+      this.$emit('newColor', index);
+      // this.$store.state.allTasks;
     }
   },
+
+  computed: {
+    paletteColors() {return this.$store.state.gradients}
+  }
 
 };
 </script>

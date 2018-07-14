@@ -1,20 +1,26 @@
 <!-- СПИСОК ЗАДАЧ -->
 // TODO: что бы каждый раз при смене фокуса из инпута не появлялось окно "отредактировано " и не оправлялся запрос на сервер нужно сравнить инпут при фокусе и при его уходе с инпута, если они разные то постим изменения, если нет то ничего не делаем
+// TODO: вместо цветов на отдельных задачах сделать возможность выделать приоритетные. Приоритетные будут цвета общец палитры списка, подниматься вверх и на них возможно будет огонек или другая пометка, которая будет располагаться на месте чекбокса и будет пропадать при ховере, что бы освободить для чекбокса место
 
-<template id="task-list-temp" :themeColor="themeColor">
+<template>
            
             <div class="task-list" 
-             v-bind:style="{ borderColor: themeColor }"
-             ref="taskBox">
+              :style="{ 'border-color': MainListColor.colorOne }"
+              ref="taskBox">
             
             <div class="task-list__header-box">
                   <Emoji class="task-list__emoji"></Emoji>
-                  <input class="task-list__name" type="text"  
-                  v-model="TList.name"
-                  @focusout='changeListTitle(TList.name)'
-                  @keyup.enter='changeListTitle(TList.name)'>
+                  <transition
+                    name="fade">  
+                      <input class="task-list__name" type="text"  
+                      v-model="TList.name"
+                      v-show="!listMenuActive"
+                      @focusout='changeListTitle(TList.name)'
+                      @keyup.enter='changeListTitle(TList.name)'>
+                  </transition>
                   <listMenu class="task-list__menu"
                     @newColor="changeMainColor"
+                    @listMenuOpen="hideListName"
                     ></listMenu>
             </div>
                                  <!-- v-once :settings="settings" -->
@@ -101,13 +107,13 @@ import Emoji from "./Emoji";
 export default {
   data: function() {
     return {
-      themeColor: "#528a52",
       taskBoxHeight: 0,
       maxBoxHeight: 0,
       onlyDoneTasks: false,
       scrollSettings: {
         suppressScrollY: false
-      }
+      },
+      listMenuActive: false,
     };
   },
   //   events: {
@@ -116,9 +122,23 @@ export default {
   //    },
   // },
   methods: {
+    //Скрытие названия списка при открытом меню
+    hideListName(val) {
+      this.listMenuActive = val;
+    },
     //Принимает новый цвет из палитны и меняем
-    changeMainColor(col) {
-      console.log('Новый цвет брат ', col);
+    changeMainColor(index) {
+      console.log('Новый цвет брат ', index);
+      console.log('данные листа ', this.activeTableIndex, this.taskListIndex);
+
+      this.$store.state.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color = index;
+      //Push color id to firebase
+      let allData = new Object();
+      allData.colIndex = index;
+      allData.actTableInd = this.activeTableIndex;
+      allData.taskListInd = this.taskListIndex;
+
+      this.$store.dispatch('pushListColor', allData);
     },
     afterLeave() {
       this.changeHeightOfList();
@@ -169,6 +189,14 @@ export default {
   },
 
   computed: {
+    //Цветовая схема списка
+    MainListColor() {
+      console.log( 'цвет списка', this.$store.state.gradients[this.themeColorId]);
+      return this.$store.state.gradients[this.themeColorId];
+    },
+    themeColorId() {
+        return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color;
+    },
     maxBoxHeightFunc() {
       return this.$store.state.taskListBoxHeight - 92 + "px";
     },
@@ -250,7 +278,7 @@ export default {
 .task-list {
   // min-width: 250px;
   // max-width: 400px;
-  border: solid 3px #c6c6c6ad;
+  border: solid 3px #979797ad;
   margin-left: 15px;
   padding: 0 1px 10px 1px;
   border-radius: 5px;

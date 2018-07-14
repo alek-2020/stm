@@ -55,7 +55,7 @@ export default {
                 //Формируем параметры нового списка
                 const newTaskList = {
                     'name': 'Введите название списка',
-                    'color': 'black',
+                    'color': 1,
                     'tasks': [],
                     'listIndex': newListIndex
                 }
