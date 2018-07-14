@@ -2,19 +2,20 @@
   
 <template id="task-list-temp" :themeColor="themeColor">
            
-            <div class="task-list" id="list-%id%" 
+            <div class="task-list" 
              v-bind:style="{ borderColor: themeColor }"
              ref="taskBox">
             
-            <!-- <listMenu></listMenu> -->
-            
-            <input class="task-list__name" type="text"  
-              v-model="TList.name"
-              @focusout='changeListTitle(TList.name)'
-              @keyup.enter='changeListTitle(TList.name)'>
+            <div class="task-list__header-box">
+                  <Emoji></Emoji>
+                  <input class="task-list__name" type="text"  
+                  v-model="TList.name"
+                  @focusout='changeListTitle(TList.name)'
+                  @keyup.enter='changeListTitle(TList.name)'>
+                  <listMenu></listMenu>
 
-                <!-- v-once :settings="settings" -->
-
+                    <!-- v-once :settings="settings" -->
+             </div>
               <VuePerfectScrollbar class="task-list__scroll-box"
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
@@ -92,6 +93,7 @@ import listMenu from "./ListMenu.vue";
 import OneTask from "./Task.vue";
 import OneDoneTask from "./DoneTask.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
+import Emoji from "./Emoji";
 
 export default {
   data: function() {
@@ -107,17 +109,17 @@ export default {
   },
   methods: {
     afterLeave() {
-       this.changeHeightOfList();
-       console.log('Пересчет высоты при завершении анимации');
+      this.changeHeightOfList();
+      console.log("Пересчет высоты при завершении анимации");
     },
     changeHeightOfList() {
-       if(this.$refs.inputsContainer != null) {
-          this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
-          console.log('Пересчет высоты', this.taskBoxHeight);
-       }
-   },
+      if (this.$refs.inputsContainer != null) {
+        this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
+        console.log("Пересчет высоты", this.taskBoxHeight);
+      }
+    },
     showDoneTasks() {
-       this.onlyDoneTasks = !this.onlyDoneTasks;
+      this.onlyDoneTasks = !this.onlyDoneTasks;
       //  this.changeHeightOfList();
       //  console.log('Пересчет высоты при переключении');
     },
@@ -150,7 +152,8 @@ export default {
     listMenu,
     OneTask,
     OneDoneTask,
-    VuePerfectScrollbar
+    VuePerfectScrollbar,
+    Emoji
   },
 
   computed: {
@@ -194,7 +197,6 @@ export default {
       //  .filterBy(t.isDone);
     }
 
-
     //   taskBoxHeight() {
     //     if(this.$refs.inputsContainer != null) {
     //     console.log('Получили высоту элемента ', this.$refs);
@@ -213,7 +215,7 @@ export default {
       console.log("Элемент ", this.$refs);
       // this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
       this.changeHeightOfList();
-      console.log('Пересчет высоты при изменении древа');
+      console.log("Пересчет высоты при изменении древа");
 
       //  if(this.$store.state.taskListBoxHeight != null) {
       //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';
@@ -275,7 +277,7 @@ export default {
     height: 100px;
     position: relative;
     overflow: hidden;
-    transition: height .3s;
+    transition: height 0.3s;
   }
 
   &__add {
@@ -471,7 +473,6 @@ export default {
   transform: translateX(130%);
 }
 
-
 .tasks-move {
   transition: all 1s;
   background: red !important;
@@ -482,17 +483,14 @@ export default {
 //   position: absolute;
 // }
 
-
-
 //Анимация кнопки на списке
-.doneBtn-enter, 
+.doneBtn-enter,
 .doneBtn-leave-to {
   opacity: 0;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .doneBtn-enter-to {
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
-
 </style>

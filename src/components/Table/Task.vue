@@ -3,6 +3,7 @@
         <div class="one-task__box">
 
             <input type="text"
+            placeholder="Enter your task"
             class="one-task__text"
             v-model="task.text"
             @focusout='changeText(task.text)'
@@ -74,7 +75,9 @@ export default {
             margin-top: 10px;
         }
 
-        &:hover .check-box {
+        &:hover .check-box,
+        &:focus .check-box,
+        &:active .check-box {
             right: 8px;
             opacity: 1;
         }

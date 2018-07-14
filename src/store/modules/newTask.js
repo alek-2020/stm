@@ -43,7 +43,6 @@ export default {
                 const taskColor = "gray";
 
                 const task = {
-                    text: 'Задача удача',
                     tableId,
                     taskListId,
                     taskColor,
