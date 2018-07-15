@@ -398,6 +398,8 @@ export default {
         .set(index)
         .then(data => {
             console.log("Записали index емоджи ", data);
+            //Если все ок пишем в локальный json
+            state.allTasks[actTableInd].taskLists[taskListInd].emojiIndex = index;
             dispatch('showGoodNews', 'Emoji изменен');
          })
         .catch(error => {
