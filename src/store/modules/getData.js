@@ -233,7 +233,8 @@ export default {
                                 'name': data.val().name,
                                 'color': data.val().color,
                                 tasks: [],
-                                'listIndex': data.val().listIndex
+                                'listIndex': data.val().listIndex,
+                                'emojiIndex': data.val().emojiIndex
                             });
 
                             console.log('.getdata. отправляем id-шники для получения', rootState.taskLists[index].tasks);

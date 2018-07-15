@@ -386,5 +386,23 @@ export default {
             dispatch('showBadNews', 'Ошибка изменения цвета');
         });
     
-     } 
+     } ,
+
+     changeEmojiIndex({ dispatch, commit, state }, {index, taskListInd}) {
+        const actTableInd = state.activeTableIndex;
+        const taskListId = state.allTasks[actTableInd].taskLists[taskListInd].id;
+      
+        firebase
+        .database()
+        .ref('taskLists/' + taskListId + '/emojiIndex')
+        .set(index)
+        .then(data => {
+            console.log("Записали index емоджи ", data);
+            dispatch('showGoodNews', 'Emoji изменен');
+         })
+        .catch(error => {
+            dispatch('showBadNews', 'Ошибка изменения Emoji');
+        });
+
+     }
 }

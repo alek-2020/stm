@@ -10,18 +10,22 @@
               ref="taskBox">
             
             <div class="task-list__header-box">
-                  <Emoji class="task-list__emoji"></Emoji>
+                  <Emoji class="task-list__emoji"
+                    @listMenuOpen="changeEmojiState"
+                    :MainListColor="MainListColor"
+                    :taskListIndex="taskListIndex"
+                    :activeTableIndex="activeTableIndex"></Emoji>
                   <transition
                     name="fade">  
                       <input class="task-list__name" type="text"  
                       v-model="TList.name"
-                      v-show="!listMenuActive"
+                      v-show="nameVisible"
                       @focusout='changeListTitle(TList.name)'
                       @keyup.enter='changeListTitle(TList.name)'>
                   </transition>
                   <listMenu class="task-list__menu"
                     @newColor="changeMainColor"
-                    @listMenuOpen="hideListName"
+                    @listMenuOpen="changeMenuState, hideListName()"
                     ></listMenu>
             </div>
                                  <!-- v-once :settings="settings" -->
@@ -114,7 +118,9 @@ export default {
       scrollSettings: {
         suppressScrollY: false
       },
-      listMenuActive: false,
+      nameVisible: true,
+      emojiState: false,
+      menuState: false,
     };
   },
   //   events: {
@@ -125,7 +131,29 @@ export default {
   methods: {
     //Скрытие названия списка при открытом меню
     hideListName(val) {
-      this.listMenuActive = val;
+      if(this.emojiState || this.menuState) {
+          this.nameVisible = false;
+          console.log('Прячем заголовок списка ', this.emojiState, this.menuState);
+      } else {
+          this.nameVisible = true;
+          console.log('Покажем заголовок списка ', this.emojiState, this.menuState);
+      }
+      
+      // this.nameVisible = !val;
+    },
+    changeEmojiState(val) {
+      this.emojiState = val;
+      if(val == true) {
+        this.menuState = false;
+      }
+      hideListName(val);
+    },
+    changeMenuState(val) {
+      this.menuState = val;
+      if(val == true) {
+        this.emojiState = false;
+      }
+      hideListName(val);
     },
     //Принимает новый цвет из палитны и меняем
     changeMainColor(index) {
