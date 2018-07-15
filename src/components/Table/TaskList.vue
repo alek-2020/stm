@@ -14,7 +14,8 @@
                     @listMenuOpen="changeEmojiState"
                     :MainListColor="MainListColor"
                     :taskListIndex="taskListIndex"
-                    :activeTableIndex="activeTableIndex"></Emoji>
+                    :activeTableIndex="activeTableIndex"
+                    :emojiState="emojiState"></Emoji>
                   <transition
                     name="fade">  
                       <input class="task-list__name" type="text"  
@@ -25,7 +26,7 @@
                   </transition>
                   <listMenu class="task-list__menu"
                     @newColor="changeMainColor"
-                    @listMenuOpen="changeMenuState, hideListName()"
+                    @listMenuOpen="changeMenuState"
                     ></listMenu>
             </div>
                                  <!-- v-once :settings="settings" -->
@@ -146,14 +147,15 @@ export default {
       if(val == true) {
         this.menuState = false;
       }
-      hideListName(val);
+      this.hideListName(val);
     },
     changeMenuState(val) {
       this.menuState = val;
+      console.log('Пришел пропс тест ', val);
       if(val == true) {
         this.emojiState = false;
       }
-      hideListName(val);
+      this.hideListName(val);
     },
     //Принимает новый цвет из палитны и меняем
     changeMainColor(index) {

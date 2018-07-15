@@ -51,6 +51,9 @@
       
 
 <script>
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
+
+
 export default {
   template: "#list-dots-menu",
   props: ["themeColor"],
@@ -124,6 +127,10 @@ export default {
       this.$emit('newColor', index);
       // this.$store.state.allTasks;
     }
+  },
+
+  components: {
+      VuePerfectScrollbar
   },
 
   computed: {

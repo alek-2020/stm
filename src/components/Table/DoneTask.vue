@@ -7,6 +7,7 @@
             v-model="task.text"
             @focusout='changeText(task.text)'
             @keyup.13='changeText(task.text)'
+            disabled
         >
 
             <div class="del-icon"
