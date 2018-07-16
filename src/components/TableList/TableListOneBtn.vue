@@ -133,7 +133,7 @@ export default Vue.extend({
     font-family: "Roboto", sans-serif;
     background: linear-gradient(to bottom, #d24242, #af4242);
     display: inline-block;
-    border-radius: 7px;
+    border-radius: 4px;
     color: white;
     position: relative;
     border: none;
@@ -201,7 +201,7 @@ export default Vue.extend({
     width: calc(100% + 8px);
     top: -4px;
     left: -4px;
-    border-radius: 10px;
+    border-radius: 7px;
     box-sizing: border-box;
   }
 }

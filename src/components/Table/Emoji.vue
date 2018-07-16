@@ -1,6 +1,8 @@
 // TODO: При добавлении задачи появляется скролл, нужно добавить встроенный пересчет высоты vueperfectscrollbar
 // TODO: При наведении на плюс сделать поворот его на 90 градусов
 // TODO: Попробовать вместо скрола сделать просто окошко с сеткой emoji по горизонтали и вертикали
+// TODO: Пофиксить слайдер, сделать нормально v-if и v-show
+// TODO: Сделать в авторизации/регистрации иконки не через фон, а псевдоэлементами, что бы браузер при повторной авторизации не перекрывал их
 
 <template>
     <div class="emoji__box">
@@ -12,6 +14,7 @@
                 </svg>
         </div>
         <vue-perfect-scrollbar class="emoji__box-rel"
+          v-show="emojiListActive"
           :settings="scrollSettings">
             <transition-group name="fade"
             class="emoji__box-abs">

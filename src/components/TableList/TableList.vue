@@ -278,11 +278,11 @@ export default Vue.extend({
     height: 40px;
     width: 40px;
     margin-left: 10px;
-    border-radius: 7px;
+    border-radius: 4px;
   } 
 
   &__cont {
-    padding: 10px;
+    padding: 7px;
     display: flex;
     position: absolute;
     top: 7px;
@@ -301,7 +301,7 @@ export default Vue.extend({
     width: 100%;
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 80px;
+    height: 68px;
     // scroll-behavior: smooth;
 
   }
