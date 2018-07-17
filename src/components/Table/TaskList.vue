@@ -100,6 +100,17 @@
                 </div>
 
             </div>
+
+            <ConfirmationWindow
+              :askConfirm="askConfirm"
+              @confirmResponse="confirmedRemove">
+              <div slot="message">
+                Confirm removing list
+              </div>
+              <span slot="action">
+                Delete
+              </span>
+            </ConfirmationWindow>
         </div>    
 </template>
 
@@ -109,6 +120,7 @@ import OneTask from "./Task.vue";
 import OneDoneTask from "./DoneTask.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import Emoji from "./Emoji";
+import ConfirmationWindow from "../Popups/Confirmation.vue";
 
 export default {
   data: function() {
@@ -122,6 +134,7 @@ export default {
       nameVisible: true,
       emojiState: false,
       menuState: false,
+      askConfirm: false,
     };
   },
   //   events: {
@@ -203,11 +216,30 @@ export default {
     },
 
     removeList(id, taskListIndex, activeTableIndex) {
-      this.$store.dispatch("removeList", {
-        id,
-        taskListIndex,
-        activeTableIndex
-      });
+       this.dataForRemoving = {
+           id,
+           taskListIndex,
+           activeTableIndex
+       }
+
+       this.askConfirm = true;
+      
+    }, 
+    confirmedRemove(responce) {
+      if(responce) {
+        const id = this.dataForRemoving.id;
+        const taskListIndex = this.dataForRemoving.taskListIndex;
+        const activeTableIndex = this.dataForRemoving.activeTableIndex;
+        
+        this.$store.dispatch("removeList", {
+          id,
+          taskListIndex,
+          activeTableIndex
+        });
+      }
+      this.askConfirm = false;
+      this.dataForRemoving = {};
+      console.log('пришел с эммита', responce);
     }
   },
   props: ["TList", "taskListIndex"],
@@ -216,7 +248,8 @@ export default {
     OneTask,
     OneDoneTask,
     VuePerfectScrollbar,
-    Emoji
+    Emoji,
+    ConfirmationWindow
   },
 
   computed: {

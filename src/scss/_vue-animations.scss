@@ -1,11 +1,11 @@
 /*
-Анимации:
-fade
-jump
-scale-up
-scale-down
-slideLeft
-slideRight
+Names:
+-fade
+-jump
+-scale-up
+-scale-down
+-slideLeft
+-slideRight
 */
 
 .fade-enter-active,
@@ -64,13 +64,15 @@ slideRight
 
 @keyframes scaleUp {
     0% {
-        transform: scale3D(1, 1, 1)
+        transform: scale3D(1, 1, 1);
+        opacity: 0.7;
     }
     50% {
-        transform: scale3D(1.2, 1.2, 1.2)
+        transform: scale3D(1.2, 1.2, 1.2);
     }
     100% {
-        transform: scale3D(1, 1, 1)
+        transform: scale3D(1, 1, 1);
+        opacity: 0.7;
     }
 }
 

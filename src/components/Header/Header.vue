@@ -56,7 +56,7 @@
               <div class="delTable"
               v-html="deleteIcon"
               :class="{ 'delTable_hidden': !tableSettingsActive }"
-              v-on:click="delTable()"              
+              v-on:click="askConfirmForDelete()"              
               ></div>
               
             </div>
@@ -91,12 +91,28 @@
     
 
     <HeaderSettings></HeaderSettings>
+
+    <ConfirmationWindow
+      :askConfirm="askConfirm"
+      @confirmResponse="delTable">
+      <div slot="message">
+        Confirm removing table
+      </div>
+      <div slot="messageTwo">
+        Delete
+      </div>
+      <div slot="action">
+        Delete
+      </div>
+    </ConfirmationWindow>
+
 </div>
 </template>
 
 <script>
 import HeaderSettings from "./HeaderSettings.vue";
 import ThreeDotsMenu from "./ThreeDotsMenu.vue";
+import ConfirmationWindow from "../Popups/Confirmation.vue";
 
 import { svgHeader } from "../../OtherSrc/svg.js";
 
@@ -143,8 +159,9 @@ export default {
           colTwo: "#ccc",
           colorId: "4"
         }
-      ]
-    };
+      ],
+      askConfirm: false,
+    }
   },
   methods: {
     //Новый список
@@ -210,8 +227,14 @@ export default {
     //   return "linear-gradient( to bottom, " + colOne + ", " + colTwo;
     // },
 
-    delTable() {
-      this.$store.dispatch("delActiveTable");
+    askConfirmForDelete() {
+       this.askConfirm = true;
+    },
+    delTable(val) {
+      if(val) {
+         this.$store.dispatch("delActiveTable");
+      }
+      this.askConfirm = false;
     },
     showTableSettings() {
       console.log('Показали настроюшки');
@@ -298,7 +321,8 @@ export default {
   },
   components: {
     HeaderSettings,
-    ThreeDotsMenu
+    ThreeDotsMenu,
+    ConfirmationWindow
   },
   created() {
     console.log("Подтягиваем SVG", svgHeader.filter);
