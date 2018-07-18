@@ -1,7 +1,7 @@
 {
-  "name": "stm",
-  "description": "A Vue.js project",
-  "version": "1.0.0",
+  "name": "Simple Task Manager",
+  "description": "Manage your tasks simple",
+  "version": "0.0.1",
   "author": "alek-2020 <alek-2020@yandex.ru>",
   "license": "MIT",
   "private": true,
