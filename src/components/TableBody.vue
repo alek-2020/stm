@@ -32,7 +32,7 @@
         v-if="GetAllTasks.length"
         @click="addList"
         >
-          <img src="../../../img/icons/add-plus-button.svg"
+          <img src="../../img/icons/add-plus-button.svg"
             class='add-list__img'> 
       </div> 
        
@@ -61,7 +61,7 @@
 
 <script>
 import TaskList from "./TaskList.vue"
-import GoodBadNewsMessage from  "./GoodBadNewsMessage.vue"
+import GoodBadNewsMessage from  "./MessageNewsGoodBad.vue"
 
 import { mapGetters } from "vuex"
 

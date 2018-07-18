@@ -89,7 +89,7 @@ export default {
     .del-icon {
         height: 21px;
         width: 21px;
-        background-image: url(../../../img/icons/delete-can.svg);
+        background-image: url(../../img/icons/delete-can.svg);
         background-size: 100%;
         opacity: .6;
         position: absolute;

@@ -1,28 +1,30 @@
 <template>
-  <!-- Block fixed -->
-  <div class="log__bg"
-  v-if="logActive"> 
 
+  <div class="log__bg"
+ > 
+    <transition>
       <div class="log__form-block">
 
             <div class="log__cancel"
-              v-if="authorised"
-              @click="goBack">
+            v-if="authorised"
+            @click="goBack">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 95.939 95.939" style="enable-background:new 0 0 95.939 95.939;" xml:space="preserve"><g>	<path d="M62.819,47.97l32.533-32.534c0.781-0.781,0.781-2.047,0-2.828L83.333,0.586C82.958,0.211,82.448,0,81.919,0   c-0.53,0-1.039,0.211-1.414,0.586L47.97,33.121L15.435,0.586c-0.75-0.75-2.078-0.75-2.828,0L0.587,12.608   c-0.781,0.781-0.781,2.047,0,2.828L33.121,47.97L0.587,80.504c-0.781,0.781-0.781,2.047,0,2.828l12.02,12.021   c0.375,0.375,0.884,0.586,1.414,0.586c0.53,0,1.039-0.211,1.414-0.586L47.97,62.818l32.535,32.535   c0.375,0.375,0.884,0.586,1.414,0.586c0.529,0,1.039-0.211,1.414-0.586l12.02-12.021c0.781-0.781,0.781-2.048,0-2.828L62.819,47.97   z" /></g></svg>
             </div> 
 
             <div class="log__title-block">
                 <span class="log__title">
-                    Авторизация
+                    Регистрация
                 </span>
                 <span class="log__or">
-                    или <router-link to="/registration/"
-                         @keypress="wipeErrors(); stopSpinner();"
-                         >Регистрация</router-link>
+                    or <router-link to="/login/"
+                        @keypress="wipeErrors(); stopSpinner();
+                        ">Login</router-link>
                 </span>  
             </div>
+
       <form class="log__form" action="" 
-       @submit.prevent="onSignIn(); runSpinner();">
+      @submit.prevent="onSignup(); runSpinner();">
+
         <input 
         name="email"
         label="Mail"
@@ -47,24 +49,25 @@
 
 
         <button type="submit">
-            <span
-             v-if="!spinnerActive">Вход</span>
+           <span
+             v-if="!spinnerActive">Регистрация</span>
             <img
              v-else
-             height="30px" src='../../../img/spinners/load-spinner-white.svg'>
+             height="30px" src='../../img/spinners/load-spinner-white.svg'>
         </button>
 
       <RegAuthError>
       </RegAuthError>
-
+  
       </form>
       </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import * as firebase from "firebase";
-import RegAuthError from "./RegAuthError.vue";
+import RegAuthError from "./PopupSignInError.vue";
 
 export default {
   data() {
@@ -72,13 +75,12 @@ export default {
       spinnerActive: false,
       email: "",
       password: "",
-      id: "",
-      logActive: true,
-      blabla: ""
+      confirmPassword: "",
+      id: ""
     };
   },
   methods: {
-    //включаем спиннер
+     //включаем спиннер
     runSpinner() {
       this.spinnerActive = true;
     },
@@ -90,58 +92,58 @@ export default {
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
     },
-    onSignIn() {
+    onSignup() {
       // vuex
 
-      console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
-      const t = this;
-      //Перед авторизацией делаем сессию бесконечной
-      firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        .then(function() {
-          return firebase
-            .auth()
-            .signInWithEmailAndPassword(t.email, t.password);
-        })
-        .then(user => {
-          const newUser = {
-            id: user.user.uid
-            //this.registerelM
-          };
-          console.log("Авторизовались, все ОК", newUser.id);
-          this.$store.state.userId = newUser.id;
-          console.log("Получили UserData по Id ");
+      console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
+        //Создаем юзера в файрбазе
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(user => {
+            console.log("Это успех. id юзера ", this.id);
 
-          //Раз все ок грузим данные и переходим в столы
-          this.$store.dispatch("startGetTasks");
-          this.$router.push("/table/");
-          // console.log('Авторизашка после авторизашки', firebase);
-        })
-        .catch(error => {
-          this.$store.state.authErrorMessage = error.message;
-          this.stopSpinner();
-         console.log("Это провал. Ошибка: ", error);
-       
-       });
+            this.$store.state.userId = user.uid;
+            console.log("Получили id ", user.uid);
+            //Сейвим стандартный бг
+            this.$store.dispatch("saveBg");
+
+            //Раз все ок грузим данные и переходим в столы
+            this.$store.dispatch("startGetTasks");
+            this.$router.push("/table/");
+          
+          })
+          .catch(error => {
+            console.log("Полный провал. Ошибка: ", error);
+            this.$store.state.authErrorMessage = error.message;
+            this.stopSpinner();
+
+         });
     },
+
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     }
   },
   computed: {
-    userIdmeth() {
-      return this.$store.state.userIdBro;
-    },
-    getUserData() {
-      return this.store.commit("getUser");
+    comparePasswords() {
+      return this.password !== this.confirmPassword;
     },
     authorised() {
       return this.$store.state.authorised;
-    }
+    },
+    userId() { return this.$store.state.userId },
+    // currentBg() {
+
+    // }
   },
   components: {
     RegAuthError
+  },
+  watch: {
+    userId(val) {
+       console.log('отслеживаем userId ', val);
+    }
   }
 };
 </script>

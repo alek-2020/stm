@@ -57,13 +57,11 @@
 </template>
 
 <script>
-import tableList from "./components/TableList/TableList.vue";
-import SignUp from "./components/UserPage/SignUp.vue";
-import SignIn from "./components/UserPage/SignIn.vue";
-import TestFirebase from "./components/ServerData/TestFirebase.vue";
-import stmHeader from "./components/Header/Header.vue";
-import SignOut from "./components/UserPage/LogOut.vue";
-import TableContent from "./components/Table/Table.vue";
+import tableList from "./components/TableButtonsAll.vue";
+import SignUp from "./components/PopupSignUp.vue";
+import SignIn from "./components/PopUpSignIn.vue";
+import stmHeader from "./components/Header.vue";
+import TableContent from "./components/TableBody.vue";
 
 import * as firebase from "firebase";
 
@@ -79,8 +77,6 @@ export default {
     SignUp,
     SignIn,
     stmHeader,
-    TestFirebase,
-    SignOut,
     TableContent
   },
 

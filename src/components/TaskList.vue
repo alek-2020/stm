@@ -122,12 +122,12 @@
 </template>
 
 <script>
-import listMenu from "./ListMenu.vue";
-import OneTask from "./Task.vue";
-import OneDoneTask from "./DoneTask.vue";
+import listMenu from "./TaskListMenu.vue";
+import OneTask from "./OneTaskCurrent.vue";
+import OneDoneTask from "./OneTaskDone.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
-import Emoji from "./Emoji";
-import ConfirmationWindow from "../Popups/Confirmation.vue";
+import Emoji from "./TaskListEmoji";
+import ConfirmationWindow from "./PopupConfirmation.vue";
 
 export default {
   data: function() {
@@ -388,7 +388,7 @@ export default {
     height: 17px;
     width: 17px;
     // background: gray;
-    background-image: url(../../../img/icons/add-task.svg);
+    background-image: url(../../img/icons/add-task.svg);
     background-size: 100%;
     margin-top: 10px;
   }

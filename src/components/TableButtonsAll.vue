@@ -87,9 +87,9 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
 
 //vuex
-import { store } from "../../store";
+import { store } from "../store";
 
-import TableListOne from "./TableListOneBtn.vue";
+import TableListOne from "./TableButtonOne.vue";
 import { functions } from "firebase";
 // import * as firebase from "firebase";
 

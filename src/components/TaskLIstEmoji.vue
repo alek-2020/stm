@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { svgEmoji } from "../../OtherSrc/svg.js";
+import { svgEmoji } from "./../OtherSrc/svg.js";
 
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 

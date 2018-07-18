@@ -1,3 +1,5 @@
+//TODO: Оформить страницу 404
+
 <template>
  <div class="">
   <div class="t-header">
@@ -111,10 +113,10 @@
 
 <script>
 import HeaderSettings from "./HeaderSettings.vue";
-import ThreeDotsMenu from "./ThreeDotsMenu.vue";
-import ConfirmationWindow from "../Popups/Confirmation.vue";
+import ThreeDotsMenu from "./HeaderDotsMenu.vue";
+import ConfirmationWindow from "./PopupConfirmation.vue";
 
-import { svgHeader } from "../../OtherSrc/svg.js";
+import { svgHeader } from "./../OtherSrc/svg.js";
 
 import * as firebase from 'firebase'
 
