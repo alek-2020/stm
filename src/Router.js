@@ -5,7 +5,7 @@ import Login from './components/PopupSignIn.vue'
 import Registration from './components/PopupSignUp.vue'
 import Table from './components/TableBody.vue'
 import NotFoundComponent from './components/404.vue'
-
+import ErrorMessage from './components/PopupError.vue'
 
 // import Login from './App.vue'
 
@@ -22,7 +22,7 @@ const routes = [
   //     TableContent: Table
   //   }
   // },
-
+  { path: '/error', components: { ErrorMessage: ErrorMessage }},
   { path: '/table/:link', components: 
     {
       TableContent: Table

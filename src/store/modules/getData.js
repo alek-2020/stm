@@ -4,7 +4,6 @@
 
 import router from './../../Router.js'
 
-
 import * as firebase from "firebase";
 
 export default {
@@ -19,22 +18,19 @@ export default {
             // 1. Получаем данные по id из users
             dispatch('altGetUserFB')
                 .then(response => {
-                    console.log('getData. Получили данные по id из users', response);
                     // 2. Пишем рабочие столы из tables в allTasks
                     const settings = response.settings;
                     // const obj = new Object();
                     dispatch('getSettings', settings);
                     //Продолжаем, если есть столы
-                    console.log('.getdata. просто тест');
                     if (response.tables != null) {
-                        console.log('.getdata. столы есть получаем задачи');
-                        
-
                         return dispatch('getDataSecondChain');
                     }
                 })
                 .catch(error => {
                     console.log(error);
+                    //если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
+                    router.push('/error/');
                 })
 
         },
@@ -44,22 +40,10 @@ export default {
         getDataSecondChain({ dispatch }) {
             dispatch('altGetTables')
                 .then(allTables => {
-                    console.log('getData. Записали рабочие столы из tables в allTasks', allTables);
-                    
-                    //Запишем урл активного стола
-                    // dispatch('pushActiveTableLink');
-                    
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
                     dispatch('getTaskLists');
                 }).then(() => {
-                    //Выполним побочные процессы, которым нужны загруженные данные
-                   
-                   
-                    console.log('чекаем наш урл', router.match(location) );
-
                     dispatch('checkUrl');
-
-
                 })
                 .catch(error => {
                     console.log(error);
@@ -68,28 +52,37 @@ export default {
         },
 
         ///Инициализация получения списка задач для активного Рабочего Стола, если он был загружен, то выводим из локальной переменную
-        startGetTasks({ dispatch, state, rootState }) {
+        /*
+          Возможные варианты на входе:
+          ---Ни одного стола не загружено
+          ---Есть загруженные, но не загружен текущий
+          ---Загружены все столы
+
+          Поидее нужно сделать: 
+          1. При смене стола отправляем запрос на загрузку
+          2. Загрузчик смотрит id стола(индекс наверное нет) и грузит по ним задачи
+          3. Если задача уже загружена, то ничего не делает
+          4. Если у нас начинается запись задач привязанных не к тому списку или
+          списков привязанных не к тому столу, то выдаем эрор и предлагаем перезагрузиться,
+          либо насильно перезагружаем.
+          5. Если у нас что-либо не догружается, то выдаем ошибку с предложением перезагрузиться, 
+          либо нужно добавить систему проверки, что бы она догружала, что нужно.
+        */
+        startGetTasks({ dispatch, rootState }) {
             return new Promise((resolve, reject) => {
-                //Выполняем только если текущий стол незагружен
+                //Если не загружено ни одного стола
                 if (rootState.allTasks.length < 1) {
-                    //если не подгружали вообще ни одного стола
-                    console.log('getdata. Инициализируем первичную загрузку столов. Массив ещё пуст.', rootState.allTables);
                     dispatch('firstGettingData');
                 } else {
-                    console.log('getdata. хотя бы одни стол есть в локальтом массиве', rootState.allTasks[rootState.activeTableIndex].taskLists);
-
-                    //Чистим побочные массивы 
+                    //Чистим побочные массивы, если уже загружили столы
                     rootState.tasksFB = [];
                     rootState.taskLists = [];
 
+                    //Если есть загруженные, но текущий стол не загружег
                     if (rootState.allTasks[rootState.activeTableIndex].taskLists.length < 1) {
-                        //если есть загруженные , но текущий не загружен
-                        console.log('getdata. если есть загруженные , но текущий не загружен');
-
-                        // тогда сразу инициализируем этам загрузки списков
+                        // тогда сразу инициализируем загрузки списков
                         dispatch('getTaskLists');
                     } else {
-                        console.log('getdata. если так то это значит, что мы кликнули на уже загруженные РС, поэтому ничего не делаем');
                         // если так то это значит, что мы кликнули на уже загруженные РС, поэтому ничего не делаем
                     }
                 }
@@ -110,32 +103,32 @@ export default {
                     .once("value")
                     .then(data => {
 
-                         //Преобразуем объекты столов в массивы
-                         let arrayLists = [];
-                         let objLists = {};
-                         let obj = data.val();
+                        //Преобразуем объекты столов в массивы
+                        let arrayLists = [];
+                        let objLists = {};
+                        let obj = data.val();
 
-                         //Если получили пустой массив-невыполняем часть операций
-                         //И заменяем на пустой объет
-                         if(data.val() != null) {
+                        //Если получили пустой массив-невыполняем часть операций
+                        //И заменяем на пустой объет
+                        if (data.val() != null) {
                             let objLists = data.val().tables;
-                            for (var prop in objLists) { 
-                              arrayLists.push(objLists[prop]);
+                            for (var prop in objLists) {
+                                arrayLists.push(objLists[prop]);
                             };
-                         } else {
+                        } else {
                             obj = {}
-                         }
+                        }
 
                         rootState.userData = {
-                          tables: arrayLists,
-                          settings:  obj.settings
+                            tables: arrayLists,
+                            settings: obj.settings
                         };
 
                         console.log("getdata. первый запрос на сервер. получили данные по userId ", rootState.userData);
                         // dispatch('altGetTables');
                         resolve(obj);
                         // dispatch('getSettings', data.val().settings);
-                  
+
 
                     })
 
@@ -169,10 +162,10 @@ export default {
                             //Преобразуем объекты в массивы
                             let objLists = data.val().taskLists;
                             let arrayLists = [];
-                            for (var prop in objLists) { 
-                              arrayLists.push(objLists[prop]);
+                            for (var prop in objLists) {
+                                arrayLists.push(objLists[prop]);
                             };
-                            
+
                             rootState.userTables.push({
                                 taskLists: arrayLists
                             })
@@ -216,12 +209,12 @@ export default {
                         .then(data => {
 
 
-                         //Преобразуем объекты задач в массивы
-                         let objLists = data.val().tasks;
-                         let arrayLists = [];
-                         for (var prop in objLists) { 
-                           arrayLists.push(objLists[prop]);
-                         };
+                            //Преобразуем объекты задач в массивы
+                            let objLists = data.val().tasks;
+                            let arrayLists = [];
+                            for (var prop in objLists) {
+                                arrayLists.push(objLists[prop]);
+                            };
 
                             rootState.taskLists.push({
                                 tasks: arrayLists
@@ -316,16 +309,16 @@ export default {
                 //     localSettings.activeTable = -1;
                 // }
                 // console.log('getdata. Получили настройкли ', settings);
-                if(typeof settings == 'undefined') {
-                   localSettings = {}
+                if (typeof settings == 'undefined') {
+                    localSettings = {}
                 }
 
                 let bgImg = localSettings.bg;
-                if(typeof localSettings.bg == 'undefined') {
+                if (typeof localSettings.bg == 'undefined') {
                     console.log('фона нема ', typeof localSettings.bg);
                     bgImg = '/img/bg/stm-bg-2.jpg';
                 }
-                
+
                 rootState.currentBgImg = bgImg;
                 rootState.activeTableIndex = localSettings.activeTable;
                 console.log('getdata. Получили настройкии ', localSettings, settings);

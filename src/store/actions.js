@@ -406,5 +406,9 @@ export default {
             dispatch('showBadNews', 'Ошибка изменения Emoji');
         });
 
+     },
+
+     scrollListDown() {
+       console.log("СкролимЛистВНиз");
      }
 }
