@@ -43,6 +43,9 @@
        <router-view name="TableContent"  v-if="authorised"></router-view>
     </transition> 
 
+
+       <router-view name="bigError"  v-if="authorised"></router-view>
+
    <!-- <TableContent></TableContent>  -->
 
     <!-- <router-view name="NotFoundComponent"></router-view> -->
@@ -54,10 +57,15 @@
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
 
+      <!-- Окна сообщений -->
+    <GoodBadNewsMessage>
+    </GoodBadNewsMessage>
+
   </div>
 </template>
 
 <script>
+import GoodBadNewsMessage from  "./components/MessageNewsGoodBad.vue"
 import tableList from "./components/TableButtonsAll.vue";
 import SignUp from "./components/PopupSignUp.vue";
 import SignIn from "./components/PopUpSignIn.vue";
@@ -78,14 +86,19 @@ export default {
     SignUp,
     SignIn,
     stmHeader,
-    TableContent
+    TableContent,
+    GoodBadNewsMessage
   },
 
   computed: {
     ...mapGetters({
       currentBgImg: "currentBgImg",
       authorised: "authorised"
-    })
+    }),
+    
+    getRoute() {
+      return this.$route.path;
+    }
   },
   methods: {},
   created() {
@@ -107,7 +120,19 @@ export default {
       }
     });
   },
-  mounted() {}
+  mounted() {},
+  watch: {
+    //Мониторим урл узера
+    getRoute(val) {
+      //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
+      console.log('Текущий адрес', val);
+      if(!this.authorised && val != "/login/" && val != "/registration/" ) {
+         console.log('Туда нельзя', val, "/login/");
+         this.$router.push('/login/');
+         this.$dispatch('showBadNews','Сначала авторизуйтесь или зарегистрируйтесь 😡')}
+      }
+      
+  }
 };
 </script>
 

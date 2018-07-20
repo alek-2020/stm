@@ -16,7 +16,7 @@ export default {
 
         firstGettingData({ dispatch }) {
             // 1. Получаем данные по id из users
-            dispatch('altGetUserFB')
+            dispatch('getUserData')
                 .then(response => {
                     // 2. Пишем рабочие столы из tables в allTasks
                     const settings = response.settings;
@@ -93,21 +93,37 @@ export default {
 
 
 
-
-        ///Получаем данные по юзеру по его id с БД (users)
-        altGetUserFB({ dispatch, commit, state, rootState }) {
+         
+        //Получаем данные юзера по его id из БД (users)
+        /*
+          На входе важен только userId
+          Возможные варианты: 
+          --Юзер id есть
+          ----Все проходит ок
+          ----Вылетает ошибка полключение либа любая др
+          --Юзер id нет
+          ----Мы 100% получаем эрор.
+         
+         Действия:
+            ====Если отсутствует userId то выполняем logOut и юзера автоматом кидает на авторизашку
+            ====Если ошибка выполнения функции Предлагаем перезагрузиться, кидаем ошибку аутентификации(получения user id)
+         */
+        getUserData({ rootState }) {
             return new Promise((resolve, reject) => {
+                const uId = rootState.userId;
+                if(!uId) {
+                    //Выход из лк и редирект на логин     
+                }
+
                 firebase
                     .database()
-                    .ref("users/" + rootState.userId)
+                    .ref("users/" + uId)
                     .once("value")
                     .then(data => {
-
                         //Преобразуем объекты столов в массивы
                         let arrayLists = [];
                         let objLists = {};
                         let obj = data.val();
-
                         //Если получили пустой массив-невыполняем часть операций
                         //И заменяем на пустой объет
                         if (data.val() != null) {
@@ -134,6 +150,8 @@ export default {
 
                     .catch(error => {
                         console.log('Полный провал. Ошибка: ', error);
+                        dispatch('showBigError', error);
+                        reject();
                     })
 
 

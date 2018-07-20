@@ -172,20 +172,7 @@ export default {
     },
     //Выход
     logOut() {
-      firebase.auth().signOut()
-      .then(data => {
-        console.log('Вышли из учетки ', data);
-        this.$store.dispatch('showGoodNews', 'Вышли из учетной записи');
-        this.$store.state.authorised = false;
-        //чистим все данные 
-        this.$store.state.allTasks = [];
-        this.$store.state.allTables = [];
-        this.$store.state.userData = [];
-        this.$store.state.taskLists = [];
-      })
-      .catch(error => {
-        this.$store.dispatch('showBadNews', 'Ошибка выхода из учетнои записи. ' + error);
-      })
+        this.$store.dispatch('logOut');
     },
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;

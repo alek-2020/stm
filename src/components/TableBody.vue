@@ -40,9 +40,7 @@
   </VuePerfectScrollbar>
  
 
-    <!-- Окна сообщений -->
-    <GoodBadNewsMessage>
-    </GoodBadNewsMessage>
+
 
 
 
@@ -61,7 +59,6 @@
 
 <script>
 import TaskList from "./TaskList.vue"
-import GoodBadNewsMessage from  "./MessageNewsGoodBad.vue"
 
 import { mapGetters } from "vuex"
 
@@ -242,7 +239,6 @@ export default {
   components: {
     TaskList,
     VuePerfectScrollbar,
-    GoodBadNewsMessage
   }
 };
 </script>

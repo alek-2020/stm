@@ -22,7 +22,7 @@ const routes = [
   //     TableContent: Table
   //   }
   // },
-  { path: '/error', components: { ErrorMessage: ErrorMessage }},
+  { path: '/error', components: { bigError: ErrorMessage }},
   { path: '/table/:link', components: 
     {
       TableContent: Table
