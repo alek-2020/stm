@@ -100,7 +100,12 @@ export default {
       return this.$route.path;
     }
   },
-  methods: {},
+  methods: {
+    callLinksHandler(link) {
+        if(!link) link = this.getRoute;
+        this.$store.dispatch('linksHandler', {link});
+    }
+  },
   created() {
     const t = this;
     //Проверяем юзера на наличие авторизации
@@ -116,21 +121,16 @@ export default {
         console.log("No user is signed in");
         t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
         //Засейвим фон
-        t.$router.replace("/login/");
+        this.callLinksHandler()
       }
     });
   },
   mounted() {},
   watch: {
-    //Мониторим урл узера
-    getRoute(val) {
-      //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
-      console.log('Текущий адрес', val);
-      if(!this.authorised && val != "/login/" && val != "/registration/" ) {
-         console.log('Туда нельзя', val, "/login/");
-         this.$router.push('/login/');
-         this.$dispatch('showBadNews','Сначала авторизуйтесь или зарегистрируйтесь 😡')}
-      }
+    //Мониторим урл узера и отпарвлям на проверку
+    getRoute(link) {
+      this.callLinksHandler(link);
+    }
       
   }
 };

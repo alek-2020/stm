@@ -115,7 +115,8 @@ export default {
 
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("startGetTasks");
-          this.$router.push("/table/");
+          // this.$router.push("/table/");
+          this.$store.dispatch("linksHandlier");
           // console.log('Авторизашка после авторизашки', firebase);
         })
         .catch(error => {
