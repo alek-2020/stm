@@ -20,7 +20,7 @@ export default {
             if (!toLink) { toLink = 'null' }
             if (!linkId) { linkId = 'null' }
             console.log('нажали упарвляющая функция жива', rootState.authorised, toLink.indexOf("/table/"), link, toLink);
-
+   
             //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
             if (!rootState.authorised && link != "/login/" && link != "/registration/") {
                 router.push('/login/');
