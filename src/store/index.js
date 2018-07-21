@@ -9,6 +9,7 @@ import getData from './modules/getData'
 import newTable from './modules/newTable'
 import newTaskList from './modules/newTaskList'
 import newTask from './modules/newTask'
+import routeHandlers from './modules/routeHandlers'
 
 import * as firebase from "firebase";
 
@@ -114,7 +115,8 @@ export const store = new Vuex.Store({
         getData,
         newTable,
         newTaskList,
-        newTask
+        newTask,
+        routeHandlers
     },
 
 })
