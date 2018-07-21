@@ -321,10 +321,11 @@ export default {
 
     pushActiveTableLink({ dispatch, commit, state }) {
         console.log(router.match(location));
-        console.log('Пушим ссылку, так как нет никакой', state.activeTableIndex, state.allTasks);
+        // console.log('Пушим ссылку, так как нет никакой', state.activeTableIndex, state.allTasks);
         let id = state.allTasks[state.activeTableIndex].id;
         let url = id.slice(id.length - 6);
-        router.push({ path: `/table/${url}` });
+        // router.push({ path: `/table/${url}` });
+        dispatch('linksHandler', { toLink: `/table/${url}` });
     },
 
     //если в новой ссылке на стол есть значение
@@ -428,23 +429,41 @@ export default {
             })
     },
 
-    linksHandler({ dispatch, state }, { link, toLink}) {
-        console.log('упарвляющая функция жива', link);
+    /*
+       Метод вызывается на сдедующих этапах:
+       ---Если ссылка изменяется-оправляем текущий адрес для проверки. 
+       Если юзер неавторизовар - редиректим его на логин
+       ---При клике на кнопку стола - отправляем toLink с урлом текущего стола 
+       ---
+    */
+    linksHandler({ dispatch, state }, { link, toLink, linkId}) {
+        if(!link) {link = 'null'}
+        if(!toLink) {toLink = 'null'}
+        if(!linkId) {linkId = 'null'}
+        console.log('нажали упарвляющая функция жива', toLink.indexOf("/table/"), link, toLink);
 
         //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
         if (!state.authorised && link != "/login/" && link != "/registration/") {
             router.push('/login/');
             dispatch('showBadNews', 'Сначала авторизуйтесь или зарегистрируйтесь 😡')
-        } else if(toLink === "/table/" && state.authorised) {
+        // } else if(toLink === "/table/" && state.authorised) {
+        //     //При авторизации. поидее сейчас мы делаем не правильно и нам нужно поставить адрес активного стола
+        //     router.push(toLink);
+        } else if(toLink.indexOf("/table/") >=0  && !state.authorised) {
+            //Если направили на столы и чувак не авторизован значит, что-то не так. оправим его на авторизацию
+            dispatch('logOut');
+            router.push('/login');
+        } else if(toLink.indexOf("/table/") >= 0 && toLink.split('/')[2].length > 0 && state.authorised) {
+            //При нажатии на кн стола, если есть /table/ и указан его адрес
+            router.push(toLink);
+        } else if(toLink === '/error/') {
+            //Если пушим ошибку юзеру
             router.push(toLink);
         }
 
-        дописать linksHadler
-        вывести ошибку при ошибку получения данных
+        // дописать linksHadler
+        // вывести ошибку при ошибку получения данных
         // Придумать условие для переадресации на рс
         // if(state.authorised)
-
-        
-
     }
 }

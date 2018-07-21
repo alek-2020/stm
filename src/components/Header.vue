@@ -51,7 +51,7 @@
 
               <div class="table-settings"
                 v-html="settingsIcon"
-                :class="{ 'table-settings_hidden': !tableSettingsVisible }"
+                :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
                 @click="showTableSettings"
                 ></div>
               
@@ -604,8 +604,11 @@ $h-small-icons-col: rgb(56, 56, 56);
   opacity: 1;
   left: 0;
   margin: 0 5;
-
   transition: all 0.2s;
+
+  &:hover svg{
+    fill: $h-small-icons-col;
+  }
 
   &_hidden {
     left: -30px;
@@ -617,7 +620,8 @@ $h-small-icons-col: rgb(56, 56, 56);
   & > svg {
     height: 20px;
     margin: auto;
-    fill: $h-small-icons-col;
+    // fill: $h-small-icons-col;
+    fill: gray;
   }
 }
 

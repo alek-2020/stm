@@ -88,14 +88,9 @@ export default ({
   },
   props: ["table", "index", "ifLasBtn"],
   methods: {
-    test2() {
-      console.log("Клик!");
-    },
 
     changeUrl(url) {
-      console.log('Меняем урл на /table/'+url);
-      this.$router.push( {path: `/table/${url}` } );
-      // this.$router.link = url;
+      this.$store.dispatch('linksHandler', { toLink: `/table/${url}` });
     },
 
     changeActiveTable(index) {

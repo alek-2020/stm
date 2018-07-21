@@ -155,7 +155,8 @@ export default {
                         //Нужно запушить урл нового стола в адресную стр.
                         console.log('Пушим в роутер');
                         let fourCharId = newTableId.slice(newTableId.length - 6);
-                        router.push('/table/' + fourCharId);
+                        // router.push('/table/' + fourCharId);
+                        dispatch('linksHandler', { toLink: `/table/'${fourCharId}`})
                         resolve(newTableId);
                         // TODO: undefined при создании нового стола новым юзером
                     })

@@ -116,21 +116,10 @@ export default {
       console.log('Отсдеживание allTasks из table ', this.allTasks)
     },
 
- 
-
-    //Отслеживаем url, что бы выводить нужный адрес
-    $route(to, from) {
-      console.log("Изменился адрес", to.params.link);
-
-      if (this.$route.params.link != null) {
-        console.log("Есть ссылка на стол");
-        this.$store.dispatch("changeActiveTable", this.$route.params.link);
-      } else {
-        console.log("Нет ссылка на стол");
-        this.$store.dispatch("pushActiveTableLink");
-      }
-    }
   },
+
+
+  
   //  beforeRouteUpdate (to, from, next) {
   //      console.log('Изменился адрес', to, from);
   //   // не забываем вызвать next()
@@ -240,7 +229,8 @@ export default {
     TaskList,
     VuePerfectScrollbar,
   }
-};
+}
+
 </script>
 
 

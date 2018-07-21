@@ -30,7 +30,8 @@ export default {
                 .catch(error => {
                     console.log(error);
                     //если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
-                    router.push('/error/');
+                    // router.push('/error/');
+                    dispatch('linksHandler', { toLink: '/error/' });
                 })
 
         },

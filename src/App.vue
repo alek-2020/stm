@@ -128,8 +128,28 @@ export default {
   mounted() {},
   watch: {
     //Мониторим урл узера и отпарвлям на проверку
-    getRoute(link) {
-      this.callLinksHandler(link);
+    // getRoute(link) {
+    // },
+
+    $route(to, from) {
+      // Отправим упл на проверку
+      this.callLinksHandler(to.path);
+      
+      //Если в приходил ссылка на конкретный стол, то выполняем смену стола
+      //Тут расчет на то, что узер вбил ссылку, но минус в том, что метод будет выполняться и когда мы програмно меняем урл
+      if (to.params.link != null) {
+        console.log("Есть ссылка на стол");
+        this.$store.dispatch("changeActiveTable", this.$route.params.link);
+      } else {
+        //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
+        if( to.path.indexOf("/table/") === 0 ) {
+          this.$store.dispatch("pushActiveTableLink");
+        } else {
+          //Пока что ничего не делаем
+          // console.log("Нет ссылка на стол");
+        }
+
+      }
     }
       
   }
