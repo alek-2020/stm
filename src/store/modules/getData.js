@@ -39,7 +39,7 @@ export default {
         //Cледующая цепочка, которая выполняется тольк если у нас есть
 
         getDataSecondChain({ dispatch }) {
-            dispatch('altGetTables')
+            dispatch('getUserTables')
                 .then(allTables => {
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
                     dispatch('getTaskLists');
@@ -94,7 +94,7 @@ export default {
 
 
 
-         
+
         //Получаем данные юзера по его id из БД (users)
         /*
           На входе важен только userId
@@ -112,7 +112,7 @@ export default {
         getUserData({ rootState }) {
             return new Promise((resolve, reject) => {
                 const uId = rootState.userId;
-                if(!uId) {
+                if (!uId) {
                     //Выход из лк и редирект на логин     
                 }
 
@@ -130,18 +130,19 @@ export default {
                         if (data.val() != null) {
                             let objLists = data.val().tables;
                             for (var prop in objLists) {
-                                arrayLists.push(objLists[prop]);
+                                arrayLists.push({ id: objLists[prop]});
                             };
                         } else {
                             obj = {}
                         }
 
                         rootState.userData = {
-                            tables: arrayLists,
                             settings: obj.settings
                         };
 
-                        console.log("getdata. первый запрос на сервер. получили данные по userId ", rootState.userData);
+                        //Пишел заготовки объектов с id для парсинга
+                        rootState.allTasks = arrayLists;
+                        // console.log("getdata. первый запрос на сервер. получили данные по userId ", rootState.userData);
                         // dispatch('altGetTables');
                         resolve(obj);
                         // dispatch('getSettings', data.val().settings);
@@ -161,22 +162,20 @@ export default {
         },
 
         ///Получаем рабочие столы с БД
-        altGetTables({ dispatch, commit, state, rootState }) {
+        getUserTables({ dispatch, commit, state, rootState }) {
             return new Promise((resolve, reject) => {
 
-
-
-
-                rootState.userData.tables.forEach((element, i) => {
+                rootState.allTasks.forEach((element, i) => {
+                    const tableId = element.id
                     firebase
                         .database()
-                        .ref("tables/" + element)
+                        .ref("tables/" + tableId)
                         .once('value')
                         .then(data => {
 
                             //Получим адрес стола. Это будут последние 6 цифр от id
-                            let tableUrl = element.slice(element.length - 6);
-                            console.log('Вырезанный кусок id ', tableUrl, element);
+                            let tableUrl = tableId.slice(tableId.length - 6);
+                            console.log('Вырезанный кусок id ', tableUrl, tableId);
 
                             //Преобразуем объекты в массивы
                             let objLists = data.val().taskLists;
@@ -188,17 +187,16 @@ export default {
                             rootState.userTables.push({
                                 taskLists: arrayLists
                             })
-
-                            rootState.allTasks.push({
-                                id: element,
-                                'name': data.val().name,
-                                colorId: data.val().colorId,
-                                colorOne: data.val().colorOne,
-                                colorTwo: data.val().colorTwo,
-                                taskLists: [],
-                                tableIndex: data.val().tableIndex,
-                                tableUrl: tableUrl
-                            })
+                            
+                            //Дописываем получанные данные в массив
+                            const table = rootState.allTasks[i]
+                            table.name = data.val().name
+                            table.colorId = data.val().colorId
+                            table.colorOne = data.val().colorOne
+                            table.colorTwo = data.val().colorTwo
+                            table.taskLists = []
+                            table.tableIndex = data.val().tableIndex
+                            table.tableUrl = tableUrl
 
                             if ((i + 1) == rootState.userData.tables.length) {
                                 resolve(rootState.allTasks);
