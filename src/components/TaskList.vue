@@ -264,12 +264,12 @@ export default {
   computed: {
     //Цветовая схема списка
     MainListColor() {
-      // console.log( 'цвет списка', this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex], this.themeColorId, this.$store.state.gradients[this.themeColorId]);
+      console.log( 'цвет списка', this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex], this.themeColorId, this.$store.state.gradients[this.themeColorId]);
       return this.$store.state.gradients[this.themeColorId];
     },
     themeColorId() {
 
-      if(this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color != null) {
+      if(this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color != null ) {
           return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color;
       } else {
          return 0

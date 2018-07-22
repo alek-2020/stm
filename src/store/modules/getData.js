@@ -39,6 +39,7 @@ export default {
         //Cледующая цепочка, которая выполняется тольк если у нас есть
 
         getDataSecondChain({ dispatch }) {
+            console.log('Вторая цепочка пошла');
             dispatch('getUserTables')
                 .then(allTables => {
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
@@ -130,7 +131,14 @@ export default {
                         if (data.val() != null) {
                             let objLists = data.val().tables;
                             for (var prop in objLists) {
-                                arrayLists.push({ id: objLists[prop] });
+                                arrayLists.push({ id: objLists[prop],
+                                name: null,
+                                colorId: null,
+                                colorOne: null,
+                                taskLists: [],
+                                tableIndex: null,
+                                tableUrl: null
+                            });
                             };
                         } else {
                             obj = {}
@@ -164,8 +172,8 @@ export default {
         ///Получаем рабочие столы с БД
         getUserTables({ dispatch, commit, state, rootState }) {
             return new Promise((resolve, reject) => {
-                const table = rootState.allTasks
-                table.forEach((element, i) => {
+                const tables = rootState.allTasks
+                tables.forEach((element, i) => {
                     const tableId = element.id
                     firebase
                         .database()
@@ -181,7 +189,14 @@ export default {
                             let objLists = data.val().taskLists;
                             let arrayLists = [];
                             for (var prop in objLists) {
-                                arrayLists.push({ id: objLists[prop] });
+                                arrayLists.push({ 
+                                    id: objLists[prop],
+                                    name: null,
+                                    color: null,
+                                    tasks: [],
+                                    listIndex: null,
+                                    emojiIndex: null
+                                 });
                             };
 
                             // rootState.userTables.push({
@@ -189,16 +204,19 @@ export default {
                             // })
 
                             //Дописываем получанные данные в массив
-                            
-                            table[i].name = data.val().name
-                            table[i].colorId = data.val().colorId
-                            table[i].colorOne = data.val().colorOne
-                            table[i].colorTwo = data.val().colorTwo
-                            table[i].taskLists = arrayLists
-                            table[i].tableIndex = data.val().tableIndex
-                            table[i].tableUrl = tableUrl
+                            //!!!!!!!С добавлением нового значения добавить его сюда и в массив выше, который назаначает свойство, что бы оно было реактивным
+                            tables[i].name = data.val().name
+                            tables[i].colorId = data.val().colorId
+                            tables[i].colorOne = data.val().colorOne
+                            tables[i].colorTwo = data.val().colorTwo
+                            tables[i].taskLists = arrayLists
+                            tables[i].tableIndex = data.val().tableIndex
+                            tables[i].tableUrl = tableUrl
 
-                            if ((i + 1) == table.length) {
+                            console.log('Итерация записи стола', tables);
+                            console.log('Итерация записи стола. Целевой массив', rootState.allTasks);
+
+                            if ((i + 1) == tables.length) {
                                 resolve(rootState.allTasks);
                             }
                         })
@@ -231,7 +249,12 @@ export default {
                             let objLists = data.val().tasks;
                             let arrayLists = [];
                             for (var prop in objLists) {
-                                arrayLists.push({ id: objLists[prop] });
+                                arrayLists.push({ 
+                                    id: objLists[prop],
+                                    text: null,
+                                    isDone: null,
+                                    taskListId: null        
+                                });
                             };
 
                             // rootState.taskLists.push({

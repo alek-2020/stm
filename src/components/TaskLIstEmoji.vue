@@ -60,9 +60,15 @@ export default {
            return this.listOfEmoji[this.currentEmojiIndex].svg;   
         },
         currentEmojiIndex() {
+           
            let emojiInd = this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].emojiIndex;
-           if(typeof emojiInd == "undefined") { emojiInd = 0 }
-           return emojiInd;
+           if(emojiInd != null) {
+                if(typeof emojiInd == "undefined") { emojiInd = 0 }
+                return emojiInd;
+           } else {
+                return 0;
+           }
+
         },
         allTasks() {
             return this.$store.state.allTasks;
