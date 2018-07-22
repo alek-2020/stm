@@ -28,11 +28,18 @@ export const store = new Vuex.Store({
             //Для баз данных
             userId: '',
             allTasks: [],
+
+            //Временные массивы для загрузки задач 
+            // userTables: [],
+            // tableTaskLists: [],
+            // listTasks: [],
+            masTables: [],
+            masTaskLists: [],
+            masTasks: [],
+            //Временный массив для записи настроек
             userData: [],
-            userTables: [],
-            taskLists: [],
-            tasksFB: [],
-            activeTableIndex: 0,
+
+            activeTableIndex: -1,
             activeTableUrl: '',
             tableSettingsActive: false,
             tableSettingsVisible: false,

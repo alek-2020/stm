@@ -385,11 +385,12 @@ export default {
             .then(data => {
                 rootState.authorised = false;
                 //чистим все данные 
-                rootState.allTasks = [];
-                // rootState.allTables = [];
-                // rootState.userData = [];
-                // rootState.taskLists = [];
+                rootState.allTasks = []
                 rootState.userId = '';
+                rootState.masTaskLists = [],
+                rootState.masTasks = [],
+                rootState.masTables = []
+
             })
             .catch(error => {
                 dispatch('showBadNews', 'Ошибка выхода из учетнои записи. ' + error);
