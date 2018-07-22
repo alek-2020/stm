@@ -76,12 +76,14 @@ export default {
         },
 
         pushActiveTableLink({ dispatch, commit, rootState }) {
-            console.log(router.match(location));
+            // console.log(router.match(location));
             // console.log('Пушим ссылку, так как нет никакой', rootState.activeTableIndex, rootState.allTasks);
-            let id = rootState.allTasks[rootState.activeTableIndex].id;
-            let url = id.slice(id.length - 6);
-            // router.push({ path: `/table/${url}` });
-            dispatch('linksHandler', { toLink: `/table/${url}` });
+            let activeTable = rootState.allTasks[rootState.activeTableIndex];
+            if(activeTable != null) {
+                let url = activeTable.id.slice(activeTable.id.length - 6);
+                // router.push({ path: `/table/${url}` });
+                dispatch('linksHandler', { toLink: `/table/${url}` });
+            }
         },
 
     }

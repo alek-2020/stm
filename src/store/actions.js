@@ -386,9 +386,9 @@ export default {
                 rootState.authorised = false;
                 //чистим все данные 
                 rootState.allTasks = [];
-                rootState.allTables = [];
-                rootState.userData = [];
-                rootState.taskLists = [];
+                // rootState.allTables = [];
+                // rootState.userData = [];
+                // rootState.taskLists = [];
                 rootState.userId = '';
             })
             .catch(error => {
