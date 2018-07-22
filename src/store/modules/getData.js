@@ -77,7 +77,6 @@ export default {
                     dispatch('firstGettingData');
                 } else {
                     //Чистим побочные массивы, если уже загружили столы
-                    // rootState.masTaskLists = []
                     /* 
                     Чистим только массив с задачами, потому что он на каждой странице разный
                      Массив со списками на каждом столе используется только раз при открытии стола, поэтому он может оставиться не изменным
@@ -226,6 +225,7 @@ export default {
         ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
         getTableTaskLists({ dispatch, commit, state, rootState }) {
             const ind = rootState.activeTableIndex;
+            const activeTableId = rootState.masTables[ind].id
             const list = rootState.allTasks[ind].taskLists
         
             //Выполняем только если у нас есть привязанные к столу списки
@@ -253,13 +253,15 @@ export default {
 
                             list.push({
                                 id: listId,
+                                tableId: activeTableId,
                                 name: data.val().name,
                                 color: data.val().color,
                                 tasks: [],
                                 listIndex: data.val().listIndex,
                                 emojiIndex: data.val().emojiIndex,
                             })
-                            dispatch('getListTasks', index);
+                            let i = index;
+                            dispatch('getListTasks', {i, listId});
                         })
                         .catch(error => {
                             console.log('Полный провал. Ошибка: ', error);
@@ -270,13 +272,16 @@ export default {
 
 
         ///Получаем задачи очередного списка
-        getListTasks({ dispatch, commit, state, rootState }, i) {
+        getListTasks({ dispatch, commit, state, rootState }, {i, listId}) {
             console.log('habra Сформировали id задач', rootState.masTasks , rootState.allTasks);
             const ind = rootState.activeTableIndex;
+            const activeTableId = rootState.masTables[ind].id
             let tasks = rootState.allTasks[ind].taskLists[i].tasks
+            let indexChecker
             //Выполняем если есть привязанные к списку задачи
             if (tasks != null) {
             rootState.masTasks[i].forEach((element, index) => {
+                indexChecker = index
                     const taskId = element.id
                     firebase
                         .database()
@@ -291,6 +296,8 @@ export default {
 
                             tasks.push({
                               id: taskId,
+                              taskListId: listId,
+                              tableId: activeTableId,
                               text: data.val().text,
                               isDone: data.val().isDone,
                               taskListId: data.val().taskListId
@@ -305,8 +312,20 @@ export default {
                         .catch(error => {
                             console.log('Полный провал. Ошибка: ', error);
                         })
+                 
+                        console.log('habrabra итерация ', (rootState.masTasks[i].length - 1) === index, (rootState.masTaskLists[ind].length - 1) === i);
+                            //Если у нас последняя итерация-отправим массив allTasks на проверку корректности заполнения
+                            // console.log('habrabra', rootState.allTasks);
+                            //Если последняя задача списка и последний список стола
+                            if((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) {
+                                console.log('habrabra вывод закочен');
+                                //то проверим наш вывод на корректность
+                                dispatch('verifyTable');
+                            }
+              
+                    });
 
-                });
+
             }
         },
 
@@ -339,8 +358,8 @@ export default {
 
 
             })
+            
 
-            //Если у нас последняя итерация-отправим массив allTasks на проверку корректности заполнения
         }
 
     }
