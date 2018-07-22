@@ -85,7 +85,6 @@ import Vue from "vue";
 //скролл
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
-
 //vuex
 import { store } from "../store";
 

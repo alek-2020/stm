@@ -264,11 +264,16 @@ export default {
   computed: {
     //Цветовая схема списка
     MainListColor() {
-      console.log( 'цвет списка', this.$store.state.gradients[this.themeColorId]);
+      // console.log( 'цвет списка', this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex], this.themeColorId, this.$store.state.gradients[this.themeColorId]);
       return this.$store.state.gradients[this.themeColorId];
     },
     themeColorId() {
-        return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color;
+
+      if(this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color != null) {
+          return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color;
+      } else {
+         return 0
+      }
     },
     maxBoxHeightFunc() {
       return this.$store.state.taskListBoxHeight - 92 + "px";
@@ -291,23 +296,29 @@ export default {
 
     //фильтруем список по сделанным задачам
     currentTasks() {
-      const t = this.allTasks[this.activeTableIndex].taskLists[
-        this.taskListIndex
-      ].tasks;
-      return t.filter(function(task) {
-        return !task.isDone;
-      });
+      
+      const t = this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].tasks;
+      if(t != null) {
+          console.log('error', t);
+          return t.filter(function(task) {
+            return !task.isDone;
+          });
+      } else {
+        return []
+      }
       //  .filterBy(t.isDone);
     },
 
     doneTasks() {
-      const t = this.allTasks[this.activeTableIndex].taskLists[
-        this.taskListIndex
-      ].tasks;
-      return t.filter(function(task) {
-        return task.isDone;
-      });
-      //  .filterBy(t.isDone);
+      const t = this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].tasks;
+      if(t != null) {
+        return t.filter(function(task) {
+          return task.isDone;
+        });
+        //  .filterBy(t.isDone);
+      } else {
+        return []
+      }
     }
 
     //   taskBoxHeight() {
