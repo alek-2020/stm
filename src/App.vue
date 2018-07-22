@@ -93,11 +93,14 @@ export default {
   computed: {
     ...mapGetters({
       currentBgImg: "currentBgImg",
-      authorised: "authorised"
+      authorised: "authorised",
     }),
     
     getRoute() {
       return this.$route.path;
+    },
+    activeTableIndex() {
+      return this.$store.state.activeTableIndex
     }
   },
   methods: {
@@ -145,13 +148,18 @@ export default {
       } else {
         //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
         if( to.path.indexOf("/table/") === 0 ) {
-          this.$store.dispatch("pushActiveTableLink");
+          // this.$store.dispatch("pushActiveTableLink");
         } else {
           //Пока что ничего не делаем
           // console.log("Нет ссылка на стол");
         }
 
       }
+    },
+    //Cледим за изменением активного стола, что бы пушить новый адрес
+    activeTableIndex(to) {
+      console.log('Новый индексссс', to);
+      this.$store.dispatch('pushActiveTableLink');
     }
       
   }

@@ -12,10 +12,10 @@
     "testwatch": "jest --watchAll"
   },
   "dependencies": {
-    "@vue/cli-plugin-pwa": "^3.0.0-rc.3",
+    "@vue/cli-plugin-pwa": "^3.0.0-rc.5",
     "@vue/test-utils": "^1.0.0-beta.20",
     "firebase": "^5.3.0",
-    "vue": "^2.5.11",
+    "vue": "^2.5.16",
     "vue-click-outside": "^1.0.7",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-router": "^3.0.1",
@@ -27,10 +27,10 @@
     "not ie <= 8"
   ],
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-jest": "^23.2.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",

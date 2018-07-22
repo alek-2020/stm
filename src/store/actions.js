@@ -192,7 +192,7 @@ export default {
                 }
 
                 //запушим адрес
-                dispatch('pushActiveTableLink')
+                // dispatch('pushActiveTableLink')
             })
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);
@@ -316,7 +316,7 @@ export default {
 
             dispatch('changeActiveTable', url)
         } else {
-            dispatch('pushActiveTableLink')
+            // dispatch('pushActiveTableLink')
             console.log('Нет ссылки на стол');
         }
     },

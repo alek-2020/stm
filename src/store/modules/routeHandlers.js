@@ -13,8 +13,7 @@ export default {
    ---Выдача ошибки при загрузке/отправке данных
    ---При создании нового стола пушим аго ссылку
    ---При удалении стола пушим новый активный(который перед ним, если он не первый)
-
-*/
+   */
         linksHandler({ dispatch, rootState }, { link, toLink, linkId }) {
             if (!link) { link = 'null' }
             if (!toLink) { toLink = 'null' }
@@ -75,6 +74,7 @@ export default {
             // }
         },
 
+        //Выполняется на автомате при изменении индекса активного стола
         pushActiveTableLink({ dispatch, commit, rootState }) {
             // console.log(router.match(location));
             // console.log('Пушим ссылку, так как нет никакой', rootState.activeTableIndex, rootState.allTasks);
