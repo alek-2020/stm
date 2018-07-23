@@ -333,7 +333,7 @@ export default {
         console.log('Наш текст', state.badNewsMes);
         setTimeout(function () {
             state.badNewsMes = [];
-        }, 1500)
+        }, 5000)
     },
 
     //Меняем цвет списка задач

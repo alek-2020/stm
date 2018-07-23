@@ -299,7 +299,6 @@ export default {
       
       const t = this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].tasks;
       if(t != null) {
-          console.log('error', t);
           return t.filter(function(task) {
             return !task.isDone;
           });
