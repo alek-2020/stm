@@ -71,6 +71,8 @@ import SignUp from "./components/PopupSignUp.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
 import TableContent from "./components/TableBody.vue";
+import VueTouch from 'vue-touch';
+
 
 import * as firebase from "firebase";
 

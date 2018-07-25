@@ -38,7 +38,9 @@
             </div>
                                  <!-- v-once :settings="settings" -->
 
-              <VuePerfectScrollbar class="task-list__scroll-box"
+              <VuePerfectScrollbar 
+                class="task-list__scroll-box"
+                ref="ps"
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
                     ref="inputsContainer">
@@ -150,6 +152,7 @@ export default {
   //    },
   // },
   methods: {
+   
     //Скрытие названия списка при открытом меню
     hideListName(val) {
       if(this.emojiState || this.menuState) {
@@ -200,7 +203,8 @@ export default {
         console.log('Высота контейнера в листе', this.taskBoxHeight);
         this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
         console.log("Пересчет высоты", this.taskBoxHeight);
-        // VuePerfectScrollbar.update();
+        this.$refs.ps.update()
+       // VuePerfectScrollbar.update();
       }
     },
     showDoneTasks() {
@@ -589,12 +593,7 @@ export default {
 //   }
 // }
 
-// @media screen and (min-width: 1150px) {
-//   .task-list {
-//     //( 100 - 3*3 )/2
-//      width: calc( 85% / 4 );
-//   }
-// }
+
 
 //Анимация для списка задач
 // .tasks-item {
@@ -650,5 +649,15 @@ export default {
 
 .doneBtn-enter-to {
   transition: opacity 0.5s;
+}
+
+// Подгоняем ширину списка на мобильных
+@media screen and (max-width: 400px) {
+  .task-list, 
+  .add-list__bg {
+    //( 100 - 3*3 )/2
+     width: 94vw;
+     min-width: 250px;
+  }
 }
 </style>

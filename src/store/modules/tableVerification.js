@@ -9,6 +9,7 @@ export default {
             const tableId = rootState.allTasks[ind].id
             let errors = []
 
+            //Проверка корректности вывода
             tableTasks.forEach((element, index) => {
                 //сравним id списка задач с id стола
                 if (element.tableId != tableId) {
@@ -37,6 +38,7 @@ export default {
                 })
             });
 
+            //Проверка на дубликаты
             let allTableTaks = []
 
             tableTasks.forEach((element, index) => {
@@ -64,6 +66,10 @@ export default {
             // FIXME: беспонечная загрузка после авторизации
             // TODO: На авторизации слайдер как на todoist с анимахами. можно что нибудь вроде стрелочки чекающей дурацкие задачи, либо что то дельное
 
+
+            //Проверка на количество
+            //Нужно подумать как это сделать без лишних движений
+            
             //Если есть хотя бы одна ошибка, то выводим массим в собщение в консоль и показываем фатал 
             if (errors.length > 0) {
                 console.log('ERROR! УЖАСНАЯ ОШИБКА У НАС ПРОИЗОШЛА. ВЫВОД НЕКОРРЕКТЕН УВАЖАЕМЫЙ!', errors);
