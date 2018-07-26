@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Login from './components/PopupSignIn.vue'
-import Registration from './components/PopupSignUp.vue'
 import Table from './components/TableBody.vue'
 import NotFoundComponent from './components/404.vue'
 import ErrorMessage from './components/PopupError.vue'
@@ -15,7 +14,7 @@ Vue.use(Router);
 const routes = [
   { path: '*', components: { NotFoundComponent }},
   { path: '*/login', components: { LogReg: Login }},
-  { path: '*/registration', components: { LogReg: Registration }},
+  { path: '*/registration', components: { LogReg: Login }},
     // { path: '/table/:name', components: 
   //   {
   //     LogReg: Login,

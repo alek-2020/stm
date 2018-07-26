@@ -1,4 +1,4 @@
-import * as firebase from "firebase";
+import firebase from "firebase"
 import router from './../Router.js'
 
 
@@ -396,6 +396,67 @@ export default {
                 dispatch('showBadNews', 'Ошибка выхода из учетнои записи. ' + error);
             })
     },
+
+    onSignIn({ dispatch, state }, {email, password}) {
+        const t = this;
+        //Перед авторизацией делаем сессию бесконечной
+        firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+          .then(() => {
+            return firebase
+              .auth()
+              .signInWithEmailAndPassword(email, password);
+              console.log('Авторизашка')
+          })
+          .then(user => {
+            const newUser = {
+              id: user.user.uid
+              //this.registerelM
+            };
+            // console.log("Авторизовались, все ОК", newUser.id);
+            state.userId = newUser.id;
+            console.log("Получили UserData по Id ");
+  
+            //Раз все ок грузим данные и переходим в столы
+            dispatch("startGetTasks");
+            // this.$store.dispatch("linksHandlier", { link: "null", toLink: "/table/" });
+          })
+          .catch(error => {
+            state.authErrorMessage = error.message;
+            this.stopSpinner();
+            console.log("Это провал. Ошибка: ", error);
+          });
+      },  
+      onSignup() {
+        // vuex
+  
+        console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
+          //Создаем юзера в файрбазе
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.email, this.password)
+            .then(user => {
+              console.log("Это успех. id юзера ", this.id);
+  
+              this.$store.state.userId = user.uid;
+              console.log("Получили id ", user.uid);
+              //Сейвим стандартный бг
+              this.$store.dispatch("saveBg");
+  
+              //Раз все ок грузим данные и переходим в столы
+              this.$store.dispatch("startGetTasks");
+              // this.$store.dispatch("linksHandlier", { link: null, toLink: "/table/" });
+  
+            
+            })
+            .catch(error => {
+              console.log("Полный провал. Ошибка: ", error);
+              this.$store.state.authErrorMessage = error.message;
+              this.stopSpinner();
+  
+           });
+      },
 
 
 }

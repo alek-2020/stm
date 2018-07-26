@@ -13,16 +13,16 @@
 
             <div class="log__title-block">
                 <span class="log__title">
-                    Авторизация
+                   {{ reg ? 'Регистрация' : 'Авторизация' }} 
                 </span>
                 <span class="log__or">
-                    или <router-link to="/registration/"
+                    или <router-link :to='returnLink'
                          @keypress="wipeErrors(); stopSpinner();"
-                         >Регистрация</router-link>
+                         >{{ reg ? 'Авторизация' : 'Регистрация' }}</router-link>
                 </span>  
             </div>
       <form class="log__form" action="" 
-       @submit.prevent="onSignIn(); runSpinner();">
+       @submit.prevent="submitForm(); runSpinner();">
        <label for="email" class="log__input-label log__input-label_mail">
           <input 
           name="email"
@@ -48,7 +48,9 @@
 
         <button type="submit">
             <span
-             v-if="!spinnerActive">Вход</span>
+             v-if="!spinnerActive">
+              {{ reg ? 'Регистрация' : 'Вход' }}  
+            </span>
             <img
              v-else
              height="30px" src='../../img/spinners/load-spinner-white.svg'>
@@ -69,6 +71,8 @@ import RegAuthError from "./PopupSignInError.vue";
 export default {
   data() {
     return {
+      //Триггер для включения режима регистрации
+      reg: false,
       spinnerActive: false,
       email: "",
       password: "",
@@ -90,9 +94,12 @@ export default {
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
     },
+    submitForm() {
+       this.reg ? this.onSignIn() : this.onSignUp()
+    },
     onSignIn() {
       // vuex
-
+      
       console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
       const t = this;
       //Перед авторизацией делаем сессию бесконечной
@@ -120,15 +127,82 @@ export default {
         .catch(error => {
           this.$store.state.authErrorMessage = error.message;
           this.stopSpinner();
-         console.log("Это провал. Ошибка: ", error);
-       
-       });
+          console.log("Это провал. Ошибка: ", error);
+        });
+    },  
+    onSignUp() {
+      // vuex
+
+      console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
+        //Создаем юзера в файрбазе
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(user => {
+            console.log("Это успех. id юзера ", this.id);
+
+            this.$store.state.userId = user.uid;
+            console.log("Получили id ", user.uid);
+            //Сейвим стандартный бг
+            this.$store.dispatch("saveBg");
+
+            //Раз все ок грузим данные и переходим в столы
+            this.$store.dispatch("startGetTasks");
+            // this.$store.dispatch("linksHandlier", { link: null, toLink: "/table/" });
+
+          
+          })
+          .catch(error => {
+            console.log("Полный провал. Ошибка: ", error);
+            this.$store.state.authErrorMessage = error.message;
+            this.stopSpinner();
+
+         });
     },
+
+    //     onSignIn() {
+    //   email = this.email
+    //   password = this.password
+    //   this.$store.dispatch('onSignIn', {email, password})
+    // },
+    // onSignup() {
+    //   email = this.email
+    //   password = this.password
+    //   this.$store.dispatch('onSignup', {email, password})
+    // },
+    enableRegMode() {
+         //Если компонент появился на стр регистрации
+        if (this.route == "/registration/") {
+          this.reg = true
+          console.log('включили регмод')
+        } else {
+          this.reg = false
+        }
+    },
+    
+
     // goBack() {
     //   window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     // }
   },
+
+  mounted() {
+ 
+  }, 
+  watch: {
+     route: {
+       handler: 'enableRegMode',
+       immediate: true
+     }
+  },
   computed: {
+    returnLink() {
+      if(this.reg) {
+        return '/login/'
+      } else {
+        return '/registration/'
+      }
+    },
     userIdmeth() {
       return this.$store.state.userIdBro;
     },
@@ -137,6 +211,9 @@ export default {
     },
     authorised() {
       return this.$store.state.authorised;
+    },
+    route() {
+      return this.$route.path;
     }
   },
   components: {
@@ -253,31 +330,29 @@ export default {
   }
 }
 
-
-
-.log__input-label{
+.log__input-label {
   position: relative;
   &:before {
-      content: "";
-      display: block;
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 8px;
-      position: absolute;
-      height: 60%;
-      width: 25px;
+    content: "";
+    display: block;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 8px;
+    position: absolute;
+    height: 60%;
+    width: 25px;
   }
 }
 
 .log__input-label_mail:before {
-    background-image: url("/img/icons/envelope.svg");
+  background-image: url("/img/icons/envelope.svg");
 }
 
 .log__input-label_password:before {
-    background-image: url("/img/icons/padlock.svg");
+  background-image: url("/img/icons/padlock.svg");
 }
 </style>
 

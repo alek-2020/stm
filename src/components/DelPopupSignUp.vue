@@ -92,35 +92,7 @@ export default {
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
     },
-    onSignup() {
-      // vuex
-
-      console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
-        //Создаем юзера в файрбазе
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
-          .then(user => {
-            console.log("Это успех. id юзера ", this.id);
-
-            this.$store.state.userId = user.uid;
-            console.log("Получили id ", user.uid);
-            //Сейвим стандартный бг
-            this.$store.dispatch("saveBg");
-
-            //Раз все ок грузим данные и переходим в столы
-            this.$store.dispatch("startGetTasks");
-            // this.$store.dispatch("linksHandlier", { link: null, toLink: "/table/" });
-
-          
-          })
-          .catch(error => {
-            console.log("Полный провал. Ошибка: ", error);
-            this.$store.state.authErrorMessage = error.message;
-            this.stopSpinner();
-
-         });
-    },
+  
 
     // goBack() {
     //   window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");

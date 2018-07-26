@@ -40,7 +40,13 @@ export default {
             } else if (toLink === '/error/') {
                 //Если пушим ошибку юзеру
                 router.push(toLink);
-            }
+            } 
+            
+            
+            // if (link === '/registration/') {
+            //     //Переключаем модалку в режим регистрации
+                
+            // }
 
             // дописать linksHadler
             // вывести ошибку при ошибку получения данных

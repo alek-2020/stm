@@ -58,8 +58,7 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
 
       <!-- Окна сообщений -->
-    <GoodBadNewsMessage>
-    </GoodBadNewsMessage>
+    <GoodBadNewsMessage/>
 
   </div>
 </template>
@@ -67,7 +66,6 @@
 <script>
 import GoodBadNewsMessage from  "./components/MessageNewsGoodBad.vue"
 import tableList from "./components/TableButtonsAll.vue";
-import SignUp from "./components/PopupSignUp.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
 import TableContent from "./components/TableBody.vue";
@@ -85,7 +83,6 @@ export default {
   },
   components: {
     tableList,
-    SignUp,
     SignIn,
     stmHeader,
     TableContent,
