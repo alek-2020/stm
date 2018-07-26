@@ -23,28 +23,28 @@
             </div>
       <form class="log__form" action="" 
        @submit.prevent="onSignIn(); runSpinner();">
-        <input 
-        name="email"
-        label="Mail"
-        v-model="email"
-        id="email"
-        type="email"
-        required
-        class="inp__mail"
-        placeholder="Enter your mail"
-        @keypress="wipeErrors">
+       <label for="email" class="log__input-label log__input-label_mail">
+          <input 
+          name="email"
+          v-model="email"
+          id="email"
+          type="email"
+          required
+          class="inp__mail"
+          placeholder="Enter your mail"
+          @keypress="wipeErrors">
+      </label>
 
-
+      <label for="password" class="log__input-label log__input-label_password">
         <input 
         name="password"
-        label="Password"
         v-model="password"
         id="password"
         type="password"
         class="inp__pass"
         placeholder="Your password"
         @keypress="wipeErrors">
-
+      </label>
 
         <button type="submit">
             <span
@@ -238,7 +238,7 @@ export default {
   border-radius: 3px;
   border: solid 1px #bebebe;
   box-sizing: border-box;
-  padding-left: 45px;
+  padding-left: 40px;
   /*Отступ для центрирования по большим символам*/
   padding-top: 4px;
   font-size: 18px;
@@ -253,20 +253,31 @@ export default {
   }
 }
 
-.inp {
-  &__mail {
-    background-image: url("/img/icons/envelope.svg");
-    background-size: 23px;
-    background-position: 10px, 50%;
-    background-repeat: no-repeat;
-  }
 
-  &__pass {
-    background-image: url("/img/icons/padlock.svg");
-    background-size: 23px;
-    background-position: 10px, 50%;
-    background-repeat: no-repeat;
+
+.log__input-label{
+  position: relative;
+  &:before {
+      content: "";
+      display: block;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 8px;
+      position: absolute;
+      height: 60%;
+      width: 25px;
   }
+}
+
+.log__input-label_mail:before {
+    background-image: url("/img/icons/envelope.svg");
+}
+
+.log__input-label_password:before {
+    background-image: url("/img/icons/padlock.svg");
 }
 </style>
 

@@ -78,38 +78,48 @@ export const store = new Vuex.Store({
             gradients: [
                 {
                     colId: 0,
-                    colorOne: "#d24242",
-                    colorTwo: "#af4242"
-                },
-                {
+                    colorOne: "#C44499",
+                    colorTwo: "#5E1C45"
+                },                {
                     colId: 1,
-                    colorOne: "#f85725",
-                    colorTwo: "#8a5e41"
-                },
-                {
+                    colorOne: "#D687D9",
+                    colorTwo: "#63375D"
+                },                {
                     colId: 2,
-                    colorOne: "#e15656",
-                    colorTwo: "#825a5a"
-                },
-                {
+                    colorOne: "#8787D9",
+                    colorTwo: "#43365D"
+                },                {
                     colId: 3,
-                    colorOne: "#8fb554",
-                    colorTwo: "#5b917d"
-                },
-                {
+                    colorOne: "#467599",
+                    colorTwo: "#282F43"
+                },                {
                     colId: 4,
-                    colorOne: "#2a2a39",
-                    colorTwo: "#535472"
-                },
-                {
+                    colorOne: "#83C9DE",
+                    colorTwo: "#41515F"
+                },                {
                     colId: 5,
-                    colorOne: "#535472",
-                    colorTwo: "#2a2a39"
-                },
-                {
+                    colorOne: "#83DEC2",
+                    colorTwo: "#415A54"
+                },                {
                     colId: 6,
-                    colorOne: "#582121",
-                    colorTwo: "#bf3737"
+                    colorOne: "#46994C",
+                    colorTwo: "#283E24"
+                },                {
+                    colId: 7,
+                    colorOne: "#90B458",
+                    colorTwo: "#464828"
+                },                {
+                    colId: 8,
+                    colorOne: "#DCC73F",
+                    colorTwo: "#66511F"
+                },                {
+                    colId: 9,
+                    colorOne: "#EC7F49",
+                    colorTwo: "#6D3423"
+                },                {
+                    colId: 10,
+                    colorOne: "#C44446",
+                    colorTwo: "#5D1C22"
                 }
             ],
         }

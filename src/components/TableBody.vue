@@ -180,13 +180,16 @@ export default {
                   scrollTo = nextListLeft - space
                   console.log('У второго больше😃', scrollTo, nextListLeft, elLeft, space)
                 }
-            //Если правая часть первого видимого элемента больше
+                this.scrollTo(this.$refs.ps.$el, scrollTo, scrolled)
+
+          //Если правая часть первого видимого элемента больше
              } else if(((elLeft + elWidth) - scrolled) > elWidth / 2 ) {
                  scrollTo = elLeft - space
                  console.log('Второго нет и у первого большая часть видна', scrollTo);
-             }
+                 this.scrollTo(this.$refs.ps.$el, scrollTo, scrolled)
 
-            this.scrollTo(this.$refs.ps.$el, scrollTo)
+            }
+
             //  setTimeout(() => {
             //     this.$refs.ps.$el.scroll({ 
             //         top: 0, 
@@ -223,10 +226,15 @@ export default {
          })
        }
     },
-    scrollTo(element, distance) {
+    scrollTo(element, sclollTo, scrolled) {
       // function sideScroll(element,direction,speed,distance,step){
+          let direction = 'right'
+          let distance = scrollTo - scrolled
+          if(distance < 0) {
+            distance = Math.abs(distance)
+            direction = 'left'
+          }
           let step = 10
-          let direction = 'left'
           let speed = 1
 
           distance = Math.abs(distance)
@@ -294,17 +302,18 @@ export default {
 },
 
   mounted() {
+    /*Отслеживание убранного от экрана пальца для автофокуса.
+    Пока что на доработке
+   
     let t = this
-    //Ловим событие тача
-    // document.body.addEventListener('touchend', function(e){
-    //     t.$store.dispatch('showGoodNews', 'Нативный работает' ) // alert pageX coordinate of touch point
-    // }, false)
     if(this.$refs.ps.$el.clientWidth <= 400) {
         // TODO: сделать возможность отключения автофокуса в настройках. Но это не точно.
         this.$refs.taskListBox.addEventListener('touchend', function(e){
             t.listPositionCalc()
       }, false)
     }
+    */
+
     // this.$store.dispatch('updateActiveTable', 1);
     //     console.log('Урл при загрузке ', this.$route.path, this.$route.params.link);
     //     //При загрузке изменяем урл в зависимости от адреса, либо включаем урл последнего активного рс
