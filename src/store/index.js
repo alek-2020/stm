@@ -88,8 +88,8 @@ export const store = new Vuex.Store({
                     colorTwo: "#BCA35A"
                 }, {
                     colId: 2,
-                    colorOne: "#5680A0",
-                    colorTwo: "#39516A"
+                    colorOne: "#39516A",
+                    colorTwo: "#5680A0"
                 }, {
                     colId: 3,
                     colorOne: "#D85053",

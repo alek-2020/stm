@@ -44,7 +44,7 @@
                 @dblclick="tableActivation"
                 >
                 <input class="actTabName__inp" type="text"
-                  :class="{actTabName__inp_active:inputActive}"
+                  :class="{'actTabName__inp_active':inputActive}"
                   v-model="actTabName"
                   :disabled="!inputActive"
                   placeholder="Название стола"

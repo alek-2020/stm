@@ -37,9 +37,11 @@ export default {
     //         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
 
     startTableLoader(state) {
+       console.log('Врубили лоадер')
        state.tableLoaderActive = true
     },
     stopTableLoader(state) {
+       console.log('Убрали лоадер')
        state.tableLoaderActive = false
     }
   

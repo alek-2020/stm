@@ -73,7 +73,7 @@ export default {
           5. Если у нас что-либо не догружается, то выдаем ошибку с предложением перезагрузиться, 
           либо нужно добавить систему проверки, что бы она догружала, что нужно.
         */
-        startGetTasks({ dispatch, rootState }) {
+        startGetTasks({ dispatch, rootState, commit }) {
             return new Promise((resolve, reject) => {
                 //Если не загружено ни одного стола
                 if (rootState.allTasks.length < 1) {

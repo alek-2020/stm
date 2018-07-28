@@ -6,12 +6,16 @@
   v-bind:class="{'desk-btns__last': ifLasBtn}"
   v-bind:id=" 'tableBtn-' + table.BtnId"
   v-on:click = 'changeActiveTable(index); changeUrl(table.tableUrl)'
+  @dblclick="tableActivation"
   >
 
       <!-- input для вывода названия -->
       <input 
+      :class="{'desk-btns__input_active':inputActive}"
       class="desk-btns__input" 
       type="text"
+      ref="tableBtnInput"
+      :disabled="!inputActive"
       placeholder=""
       v-model="table.name"
       @focusout='changeTableTitle(table.name)'
@@ -48,6 +52,7 @@
 export default ({
   data() {
     return {
+      inputActive: false,
       gradients: [
         {
           colId: 1,
@@ -89,7 +94,20 @@ export default ({
   },
   props: ["table", "index", "ifLasBtn"],
   methods: {
-
+    tableActivation() {
+      let t = this;
+      console.log("Раз");
+      this.inputActive = true;
+      window.addEventListener("click", this.checkOuterClick);
+    },
+    checkOuterClick(el) {
+      console.log("Идентифkkикатор", el);
+      if (el.target != this.$refs.tableBtnInput) {
+        console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        this.inputActive = false;
+        window.removeEventListener("click",  this.checkOuterClick);
+      }
+    },
     changeUrl(url) {
       this.$store.dispatch('linksHandler', { toLink: `/table/${url}` });
     },
@@ -159,13 +177,8 @@ export default ({
     height: 76%;
     border-radius: 4px;
     padding: 0 8px;
-    box-sizing: content-box;
-    border-radius: 7px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
     border-right: none;
     outline: none;
-    /*            padding: 0 0 0 12px;*/
     font-size: 16px;
     font-weight: 600;
     border: none;
@@ -173,8 +186,12 @@ export default ({
     color: white;
     font-family: "Open Sans", sans-serif;
     white-space: nowrap;
-    /*            min-width: 100px;*/
     box-sizing: border-box;
+    &_active {
+      background: rgb(255, 255, 255);
+      user-select: unset;
+      color: #6b6b6b;
+    }
   }
 
   // буффер для инпута
