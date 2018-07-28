@@ -80,57 +80,45 @@ export const store = new Vuex.Store({
             gradients: [
                 {
                     colId: 0,
-                    colorOne: "#C44499",
-                    colorTwo: "#5E1C45"
-                },                {
+                    colorOne: "#D85053",
+                    colorTwo: "#7C4143"
+                }, {
                     colId: 1,
-                    colorOne: "#D687D9",
-                    colorTwo: "#63375D"
-                },                {
+                    colorOne: "#E2CE45",
+                    colorTwo: "#BCA35A"
+                }, {
                     colId: 2,
-                    colorOne: "#8787D9",
-                    colorTwo: "#43365D"
-                },                {
+                    colorOne: "#5680A0",
+                    colorTwo: "#39516A"
+                }, {
                     colId: 3,
-                    colorOne: "#467599",
-                    colorTwo: "#282F43"
-                },                {
+                    colorOne: "#D85053",
+                    colorTwo: "#7C4143"
+                }, {
                     colId: 4,
-                    colorOne: "#83C9DE",
-                    colorTwo: "#41515F"
-                },                {
+                    colorOne: "#C160A1",
+                    colorTwo: "#7F475F"
+                }, {
                     colId: 5,
-                    colorOne: "#83DEC2",
-                    colorTwo: "#415A54"
-                },                {
+                    colorOne: "#69AA6E",
+                    colorTwo: "#476949"
+                }, {
                     colId: 6,
-                    colorOne: "#46994C",
-                    colorTwo: "#283E24"
-                },                {
+                    colorOne: "#8383D0",
+                    colorTwo: "#57578C"
+                }, {
                     colId: 7,
-                    colorOne: "#90B458",
-                    colorTwo: "#464828"
-                },                {
-                    colId: 8,
-                    colorOne: "#DCC73F",
-                    colorTwo: "#66511F"
-                },                {
-                    colId: 9,
-                    colorOne: "#EC7F49",
-                    colorTwo: "#6D3423"
-                },                {
-                    colId: 10,
-                    colorOne: "#C44446",
-                    colorTwo: "#5D1C22"
-                }
+                    colorOne: "#E67D49",
+                    colorTwo: "#D06B3F"
+                },
             ],
         }
     },
- 
+
     mutations,
     actions,
     getters,
-    
+
     modules: {
         getData,
         newTable,

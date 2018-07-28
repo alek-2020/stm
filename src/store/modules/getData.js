@@ -333,6 +333,8 @@ export default {
                     });
 
 
+            } else {
+                commit('stopTableLoader')
             }
         },
 

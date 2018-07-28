@@ -256,7 +256,7 @@ a {
 .table-load-spinner {
   height: 80px;
   width: 80px;
-  background: #7d7d7dad;
+  background: rgba(0, 0, 0, .6);
   background-image: url("../img/spinners/load-spinner-white.svg");
   border-radius: 10px;
   position: fixed;
