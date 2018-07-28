@@ -12,6 +12,7 @@
       <input 
       class="desk-btns__input" 
       type="text"
+      placeholder=""
       v-model="table.name"
       @focusout='changeTableTitle(table.name)'
       @keyup.enter='changeTableTitle(table.name)'
@@ -124,7 +125,7 @@ export default ({
 .desk-btns {
   //  базовые стили кнопки
   &__one {
-    padding: 7px;
+    padding: 0 6px;
     font-family: "Roboto", sans-serif;
     background: linear-gradient(to bottom, #d24242, #af4242);
     display: inline-block;
@@ -155,8 +156,9 @@ export default ({
 
   // инпут внутри кнопки
   &__input {
-    /*            margin-left: 10px;*/
-    /*            height: 40px;*/
+    height: 76%;
+    border-radius: 4px;
+    padding: 0 8px;
     box-sizing: content-box;
     border-radius: 7px;
     border-top-right-radius: 0;
@@ -198,6 +200,8 @@ export default ({
     left: -4px;
     border-radius: 7px;
     box-sizing: border-box;
+    //Что бы не перекрывала инпут задвигаем кнопку назад
+    z-index: -10;
   }
 }
 </style>

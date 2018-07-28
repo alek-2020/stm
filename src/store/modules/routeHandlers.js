@@ -18,17 +18,18 @@ export default {
             if (!link) { link = 'null' }
             if (!toLink) { toLink = 'null' }
             if (!linkId) { linkId = 'null' }
-            console.log('нажали упарвляющая функция жива', rootState.authorised, toLink.indexOf("/table/"), link, toLink);
-   
+            console.log('нажали управляющая функция жива', rootState.authorised, toLink.indexOf("/table/"), link, toLink);
+
             //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
             if (!rootState.authorised && link != "/login/" && link != "/registration/") {
                 router.push('/login/');
                 dispatch('showBadNews', 'Сначала авторизуйтесь или зарегистрируйтесь 😡')
-                // } else if(toLink === "/table/" && rootState.authorised) {
-                //     //При авторизации. поидее сейчас мы делаем не правильно и нам нужно поставить адрес активного стола
-                //     router.push(toLink);
-            } else if(rootState.authorised && (link == "/login/" || link == "/registration/")) {
+            } else if (toLink === "/table/" && rootState.authorised) {
+                //При авторизации. поидее сейчас мы делаем не правильно и нам нужно поставить адрес активного стола
+                router.push(toLink);
+            } else if (rootState.authorised && (link == "/login/" || link == "/registration/")) {
                 //Если мы на странице авторизации и узер авторизован-перекинем его на активный рс
+                console.log('Управляющая 43');
                 dispatch('pushActiveTableLink');
             } else if (toLink.indexOf("/table/") >= 0 && !rootState.authorised) {
                 //Если направили на столы и чувак не авторизован значит, что-то не так. оправим его на авторизацию
@@ -40,12 +41,12 @@ export default {
             } else if (toLink === '/error/') {
                 //Если пушим ошибку юзеру
                 router.push(toLink);
-            } 
-            
-            
+            }
+
+
             // if (link === '/registration/') {
             //     //Переключаем модалку в режим регистрации
-                
+
             // }
 
             // дописать linksHadler
@@ -85,10 +86,12 @@ export default {
             // console.log(router.match(location));
             // console.log('Пушим ссылку, так как нет никакой', rootState.activeTableIndex, rootState.allTasks);
             let activeTable = rootState.allTasks[rootState.activeTableIndex];
-            if(activeTable != null) {
+            if (activeTable != null) {
                 let url = activeTable.id.slice(activeTable.id.length - 6);
                 // router.push({ path: `/table/${url}` });
                 dispatch('linksHandler', { toLink: `/table/${url}` });
+            } else {
+                dispatch('linksHandler', { toLink: `/table/` });
             }
         },
 

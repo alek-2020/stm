@@ -95,7 +95,7 @@ export default {
       this.$store.state.authErrorMessage = "";
     },
     submitForm() {
-       this.reg ? this.onSignIn() : this.onSignUp()
+       this.reg ? this.onSignUp() : this.onSignIn() 
     },
     onSignIn() {
       // vuex
@@ -119,10 +119,10 @@ export default {
           console.log("Авторизовались, все ОК", newUser.id);
           this.$store.state.userId = newUser.id;
           console.log("Получили UserData по Id ");
-
+          this.$store.dispatch('linksHandler', {link: this.route})
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("startGetTasks");
-          // this.$store.dispatch("linksHandlier", { link: "null", toLink: "/table/" });
+          this.$store.dispatch("linksHandlier", { toLink: "/table/" });
         })
         .catch(error => {
           this.$store.state.authErrorMessage = error.message;
@@ -148,7 +148,8 @@ export default {
 
             //Раз все ок грузим данные и переходим в столы
             this.$store.dispatch("startGetTasks");
-            // this.$store.dispatch("linksHandlier", { link: null, toLink: "/table/" });
+            this.$store.dispatch("linksHandlier", { toLink: "/table/" });
+            // this.$store.dispatch('linksHandler', {link: this.route})
 
           
           })

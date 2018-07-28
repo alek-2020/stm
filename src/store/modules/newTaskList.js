@@ -54,7 +54,7 @@ export default {
                 // console.log('.newTaskList. ', lastTaskInd, rootState.activeTableIndex, rootState.allTasks[rootState.activeTableIndex].taskLists.length, newListIndex);
                 //Формируем параметры нового списка
                 const newTaskList = {
-                    'name': 'Введите название списка',
+                    'name': '',
                     'color': 1,
                     'tasks': [],
                     'listIndex': newListIndex

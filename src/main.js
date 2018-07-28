@@ -1,16 +1,11 @@
 import Vue from 'vue'
-//Router
 import router from './Router.js'
-
-// import Router from 'vue-router'
 import App from './App.vue'
-
-//импортируем всю байду из firebase
 import * as firebase from 'firebase'
-
-//vuex
 import { store  } from './store'
+import VueI18n from 'vue-i18n'
 
+Vue.use(VueI18n)
 
 new Vue({
   el: '#app',

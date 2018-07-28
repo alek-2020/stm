@@ -26,6 +26,7 @@
                   <transition
                     name="fade">  
                       <input class="task-list__name" type="text"  
+                      placeholder="Название списка задач"
                       v-model="TList.name"
                       v-show="nameVisible"
                       @focusout='changeListTitle(TList.name)'
