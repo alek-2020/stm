@@ -20,7 +20,7 @@
           >
           <div class="btn btn_hover_gray text px-3"
            @click="HeaderAdd();"
-          >Новый стол</div>
+          >{{ $t("message.newTable") }}</div>
           <div class="btn btn btn_hover_gray text"
           @click="addList()"
           > Список задач</div>
