@@ -18,10 +18,10 @@
 
         <div class=" desk-btns__check-add"
           >
-          <div class="btn btn_hover_gray text px-3"
+          <div class="btn btn_hover_gray btn_icon_window text"
            @click="HeaderAdd();"
           >{{ $t("message.newTable") }}</div>
-          <div class="btn btn btn_hover_gray text"
+          <div class="btn btn_icon_list btn_hover_gray mt-2 text"
           @click="addList()"
           > Список задач</div>
         </div>
@@ -524,16 +524,27 @@ $h-small-icons-col: rgb(56, 56, 56);
     height: 50px;
     & .desk-btns__check-add {
       max-height: 400px;
-      padding: 5px;
+      max-width: 400px;
+      padding: 8px;
+      // display: block;
+      visibility: visible;
+      opacity: .95;
+      & > div {
+          border: solid 1px #656565;
+          padding: 5px;
+          justify-content: flex-start !important;
+      }
     }
   }
 
   &__check-add {
+    visibility: hidden;
+    // visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
-    margin-top: 35px;
-    opacity: 0.95;
+    margin-top: 45px;
+    opacity: 0;
     // background: $h-icons-bg-col;
     background: #efefef;
     border-radius: 4px;
@@ -543,7 +554,8 @@ $h-small-icons-col: rgb(56, 56, 56);
     white-space: nowrap;
     overflow: hidden;
     transition: all 0.3s;
-    max-height: 0;
+    max-height: 20px;
+    max-width: 20px;
     padding: 0 5px;
   }
 }
