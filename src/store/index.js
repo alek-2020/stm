@@ -19,6 +19,8 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state() {
         return {
+            //Лоадер загрузки списков стола
+            tableLoaderActive: true,
             authErrorMessage: '',
             //меню добавить
             addMenuActive: false,

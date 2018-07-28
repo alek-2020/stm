@@ -14,7 +14,8 @@ export default {
         // УПРАВЛЯЮЩАЯ ФУНКЦИЯ ПЕРВИЧНОГО ПОЛУЧЕНИЕ РАБ. СТ.
         /////////////////////////////////////////////////////
 
-        firstGettingData({ dispatch }) {
+        firstGettingData({ dispatch, commit }) {
+            commit('startTableLoader')
             // 1. Получаем данные по id из users
             dispatch('getUserData')
                 .then(response => {
@@ -32,6 +33,7 @@ export default {
                     //если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
                     // router.push('/error/');
                     dispatch('linksHandler', { toLink: '/error/' });
+                    commit('stopTableLoader')
                 })
 
         },
@@ -49,6 +51,7 @@ export default {
                 })
                 .catch(error => {
                     console.log(error);
+                    commit('stopTableLoader')
                 })
 
         },
@@ -86,10 +89,12 @@ export default {
                     //Если есть загруженные, но текущий стол не загружег
                     if (rootState.allTasks[rootState.activeTableIndex].taskLists.length < 1) {
                         // тогда сразу инициализируем загрузки списков
+                        commit('startTableLoader')
                         dispatch('getTableTaskLists');
                     } else {
                         // если так то это значит, что мы кликнули на уже загруженные РС, поэтому ничего не делаем
                         // выполним проверку загруженных спиской и задач в них
+                        commit('stopTableLoader')
                     }
                 }
             })
@@ -320,7 +325,9 @@ export default {
                             if((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) {
                                 console.log('habrabra вывод закочен');
                                 //то проверим наш вывод на корректность
-                                dispatch('verifyTable');
+                                commit('stopTableLoader')
+                                dispatch('pushActiveTableLink')
+                                dispatch('verifyTable')
                             }
               
                     });

@@ -60,11 +60,15 @@
       <!-- Окна сообщений -->
     <GoodBadNewsMessage/>
 
+      <transition name="fade">
+        <div class="table-load-spinner"
+        v-if="tableLoaderActive"/>
+      </transition>
   </div>
 </template>
 
 <script>
-import GoodBadNewsMessage from  "./components/MessageNewsGoodBad.vue"
+import GoodBadNewsMessage from "./components/MessageNewsGoodBad.vue";
 import tableList from "./components/TableButtonsAll.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
@@ -90,20 +94,23 @@ export default {
   computed: {
     ...mapGetters({
       currentBgImg: "currentBgImg",
-      authorised: "authorised",
+      authorised: "authorised"
     }),
-    
+
     getRoute() {
       return this.$route.path;
     },
     activeTableIndex() {
-      return this.$store.state.activeTableIndex
+      return this.$store.state.activeTableIndex;
+    },
+    tableLoaderActive() {
+      return this.$store.state.tableLoaderActive
     }
   },
   methods: {
     callLinksHandler(link) {
-        if(!link) link = this.getRoute;
-        this.$store.dispatch('linksHandler', {link});
+      if (!link) link = this.getRoute;
+      this.$store.dispatch("linksHandler", { link });
     }
   },
   created() {
@@ -116,13 +123,13 @@ export default {
         t.$store.state.activeTableUrl = url;
         t.$store.dispatch("startGetTasks");
         t.$store.state.authorised = true;
-        this.callLinksHandler()
+        this.callLinksHandler();
         console.log("User is signed in", firebase.auth().currentUser.uid);
       } else {
         console.log("No user is signed in");
         //Засейвим фон
         t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
-        this.callLinksHandler()
+        this.callLinksHandler();
       }
     });
   },
@@ -134,9 +141,9 @@ export default {
 
     $route(to, from) {
       // Отправим упл на проверку
-      console.log('Мониторим урл ', to.path);
+      console.log("Мониторим урл ", to.path);
       this.callLinksHandler(to.path);
-      
+
       //Если в приходил ссылка на конкретный стол, то выполняем смену стола
       //Тут расчет на то, что узер вбил ссылку, но минус в том, что метод будет выполняться и когда мы програмно меняем урл
       if (to.params.link != null) {
@@ -144,21 +151,19 @@ export default {
         this.$store.dispatch("changeActiveTable", this.$route.params.link);
       } else {
         //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
-        if( to.path.indexOf("/table/") === 0 ) {
+        if (to.path.indexOf("/table/") === 0) {
           // this.$store.dispatch("pushActiveTableLink");
         } else {
           //Пока что ничего не делаем
           // console.log("Нет ссылка на стол");
         }
-
       }
     },
     //Cледим за изменением активного стола, что бы пушить новый адрес
     activeTableIndex(to) {
-      console.log('Новый индексссс', to);
-      this.$store.dispatch('pushActiveTableLink');
+      console.log("Новый индексссс", to);
+      this.$store.dispatch("pushActiveTableLink");
     }
-      
   }
 };
 </script>
@@ -246,5 +251,19 @@ a {
 .fade-enter,
 .fade-leave-active {
   opacity: 0;
+}
+
+.table-load-spinner {
+  height: 80px;
+  width: 80px;
+  background: #7d7d7dad;
+  background-image: url("../img/spinners/load-spinner-white.svg");
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 </style>

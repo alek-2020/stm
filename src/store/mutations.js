@@ -36,6 +36,11 @@ export default {
     //   );
     //         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
 
-
+    startTableLoader(state) {
+       state.tableLoaderActive = true
+    },
+    stopTableLoader(state) {
+       state.tableLoaderActive = false
+    }
   
 }

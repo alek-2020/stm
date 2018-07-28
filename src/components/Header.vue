@@ -531,7 +531,7 @@ $h-small-icons-col: rgb(56, 56, 56);
       opacity: .95;
       & > div {
           border: solid 1px #656565;
-          padding: 5px;
+          padding: 5px 10px 5px 5px;
           justify-content: flex-start !important;
       }
     }
