@@ -36,60 +36,52 @@
 
 </button>
 
-  <!-- <div>
-  {{ people.work }}
-  {{ people.name }}
-  her index 
-  {{ index }}
-  <input type="text" v-model="people.name">
-  </div> -->
 </template>
 
 
 <script>
-// import Vue from "vue";
 
 export default ({
   data() {
     return {
       inputActive: false,
-      gradients: [
-        {
-          colId: 1,
-          colorOne: "#d24242",
-          colorTwo: "#af4242"
-        },
-        {
-          colId: 2,
-          colorOne: "#f85725",
-          colorTwo: "#8a5e41"
-        },
-        {
-          colId: 3,
-          colorOne: "#e15656",
-          colorTwo: "#825a5a"
-        },
-        {
-          colId: 4,
-          colorOne: "#8fb554",
-          colorTwo: "#5b917d"
-        },
-        {
-          colId: 5,
-          colorOne: "#2a2a39",
-          colorTwo: "#535472"
-        },
-        {
-          colId: 6,
-          colorOne: "#535472",
-          colorTwo: "#2a2a39"
-        },
-        {
-          colId: 7,
-          colorOne: "#582121",
-          colorTwo: "#bf3737"
-        }
-      ] //,
+      // gradients: [
+      //   {
+      //     colId: 1,
+      //     colorOne: "#d24242",
+      //     colorTwo: "#af4242"
+      //   },
+      //   {
+      //     colId: 2,
+      //     colorOne: "#f85725",
+      //     colorTwo: "#8a5e41"
+      //   },
+      //   {
+      //     colId: 3,
+      //     colorOne: "#e15656",
+      //     colorTwo: "#825a5a"
+      //   },
+      //   {
+      //     colId: 4,
+      //     colorOne: "#8fb554",
+      //     colorTwo: "#5b917d"
+      //   },
+      //   {
+      //     colId: 5,
+      //     colorOne: "#2a2a39",
+      //     colorTwo: "#535472"
+      //   },
+      //   {
+      //     colId: 6,
+      //     colorOne: "#535472",
+      //     colorTwo: "#2a2a39"
+      //   },
+      //   {
+      //     colId: 7,
+      //     colorOne: "#582121",
+      //     colorTwo: "#bf3737"
+      //   }
+      // ] //,
     };
   },
   props: ["table", "index", "ifLasBtn"],
@@ -187,6 +179,7 @@ export default ({
     font-family: "Open Sans", sans-serif;
     white-space: nowrap;
     box-sizing: border-box;
+    z-index: 10;
     &_active {
       background: rgb(255, 255, 255);
       user-select: unset;
@@ -218,7 +211,7 @@ export default ({
     border-radius: 7px;
     box-sizing: border-box;
     //Что бы не перекрывала инпут задвигаем кнопку назад
-    z-index: -10;
+    z-index: -1;
   }
 }
 </style>

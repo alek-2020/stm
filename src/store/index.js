@@ -20,6 +20,13 @@ export const store = new Vuex.Store({
     state() {
         return {
             //Лог событий приложения
+            /*
+            appLog: [
+                router: [],
+                getPutData: [],
+                errors: []
+            ]
+            */
             appLog: [],
             appRouteLog: [],
             //Лоадер загрузки списков стола

@@ -47,6 +47,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  z-index: 1500;
 }
 
 .badNews {
@@ -64,6 +65,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+   z-index: 1500;
 }
 </style>
 

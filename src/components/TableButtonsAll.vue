@@ -136,9 +136,7 @@ export default Vue.extend({
       }
     },
     stopScroll() {
-      this.$store.dispatch('showGoodNews', 'А тут все ок!');
       this.mouseDownForScroll = false;
-      console.log('hi')
     },
     OutStopScroll() {
 
