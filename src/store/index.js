@@ -21,6 +21,7 @@ export const store = new Vuex.Store({
         return {
             //Лог событий приложения
             appLog: [],
+            appRouteLog: [],
             //Лоадер загрузки списков стола
             tableLoaderActive: true,
             authErrorMessage: '',

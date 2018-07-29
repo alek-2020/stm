@@ -389,8 +389,8 @@ export default {
                 rootState.userId = '';
                 rootState.masTaskLists = [],
                 rootState.masTasks = [],
-                rootState.masTables = []
-
+                rootState.masTables = [],
+                rootState.activeTableUrl = ''
             })
             .catch(error => {
                 dispatch('showBadNews', 'Ошибка выхода из учетнои записи. ' + error);

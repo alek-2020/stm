@@ -122,7 +122,8 @@ export default {
           this.$store.dispatch('linksHandler', {link: this.route})
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("startGetTasks");
-          this.$store.dispatch("linksHandlier", { toLink: "/table/" });
+          this.$store.state.appRouteLog.push('routeHandler - вызываем послу авторизации')
+          this.$store.dispatch("linksHandler", { toLink: "/" });
         })
         .catch(error => {
           this.$store.state.authErrorMessage = error.message;
@@ -148,7 +149,8 @@ export default {
 
             //Раз все ок грузим данные и переходим в столы
             this.$store.dispatch("startGetTasks");
-            this.$store.dispatch("linksHandlier", { toLink: "/table/" });
+            this.$store.state.appRouteLog.push('routeHandler - вызываем послу авторизации')
+            this.$store.dispatch("linksHandler", { toLink: "/" });
             // this.$store.dispatch('linksHandler', {link: this.route})
 
           

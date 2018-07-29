@@ -105,6 +105,9 @@ export default {
     },
     tableLoaderActive() {
       return this.$store.state.tableLoaderActive
+    },
+    allTasks() {
+      return this.$store.state.allTasks
     }
   },
   methods: {
@@ -161,8 +164,10 @@ export default {
     },
     //Cледим за изменением активного стола, что бы пушить новый адрес
     activeTableIndex(to) {
-      console.log("Новый индексссс", to);
-      this.$store.dispatch("pushActiveTableLink");
+      if(this.allTasks[this.activeTableIndex] != null) {
+        this.$store.state.appRouteLog.push(`Выполняем изменение роута из прослушки индекса стола в App`)
+        this.$store.dispatch("pushActiveTableLink");
+      }
     }
   }
 };

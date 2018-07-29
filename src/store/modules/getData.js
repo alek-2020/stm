@@ -4,7 +4,8 @@
 
 import router from './../../Router.js'
 
-import * as firebase from "firebase";
+import * as firebase from "firebase"
+// import routeHandler from "./routeHandlers"
 
 export default {
 
@@ -214,6 +215,8 @@ export default {
                             if ((i + 1) == rootState.masTables.length) {
                                 // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
                                 rootState.appLog.push('Получили столы юзера');
+                                rootState.appRouteLog.push('routeHandlier - вызваем после получения списка столов');
+                                dispatch('pushActiveTableLink')
                                 resolve(rootState.allTasks);
                            
                             }
@@ -329,18 +332,17 @@ export default {
                             console.log('Полный провал. Ошибка: ', error);
                         })
                  
-                        console.log('habrabra итерация ', (rootState.masTasks[i].length - 1) === index, (rootState.masTaskLists[ind].length - 1) === i);
                             //Если у нас последняя итерация-отправим массив allTasks на проверку корректности заполнения
                             // console.log('habrabra', rootState.allTasks);
                             /*Если последняя задача списка и последний список стола
                               Вторым условием учтем то, что задач может не быть, тогда первое условие будет работаь некорректно*/
                             if(((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) || ((rootState.masTasks[i].length - 1) === index && rootState.masTaskLists[ind].length == 0 )) {
-                                console.log('habrabra вывод закочен');
                                 //то проверим наш вывод на корректность
                                 commit('stopTableLoader')
                                 rootState.appLog.push('Загрузка стола завершена');
-                                dispatch('pushActiveTableLink')
+
                                 dispatch('verifyTable')
+
                             }
               
                     });
