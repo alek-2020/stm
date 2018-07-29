@@ -354,7 +354,7 @@ $h-small-icons-col: rgb(56, 56, 56);
   height: 40px;
   width: 100%;
   min-width: 300px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.85);
   display: flex;
   align-items: center;
   position: relative;

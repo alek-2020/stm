@@ -34,13 +34,15 @@ export default {
                     // router.push('/error/');
                     dispatch('linksHandler', { toLink: '/error/' });
                     commit('stopTableLoader')
+                    rootState.appLog.push('Ошибка загрузки стола в firstGettingData');
+
                 })
 
         },
 
         //Cледующая цепочка, которая выполняется тольк если у нас есть
 
-        getDataSecondChain({ dispatch }) {
+        getDataSecondChain({ dispatch, commit }) {
             console.log('Вторая цепочка пошла');
             dispatch('getUserTables')
                 .then(allTables => {
@@ -75,8 +77,10 @@ export default {
         */
         startGetTasks({ dispatch, rootState, commit }) {
             return new Promise((resolve, reject) => {
+                rootState.appLog.push('==========================');
                 //Если не загружено ни одного стола
                 if (rootState.allTasks.length < 1) {
+                    rootState.appLog.push('Ниодного загруженного стола');
                     dispatch('firstGettingData');
                 } else {
                     //Чистим побочные массивы, если уже загружили столы
@@ -89,20 +93,18 @@ export default {
                     //Если есть загруженные, но текущий стол не загружег
                     if (rootState.allTasks[rootState.activeTableIndex].taskLists.length < 1) {
                         // тогда сразу инициализируем загрузки списков
+                        rootState.appLog.push('Есть загруженные столы, нет загруженных списков на текущем');
                         commit('startTableLoader')
                         dispatch('getTableTaskLists');
                     } else {
                         // если так то это значит, что мы кликнули на уже загруженные РС, поэтому ничего не делаем
                         // выполним проверку загруженных спиской и задач в них
+                        rootState.appLog.push('Этот стол уже загружен');
                         commit('stopTableLoader')
                     }
                 }
             })
         },
-
-
-
-
 
 
         //Получаем данные юзера по его id из БД (users)
@@ -152,14 +154,13 @@ export default {
 
                         //Пишел заготовки объектов с id для парсинга
                         rootState.masTables = arrayLists;
-                        console.log('habra Записали столы и настройки ', rootState.userData, rootState.masTables);
+                        rootState.appLog.push('Первичное получение данных по юзеру');
                         resolve(obj);
-
-
                     })
 
                     .catch(error => {
                         console.log('Полный провал. Ошибка: ', error);
+                        rootState.appLog.push('Ошибка на этапе: Первичное получение данных по юзеру');
                         dispatch('showBigError', error);
                         reject();
                     })
@@ -211,15 +212,15 @@ export default {
                             // console.log('Итерация записи стола. Целевой массив', rootState.allTasks);
 
                             if ((i + 1) == rootState.masTables.length) {
-                                console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
-
+                                // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
+                                rootState.appLog.push('Получили столы юзера');
                                 resolve(rootState.allTasks);
                            
                             }
                         })
                         .catch(error => {
                             console.log('Полный провал. Ошибка: ', error);
-                       
+                            rootState.appLog.push('Ошибка на этапе: Получили столы юзера');
                         })
 
                 });
@@ -232,9 +233,8 @@ export default {
             const ind = rootState.activeTableIndex;
             const activeTableId = rootState.masTables[ind].id
             const list = rootState.allTasks[ind].taskLists
-        
             //Выполняем только если у нас есть привязанные к столу списки
-            if (list != null) {
+            if (list.length > 0) {
                 //подтягиваем списки активного раб. ст.
                 rootState.masTaskLists[ind].forEach((element, index) => {
                     const listId = element.id
@@ -270,8 +270,19 @@ export default {
                         })
                         .catch(error => {
                             console.log('Полный провал. Ошибка: ', error);
+                            rootState.appLog.push('Ошибка на этапе получения списков задач юзера');               
+
                         })
+
+                  //Ловим последнюю итерацию, что бы отслеживать зевершение этапа
+                  if ((index + 1) == rootState.masTaskLists[ind].length) {
+                    // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
+                    rootState.appLog.push('Получили списки задач юзера');               
+                  }
                 });
+            } else {
+                commit('stopTableLoader')
+                rootState.appLog.push('Загрузка стола завершена. У стола нет списков.');
             }
         },
 
@@ -284,7 +295,7 @@ export default {
             let tasks = rootState.allTasks[ind].taskLists[i].tasks
             let indexChecker
             //Выполняем если есть привязанные к списку задачи
-            if (tasks != null) {
+            if (tasks.length > 0) {
             rootState.masTasks[i].forEach((element, index) => {
                 indexChecker = index
                     const taskId = element.id
@@ -321,11 +332,13 @@ export default {
                         console.log('habrabra итерация ', (rootState.masTasks[i].length - 1) === index, (rootState.masTaskLists[ind].length - 1) === i);
                             //Если у нас последняя итерация-отправим массив allTasks на проверку корректности заполнения
                             // console.log('habrabra', rootState.allTasks);
-                            //Если последняя задача списка и последний список стола
-                            if((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) {
+                            /*Если последняя задача списка и последний список стола
+                              Вторым условием учтем то, что задач может не быть, тогда первое условие будет работаь некорректно*/
+                            if(((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) || ((rootState.masTasks[i].length - 1) === index && rootState.masTaskLists[ind].length == 0 )) {
                                 console.log('habrabra вывод закочен');
                                 //то проверим наш вывод на корректность
                                 commit('stopTableLoader')
+                                rootState.appLog.push('Загрузка стола завершена');
                                 dispatch('pushActiveTableLink')
                                 dispatch('verifyTable')
                             }
@@ -334,7 +347,7 @@ export default {
 
 
             } else {
-                commit('stopTableLoader')
+                //У списка нет задач
             }
         },
 
