@@ -27,7 +27,7 @@ export default {
                     // 3. Отправим обновленные списки на сервер
                     return dispatch('addListIdToTable', { tableId, newListId });
                 }).then(response => {
-                    console.log();
+                    // console.log();
                 }).catch(error => {
                     console.log('Полный провал. Ошибка: ', error);
                 })
@@ -95,13 +95,13 @@ export default {
         },
 
         pushKeyToTaskList({ dispatch, commit, state, rootState }, listKey) {
-            console.log('k ',listKey);
+            // console.log('k ',listKey);
             firebase
             .database()
             .ref("taskLists/" + listKey + "/id")
             .set(listKey)
             .then(data => { 
-               console.log('.newTaskList. запушили в список его id ', data);
+            //    console.log('.newTaskList. запушили в список его id ', data);
             })
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);

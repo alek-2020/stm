@@ -115,7 +115,7 @@ export default {
   },
   watch: {
     userId(val) {
-       console.log('отслеживаем userId ', val);
+      //  console.log('отслеживаем userId ', val);
     }
   }
 };

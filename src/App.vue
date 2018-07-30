@@ -127,9 +127,9 @@ export default {
         t.$store.dispatch("startGetTasks");
         t.$store.state.authorised = true;
         this.callLinksHandler();
-        console.log("User is signed in", firebase.auth().currentUser.uid);
+        // console.log("User is signed in", firebase.auth().currentUser.uid);
       } else {
-        console.log("No user is signed in");
+        // console.log("No user is signed in");
         //Засейвим фон
         t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
         this.callLinksHandler();
@@ -144,13 +144,13 @@ export default {
 
     $route(to, from) {
       // Отправим упл на проверку
-      console.log("Мониторим урл ", to.path);
+      // console.log("Мониторим урл ", to.path);
       this.callLinksHandler(to.path);
 
       //Если в приходил ссылка на конкретный стол, то выполняем смену стола
       //Тут расчет на то, что узер вбил ссылку, но минус в том, что метод будет выполняться и когда мы програмно меняем урл
       if (to.params.link != null) {
-        console.log("Есть ссылка на стол");
+        // console.log("Есть ссылка на стол");
         this.$store.dispatch("changeActiveTable", this.$route.params.link);
       } else {
         //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола

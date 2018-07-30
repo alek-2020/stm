@@ -45,7 +45,7 @@ export default {
         // const tableInd = this.tableInd
         // const taskListInd = this.taskInd
 
-         console.log('Клавиша нажата, отправляем ', text);
+        //  console.log('Клавиша нажата, отправляем ', text);
          this.$store.dispatch('changeText', { text, task });
       }
     },

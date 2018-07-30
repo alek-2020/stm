@@ -119,7 +119,7 @@ export default Vue.extend({
 
     },
     mDownOnTableList(e) {
-        console.log('down-down', e);
+        // console.log('down-down', e);
         this.initialPosForScroll = e;
         const container = document.querySelector('.ps-container');
         this.initialScroll = container.scrollLeft;
@@ -132,7 +132,7 @@ export default Vue.extend({
         let diff = this.initialPosForScroll.pageX - e.pageX;
         let container = document.querySelector('.ps-container');
         container.scrollLeft = this.initialScroll + diff;
-                console.log('move', diff);
+                // console.log('move', diff);
       }
     },
     stopScroll() {
@@ -150,12 +150,12 @@ export default Vue.extend({
     // },
     //для скролла
     scrollHanle(evt) {
-      console.log(evt)
+      // console.log(evt)
     },
 
     getAllBtns() {},
     test2() {
-      console.log("А тут Ок!");
+      // console.log("А тут Ок!");
     },
     getTableList() {
       firebase
@@ -163,7 +163,7 @@ export default Vue.extend({
         .ref("users/" + "BjRdscIcrsdy4u4RNqCDb7DDTpj1")
         .once("value")
         .then(data => {
-          console.log("Получили ", data);
+          // console.log("Получили ", data);
           this.tableList = data;
         })
         .catch(error => {
@@ -204,14 +204,14 @@ export default Vue.extend({
       return lastTableId;
     },
     delTable: function() {
-      console.log("Массив до удаления ", this.tables);
+      // console.log("Массив до удаления ", this.tables);
       var spliceRes = this.tables.splice(this.activeTable, 1);
-      console.log(
-        "Массив после удаления ",
-        this.tables,
-        " Удаленные строки ",
-        spliceRes
-      );
+      // console.log(
+      //   "Массив после удаления ",
+      //   this.tables,
+      //   " Удаленные строки ",
+      //   spliceRes
+      // );
       this.addTable();
     },
     ifLastBtn(Index) {

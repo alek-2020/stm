@@ -90,8 +90,8 @@ export default {
     // },
     thisTableTaskLists() {
       if (this.$store.state.allTasks.length > 0) {
-        console.log("получили индекс ", this.$store.state.allTasks);
-        console.log("получили индекс ", this.$store.state.allTasks[1]);
+        // console.log("получили индекс ", this.$store.state.allTasks);
+        // console.log("получили индекс ", this.$store.state.allTasks[1]);
         //Проверяем загрузку нужного стола
         if (
           this.$store.state.allTasks[this.$store.state.activeTableIndex] != null
@@ -105,8 +105,8 @@ export default {
   watch: {
     GetAllTasks(val) {
       this.VarThisTableTaskLists = this.thisTableTaskLists;
-      console.log("следим ", val);
-      console.log('Отсдеживание allTasks из table ', this.allTasks)
+      // console.log("следим ", val);
+      // console.log('Отсдеживание allTasks из table ', this.allTasks)
     },
 
   },
@@ -161,14 +161,14 @@ export default {
             if(elLeft < scrolled && (elLeft + elWidth) > scrolled) {
              //Запишим ширину видимой части и сравним с шириной видимой части следующего
              firstVisible = elLeft + elWidth - scrolled
-             console.log('Элемент пересек экран слева', firstVisible);
+            //  console.log('Элемент пересек экран слева', firstVisible);
 
              //Расстояние от элемента до экрана в сфокусированном сотоянии
              space = (clientWidth - elWidth) / 2
 
              //Если сдедующий существует
              if(this.$refs.list[i+1]){
-               console.log('Следующий существует😃')
+              //  console.log('Следующий существует😃')
               //  this.$store.dispatch('showGoodNews', 'Следующий существует😃')
               nextList = this.$refs.list[i+1].$el
               nextListLeft = nextList.offsetLeft
@@ -176,17 +176,17 @@ export default {
 
                 if(firstVisible > secondVisible) {
                   scrollTo = elLeft - space
-                  console.log('У первого больше😃', scrollTo)
+                  // console.log('У первого больше😃', scrollTo)
                 } else {
                   scrollTo = nextListLeft - space
-                  console.log('У второго больше😃', scrollTo, nextListLeft, elLeft, space)
+                  // console.log('У второго больше😃', scrollTo, nextListLeft, elLeft, space)
                 }
                 this.scrollTo(this.$refs.ps.$el, scrollTo, scrolled)
 
           //Если правая часть первого видимого элемента больше
              } else if(((elLeft + elWidth) - scrolled) > elWidth / 2 ) {
                  scrollTo = elLeft - space
-                 console.log('Второго нет и у первого большая часть видна', scrollTo);
+                //  console.log('Второго нет и у первого большая часть видна', scrollTo);
                  this.scrollTo(this.$refs.ps.$el, scrollTo, scrolled)
 
             }
@@ -285,7 +285,7 @@ export default {
     },
 
         ttest() {
-             console.log("RRRResource conscious resize callback!", this.listBoxH);
+            //  console.log("RRRResource conscious resize callback!", this.listBoxH);
 
     }
   },
@@ -354,15 +354,15 @@ export default {
 //     )
 
     if (this.$route.params.link != null) {
-      console.log("Есть ссылка на стол", this.$route.params.link);
+      // console.log("Есть ссылка на стол", this.$route.params.link);
       // this.$store.dispatch('checkUrl');
     } else {
-      console.log("Нет ссылка на стол");
+      // console.log("Нет ссылка на стол");
     }
-    console.log("Проверка route ", this.$route);
+    // console.log("Проверка route ", this.$route);
 
     //Запишем в хранилице высоту блока для расчетов
-    console.log('Высота блока ', this.$refs.taskListBox.clientHeight);
+    // console.log('Высота блока ', this.$refs.taskListBox.clientHeight);
     this.$store.state.taskListBoxHeight = this.$refs.taskListBox.clientHeight;
   },
   components: {

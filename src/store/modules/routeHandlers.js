@@ -37,7 +37,7 @@ export default {
                 router.push(toLink);
             } else if (rootState.authorised && (link == "/login/" || link == "/registration/")) {
                 //Если мы на странице авторизации и узер авторизован-перекинем его на активный рс
-                console.log('Управляющая 43');
+                // console.log('Управляющая 43');
                 rootState.appRouteLog.push('routeHandler - вызываем из linksHandler')
                 dispatch('pushActiveTableLink');
             } else if (toLink.indexOf("/table/") >= 0 && !rootState.authorised) {
@@ -72,9 +72,9 @@ export default {
             var obj = rootState.allTasks;
             var correctUrl = false;
             obj.forEach((element, index) => {
-                console.log(index, element.tableUrl);
+                // console.log(index, element.tableUrl);
                 if (element.tableUrl == url) {
-                    console.log('Индексы сошлись', url);
+                    // console.log('Индексы сошлись', url);
                     rootState.activeTableIndex = index;
                     correctUrl = true;
                 }
@@ -83,7 +83,7 @@ export default {
             if (!correctUrl) {
                 rootState.appRouteLog.push('routeHandler - вызываем из changeActiveTable')
                 dispatch('pushActiveTableLink');
-                console.log('Ссылка фигня пушим активный стол');
+                // console.log('Ссылка фигня пушим активный стол');
             }
 
             //  for (var prop in obj) {

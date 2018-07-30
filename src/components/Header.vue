@@ -170,15 +170,15 @@ export default {
   methods: {
     tableActivation() {
       let t = this;
-      console.log("Раз");
+      // console.log("Раз");
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
     checkOuterClick(el) {
-              console.log("Идентифkkикатор", el);
+              // console.log("Идентифkkикатор", el);
 
       if (el.target != this.$refs.headerInput) {
-        console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
         window.removeEventListener("click",  this.checkOuterClick);
       }
@@ -200,7 +200,7 @@ export default {
       this.$store.state.tableSettingsVisible = true;
     },
     hideSettings() {
-      console.log("Срабатывает mouseout");
+      // console.log("Срабатывает mouseout");
       this.$store.state.tableSettingsVisible = false;
       //  this.$store.state.tableSettingsActive = false;
     },
@@ -310,12 +310,12 @@ export default {
 
       get: function() {
         if (this.allTasks.length > 0) {
-          console.log(
-            "get table name ",
-            this.allTasks,
-            this.actTableIndex,
-            this.allTasks[0].name
-          );
+          // console.log(
+          //   "get table name ",
+          //   this.allTasks,
+          //   this.actTableIndex,
+          //   this.allTasks[0].name
+          // );
           if (this.allTasks[this.actTableIndex]) {
             return this.allTasks[this.actTableIndex].name;
           }

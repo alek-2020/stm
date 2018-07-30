@@ -165,14 +165,14 @@ export default {
   methods: {
     tableActivation() {
       let t = this;
-      console.log("Раз");
+      // console.log("Раз");
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
     checkOuterClick(el) {
-      console.log("Идентифkkикатор", el);
+      // console.log("Идентифkkикатор", el);
       if (el.target != this.$refs.listHeaderInput) {
-        console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
         window.removeEventListener("click", this.checkOuterClick);
       }
@@ -181,18 +181,18 @@ export default {
     hideListName(val) {
       if (this.emojiState || this.menuState) {
         this.nameVisible = false;
-        console.log(
-          "Прячем заголовок списка ",
-          this.emojiState,
-          this.menuState
-        );
+        // console.log(
+        //   "Прячем заголовок списка ",
+        //   this.emojiState,
+        //   this.menuState
+        // );
       } else {
         this.nameVisible = true;
-        console.log(
-          "Покажем заголовок списка ",
-          this.emojiState,
-          this.menuState
-        );
+        // console.log(
+        //   "Покажем заголовок списка ",
+        //   this.emojiState,
+        //   this.menuState
+        // );
       }
 
       // this.nameVisible = !val;
@@ -206,7 +206,7 @@ export default {
     },
     changeMenuState(val) {
       this.menuState = val;
-      console.log("Пришел пропс тест ", val);
+      // console.log("Пришел пропс тест ", val);
       if (val == true) {
         this.emojiState = false;
       }
@@ -214,8 +214,8 @@ export default {
     },
     //Принимает новый цвет из палитны и меняем
     changeMainColor(index) {
-      console.log("Новый цвет брат ", index);
-      console.log("данные листа ", this.activeTableIndex, this.taskListIndex);
+      // console.log("Новый цвет брат ", index);
+      // console.log("данные листа ", this.activeTableIndex, this.taskListIndex);
 
       this.$store.state.allTasks[this.activeTableIndex].taskLists[
         this.taskListIndex
@@ -230,13 +230,13 @@ export default {
     },
     afterLeave() {
       this.changeHeightOfList();
-      console.log("Пересчет высоты при завершении анимации");
+      // console.log("Пересчет высоты при завершении анимации");
     },
     changeHeightOfList() {
       if (this.$refs.inputsContainer != null) {
-        console.log("Высота контейнера в листе", this.taskBoxHeight);
+        // console.log("Высота контейнера в листе", this.taskBoxHeight);
         this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
-        console.log("Пересчет высоты", this.taskBoxHeight);
+        // console.log("Пересчет высоты", this.taskBoxHeight);
         this.$refs.ps.update();
         // VuePerfectScrollbar.update();
       }
@@ -248,7 +248,7 @@ export default {
     },
 
     a: function() {
-      console.log(this.themeColor);
+      // console.log(this.themeColor);
     },
 
     //Добавляем новую задачу (пока что просто пустой инпут)
@@ -285,7 +285,7 @@ export default {
       }
       this.askConfirm = false;
       this.dataForRemoving = {};
-      console.log("пришел с эммита", responce);
+      // console.log("пришел с эммита", responce);
     }
   },
   props: ["TList", "taskListIndex"],
@@ -301,12 +301,12 @@ export default {
   computed: {
     //Цветовая схема списка
     MainListColor() {
-      console.log(
-        "цвет списка",
-        this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex],
-        this.themeColorId,
-        this.$store.state.gradients[this.themeColorId]
-      );
+      // console.log(
+      //   "цвет списка",
+      //   this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex],
+      //   this.themeColorId,
+      //   this.$store.state.gradients[this.themeColorId]
+      // );
       return this.$store.state.gradients[this.themeColorId];
     },
     themeColorId() {
@@ -332,7 +332,7 @@ export default {
     },
     getListName() {
       const TLName = allTasks[activeTableIndex].taskLists[taskListIndex].name;
-      console.log("можно и отсюда вывести ", TLName);
+      // console.log("можно и отсюда вывести ", TLName);
       if (TLName) {
         return TLName;
       } else {
@@ -384,10 +384,10 @@ export default {
     this.$nextTick(() => {
       // Code that will run only after the
       // entire view has been re-rendered
-      console.log("Элемент ", this.$refs);
+      // console.log("Элемент ", this.$refs);
       // this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
       this.changeHeightOfList();
-      console.log("Пересчет высоты при изменении древа");
+      // console.log("Пересчет высоты при изменении древа");
 
       //  if(this.$store.state.taskListBoxHeight != null) {
       //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';

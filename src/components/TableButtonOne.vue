@@ -88,14 +88,14 @@ export default ({
   methods: {
     tableActivation() {
       let t = this;
-      console.log("Раз");
+      // console.log("Раз");
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
     checkOuterClick(el) {
-      console.log("Идентифkkикатор", el);
+      // console.log("Идентифkkикатор", el);
       if (el.target != this.$refs.tableBtnInput) {
-        console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
         window.removeEventListener("click",  this.checkOuterClick);
       }

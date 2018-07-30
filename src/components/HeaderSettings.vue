@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     changeBg(index) {
-      console.log("Работает");
+      // console.log("Работает");
       this.$store.state.currentBgImg = this.imgForBg[index];
       // console.log("ВАСЯ!!!!!!!", this.$store.state.currentBgImg);
     },

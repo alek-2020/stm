@@ -1,3 +1,6 @@
+// TODO: Покрутить цвета списков, что бы смотрелись нормально
+// TODO: Сделать цвета списков привязанными к заставке, так что при смене они тоже менялись, кроме тех, где юзер поставил свой цвет 
+
 <template>
   <!-- Block fixed -->
   <div class="log__bg"
@@ -100,7 +103,7 @@ export default {
     onSignIn() {
       // vuex
       
-      console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
+      // console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
       const t = this;
       //Перед авторизацией делаем сессию бесконечной
       firebase
@@ -116,9 +119,9 @@ export default {
             id: user.user.uid
             //this.registerelM
           };
-          console.log("Авторизовались, все ОК", newUser.id);
+          // console.log("Авторизовались, все ОК", newUser.id);
           this.$store.state.userId = newUser.id;
-          console.log("Получили UserData по Id ");
+          // console.log("Получили UserData по Id ");
           this.$store.dispatch('linksHandler', {link: this.route})
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("startGetTasks");
@@ -134,16 +137,16 @@ export default {
     onSignUp() {
       // vuex
 
-      console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
+      // console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
         //Создаем юзера в файрбазе
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(user => {
-            console.log("Это успех. id юзера ", this.id);
+            // console.log("Это успех. id юзера ", this.id);
 
             this.$store.state.userId = user.uid;
-            console.log("Получили id ", user.uid);
+            // console.log("Получили id ", user.uid);
             //Сейвим стандартный бг
             this.$store.dispatch("saveBg");
 
@@ -177,7 +180,7 @@ export default {
          //Если компонент появился на стр регистрации
         if (this.route == "/registration/") {
           this.reg = true
-          console.log('включили регмод')
+          // console.log('включили регмод')
         } else {
           this.reg = false
         }
@@ -262,6 +265,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 60%;
+    min-width: 250px;
 
     & > *:not(:first-child) {
       margin-top: 15px;

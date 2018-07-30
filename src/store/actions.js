@@ -12,7 +12,7 @@ export default {
     checkTask({ dispatch, commit, state }, { task, tableInd, taskListInd, taskId }) {
         // taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
 
-        console.log('ДЛЯ ОТМЕТКИ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
+        // console.log('ДЛЯ ОТМЕТКИ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
 
         /*
         т.к. список задач фильтрован по isDone индексы расходятся, поэтому нам нужно определить
@@ -34,7 +34,7 @@ export default {
 
                 //Если успех внесем изменения в локальный массив
                 state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].isDone = true;
-                console.log('Задачка готова!');
+                // console.log('Задачка готова!');
                 dispatch('showGoodNews', 'Задача выполнена!');
 
             })
@@ -52,7 +52,7 @@ export default {
     delTask({ dispatch, commit, state }, { task, tableInd, taskListInd, taskId }) {
         // taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
 
-        console.log('ДЛЯ УДАЛЕНИЯ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
+        // console.log('ДЛЯ УДАЛЕНИЯ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
         const taskListId = task.taskListId;
         /*
         т.к. список задач фильтрован по isDone индексы расходятся, поэтому нам нужно определить
@@ -66,7 +66,7 @@ export default {
             }
         })
 
-        console.log('Удаляем задачу ', "tasksLists/" + taskListId + "/tasks/" + taskId);
+        // console.log('Удаляем задачу ', "tasksLists/" + taskListId + "/tasks/" + taskId);
         firebase
             .database()
             .ref("taskLists/" + taskListId + "/tasks/" + taskId)
@@ -77,7 +77,7 @@ export default {
                 state.allTasks[tableInd].taskLists[taskListInd].tasks.splice(taskInd, 1);
 
 
-                console.log('Задачка готова!');
+                // console.log('Задачка готова!');
                 dispatch('showGoodNews', 'Задача удалена!');
 
             })
@@ -96,14 +96,14 @@ export default {
     // Определяем цвет последнего стола и возвращаем новый
     lastTableColor({ dispatch, commit, state }) {
         var i = state.allTasks.length - 1;
-        console.log('длина, сам массив ', i, state.allTasks[i]);
+        // console.log('длина, сам массив ', i, state.allTasks[i]);
         var id = state.allTasks[i].colorId;
         var color = state.gradients[id + 1];
         var colOne = color.colorOne;
         var colTwo = color.colorTwo;
         // var colOne = state.allTasks[i].tables.colorOne;
         // var colTwo = state.tables[i].colorTwo;
-        console.log("linear-gradient( to bottom, " + colOne + ", " + colTwo);
+        // console.log("linear-gradient( to bottom, " + colOne + ", " + colTwo);
 
         return "linear-gradient( to bottom, " + colOne + ", " + colTwo;
     },
@@ -113,7 +113,7 @@ export default {
     ///Изменение поля в задаче
     changeText({ dispatch, commit, state }, { text, task }) {
         // TaskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd]
-        console.log('Вот наша задача ', task);
+        // console.log('Вот наша задача ', task);
         const TaskId = task.id;
 
         firebase
@@ -122,7 +122,7 @@ export default {
             .set(text)
             .then(data => {
 
-                console.log('Поменяли текст в задаче');
+                // console.log('Поменяли текст в задаче');
                 //покажем сообщение
                 dispatch('showGoodNews', 'Задача отредактирована');
 
@@ -143,7 +143,7 @@ export default {
             .ref("taskLists/" + ListId + "/name")
             .set(NewName)
             .then(data => {
-                console.log('Поменяли заголовок в списке');
+                // console.log('Поменяли заголовок в списке');
             })
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);
@@ -159,7 +159,7 @@ export default {
             .ref("tables/" + TableId + "/name")
             .set(NewName)
             .then(data => {
-                console.log('Поменяли заголовок стола');
+                // console.log('Поменяли заголовок стола');
             })
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);
@@ -180,7 +180,7 @@ export default {
             .remove()
             .then(data => {
 
-                console.log('Удалили рабочий стол');
+                // console.log('Удалили рабочий стол');
                 //Если все ок - вырезаем из локального массива
                 let allTables = state.allTasks;
                 allTables.splice(ind, 1);
@@ -188,7 +188,7 @@ export default {
 
                 if (ind > 0) {
                     state.activeTableIndex = ind - 1;
-                    console.log(state.activeTableIndex);
+                    // console.log(state.activeTableIndex);
                 }
 
                 //запушим адрес
@@ -233,7 +233,7 @@ export default {
 
     saveBg({ dispatch, commit, state }) {
 
-        console.log('Наш фон ', state.userId);
+        // console.log('Наш фон ', state.userId);
 
         const userId = state.userId;
         let bgImg = state.currentBgImg;
@@ -249,7 +249,7 @@ export default {
             .set(bgImg)
             .then(data => {
 
-                console.log('Сменили фон ', data);
+                // console.log('Сменили фон ', data);
 
             })
             .catch(error => {
@@ -259,7 +259,7 @@ export default {
 
     //Делает посделний стол активным
     makeLastTableActive({ dispatch, commit, state }) {
-        console.log('Переключаем последний стол на активный');
+        // console.log('Переключаем последний стол на активный');
         const last = state.allTasks.length - 1;
         state.activeTableIndex = last;
         dispatch('updateActiveTable', last);
@@ -273,7 +273,7 @@ export default {
             .ref("users/" + state.userId + "/settings/activeTable")
             .set(index)
             .then(data => {
-                console.log("Записали активный рс ", data);
+                // console.log("Записали активный рс ", data);
             })
             .catch(error => {
                 console.log("Не получили ", error);
@@ -283,7 +283,7 @@ export default {
     removeList({ dispatch, commit, state }, { id, taskListIndex, activeTableIndex }) {
 
         let activeTableId = state.allTasks[activeTableIndex].id;
-        console.log('del table ', "tables/" + activeTableId + "/taskLists" + taskListIndex);
+        // console.log('del table ', "tables/" + activeTableId + "/taskLists" + taskListIndex);
         firebase
             .database()
             .ref("tables/" + activeTableId + "/taskLists/" + id)
@@ -293,7 +293,7 @@ export default {
                 //уберем список из локального массива
                 state.allTasks[activeTableIndex].taskLists.splice(taskListIndex, 1);
 
-                console.log("Удалили лист. Все. Его больше нет и не будет. ", data);
+                // console.log("Удалили лист. Все. Его больше нет и не будет. ", data);
                 state.tableList = data;
             })
             .catch(error => {
@@ -307,30 +307,30 @@ export default {
     checkUrl({ dispatch, commit, state }) {
 
         let url = state.activeTableUrl;
-        console.log('смо записался ', url);
+        // console.log('смо записался ', url);
 
         if (url != null) {
 
 
-            console.log('Есть ссылка на стол(act)', url);
+            // console.log('Есть ссылка на стол(act)', url);
 
             dispatch('changeActiveTable', url)
         } else {
             // dispatch('pushActiveTableLink')
-            console.log('Нет ссылки на стол');
+            // console.log('Нет ссылки на стол');
         }
     },
 
     showGoodNews({ dispatch, commit, state }, mes) {
         state.goodNewsMes = mes;
-        console.log('Наш текст', state.goodNewsMes);
+        // console.log('Наш текст', state.goodNewsMes);
         setTimeout(function () {
             state.goodNewsMes = [];
         }, 1500)
     },
     showBadNews({ dispatch, commit, state }, mes) {
         state.badNewsMes = mes;
-        console.log('Наш текст', state.badNewsMes);
+        // console.log('Наш текст', state.badNewsMes);
         setTimeout(function () {
             state.badNewsMes = [];
         }, 5000)
@@ -338,7 +338,7 @@ export default {
 
     //Меняем цвет списка задач
     pushListColor({ dispatch, commit, state }, allData) {
-        console.log('Данные для изменения цвета ', allData);
+        // console.log('Данные для изменения цвета ', allData);
         //    const userId = state.userId;
         const taskListId = state.allTasks[allData.actTableInd].taskLists[allData.taskListInd].id;
 
@@ -347,7 +347,7 @@ export default {
             .ref('taskLists/' + taskListId + '/color')
             .set(allData.colIndex)
             .then(data => {
-                console.log("Записали цвет таскЛиста ", data);
+                // console.log("Записали цвет таскЛиста ", data);
                 dispatch('showGoodNews', 'Цвет записан');
             })
             .catch(error => {
@@ -365,7 +365,7 @@ export default {
             .ref('taskLists/' + taskListId + '/emojiIndex')
             .set(index)
             .then(data => {
-                console.log("Записали index емоджи ", data);
+                // console.log("Записали index емоджи ", data);
                 //Если все ок пишем в локальный json
                 state.allTasks[actTableInd].taskLists[taskListInd].emojiIndex = index;
                 dispatch('showGoodNews', 'Emoji изменен');
@@ -377,7 +377,7 @@ export default {
     },
 
     scrollListDown() {
-        console.log("СкролимЛистВНиз");
+        // console.log("СкролимЛистВНиз");
     },
 
     logOut({ dispatch, rootState }) {
@@ -407,7 +407,7 @@ export default {
             return firebase
               .auth()
               .signInWithEmailAndPassword(email, password);
-              console.log('Авторизашка')
+            //   console.log('Авторизашка')
           })
           .then(user => {
             const newUser = {
@@ -416,7 +416,7 @@ export default {
             };
             // console.log("Авторизовались, все ОК", newUser.id);
             state.userId = newUser.id;
-            console.log("Получили UserData по Id ");
+            // console.log("Получили UserData по Id ");
   
             //Раз все ок грузим данные и переходим в столы
             dispatch("startGetTasks");
@@ -431,16 +431,16 @@ export default {
       onSignup() {
         // vuex
   
-        console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
+        // console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
           //Создаем юзера в файрбазе
           firebase
             .auth()
             .createUserWithEmailAndPassword(this.email, this.password)
             .then(user => {
-              console.log("Это успех. id юзера ", this.id);
+            //   console.log("Это успех. id юзера ", this.id);
   
               this.$store.state.userId = user.uid;
-              console.log("Получили id ", user.uid);
+            //   console.log("Получили id ", user.uid);
               //Сейвим стандартный бг
               this.$store.dispatch("saveBg");
   

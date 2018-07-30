@@ -6,7 +6,7 @@ export default {
             .ref("users/" + state.userIdBro)
             .once("value")
             .then(data => {
-                console.log("Получили ", data);
+                // console.log("Получили ", data);
                 state.tableList = data;
             })
             .catch(error => {
@@ -17,12 +17,12 @@ export default {
     scrollButtonsToEnd() {
         let container = document.querySelector(".desk-btns__rel-cont");
         let bigDiv = document.querySelector(".desk-btns__cont");
-        console.log(
-          "скролл",
-          container.scrollLeft,
-          bigDiv.clientWidth,
-          container.offsetWidth
-        );
+        // console.log(
+        //   "скролл",
+        //   container.scrollLeft,
+        //   bigDiv.clientWidth,
+        //   container.offsetWidth
+        // );
         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
       },
 
@@ -37,11 +37,11 @@ export default {
     //         container.scrollLeft = bigDiv.clientWidth - container.offsetWidth;
 
     startTableLoader(state) {
-       console.log('Врубили лоадер')
+    //    console.log('Врубили лоадер')
        state.tableLoaderActive = true
     },
     stopTableLoader(state) {
-       console.log('Убрали лоадер')
+    //    console.log('Убрали лоадер')
        state.tableLoaderActive = false
     }
   

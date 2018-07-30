@@ -49,7 +49,7 @@ export default {
         //Cледующая цепочка, которая выполняется тольк если у нас есть
 
         getDataSecondChain({ dispatch, commit }) {
-            console.log('Вторая цепочка пошла');
+            // console.log('Вторая цепочка пошла');
             dispatch('getUserTables')
                 .then(allTables => {
                     // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
@@ -192,7 +192,7 @@ export default {
 
                                 //Получим адрес стола. Это будут последние 6 цифр от id
                                 let tableUrl = tableId.slice(tableId.length - 6);
-                                console.log('Вырезанный кусок id ', tableUrl, tableId);
+                                // console.log('Вырезанный кусок id ', tableUrl, tableId);
 
                                 //Преобразуем объекты в массивы
                                 let objLists = data.val().taskLists;
@@ -345,11 +345,12 @@ export default {
                             console.log('Полный провал. Ошибка: ', error);
                         })
 
+                    rootState.appLog.push(`Зашли в получение задачи с параметрами: Длина массива с задачами ${rootState.masTasks[i].length } Итерация получения задач ${ index } Длинна массива со списками ${ rootState.masTaskLists[ind].length } Итерация получения списков   ${ i }`);
                     //Если у нас последняя итерация-отправим массив allTasks на проверку корректности заполнения
                     // console.log('habrabra', rootState.allTasks);
                     /*Если последняя задача списка и последний список стола
-                      Вторым условием учтем то, что задач может не быть, тогда первое условие будет работаь некорректно*/
-                    if (((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) || ((rootState.masTasks[i].length - 1) === index && rootState.masTaskLists[ind].length == 0)) {
+                      Вторым условием учтем то, что задач может не быть, а список так же последний, тогда первое условие будет работаь некорректно*/
+                    if (((rootState.masTasks[i].length - 1) === index && (rootState.masTaskLists[ind].length - 1) === i) || ((rootState.masTasks[i].length == 0) && ((rootState.masTaskLists[ind].length - 1) == i))) {
                         //то проверим наш вывод на корректность
                         commit('stopTableLoader')
                         rootState.appLog.push('Загрузка стола завершена');
