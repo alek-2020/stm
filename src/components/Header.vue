@@ -1,107 +1,73 @@
 //TODO: Оформить страницу 404
 
 <template>
- <div class="">
-  <div class="t-header">
+  <div class="">
+    <div class="t-header">
+      <div class="desk-btns__group-1">
+        <!--  добавление РС-->
+        <div class=" btn-bg-white ml-2"
+             @click="AddTableBtn();"
+             :class="{'desk-btns__h-add_active': hPlusActive}">
+          <div class="desk-btns__h-add"
+               v-html="plusIcon"></div>
 
-        <!-- <div class="t-header__logo"
-            v-html="logoSVG">  
-        </div> -->
-<div class="desk-btns__group-1">
-       <!--  добавление РС-->
-      <div class=" btn-bg-white ml-2"
-        @click="AddTableBtn();"
-         :class = "{'desk-btns__h-add_active': hPlusActive}"
-      >
-        <div class="desk-btns__h-add"
-        v-html="plusIcon"></div>
+          <div class=" desk-btns__check-add">
+            <div class="btn btn_hover_gray btn_icon_window text"
+                 @click="HeaderAdd();">{{ $t("message.newTable") }}</div>
+            <div class="btn btn_icon_list btn_hover_gray mt-2 text"
+                 @click="addList()"> Список задач</div>
+          </div>
 
-        <div class=" desk-btns__check-add"
-          >
-          <div class="btn btn_hover_gray btn_icon_window text"
-           @click="HeaderAdd();"
-          >{{ $t("message.newTable") }}</div>
-          <div class="btn btn_icon_list btn_hover_gray mt-2 text"
-          @click="addList()"
-          > Список задач</div>
         </div>
 
       </div>
-              <!-- v-bind:style="{ 'background': lastTableColor() }" -->
-      <!-- Кнопка фильтра -->
-      <!-- <div class="btn-filter btn-bg-white ml-2" v-html="filterIcon">
-      </div> -->
-</div>
 
-        <!-- <input class="t-header__search" placeholder="Search"> -->
-        
-        <div class="t-header__desk-name"
-          @mouseover="showSettings"
-          @mouseout="hideSettings"
-          >
-            <div class="t-header__desk-name-abs">
-              <div class="actTabName__box"
-                @dblclick="tableActivation"
-                >
-                <input class="actTabName__inp" type="text"
-                  :class="{'actTabName__inp_active':inputActive}"
-                  v-model="actTabName"
-                  :disabled="!inputActive"
-                  placeholder="Название стола"
-                  ref="headerInput"
+      <div class="t-header__desk-name"
+           @mouseover="showSettings"
+           @mouseout="hideSettings">
+        <div class="t-header__desk-name-abs">
+          <div class="actTabName__box"
+               @dblclick="tableActivation">
+            <input class="actTabName__inp"
+                   type="text"
+                   :class="{'actTabName__inp_active':inputActive}"
+                   v-model="actTabName"
+                   :disabled="!inputActive"
+                   placeholder="Название стола"
+                   ref="headerInput"
                    @focusout='changeTableTitle(actTabName)'
                    @keyup.enter='changeTableTitle(actTabName)'>
-                <span class="actTabName__buffer">{{ actTabName }}</span>
-              </div>
-
-              <div class="table-settings"
-                v-html="settingsIcon"
-                :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
-                @click="showTableSettings"
-                ></div>
-              
-              <div class="delTable"
-              v-html="deleteIcon"
-              :class="{ 'delTable_hidden': !tableSettingsActive }"
-              v-on:click="askConfirmForDelete()"              
-              ></div>
-              
-            </div>
-        </div>
-        
-        <!-- <div class="t-header__logout">
-            EXIT
-        </div> -->
-     <div class="desk-btns__group-2 mr-2">
-          
-          <div to="/login"
-           @click="logOut()" 
-            class="t-header__profile btn-bg-white"
-            v-html="loginIcon">
-            <!-- <img src="/img/icons/log-in.svg" alt=""> -->
+            <span class="actTabName__buffer">{{ actTabName }}</span>
           </div>
 
-          <!-- <div class="t-header__star"><img src="/img/icons/star.svg" alt=""></div> -->
-          
-          <!-- <div class="t-header__menu btn-bg-white mx-2"
-            @click="ActivateDots"
-            >
-            <img src="../../../img/icons/more-dots.svg">
-                 
-                  <ThreeDotsMenu
-                  :class="{ 'header-menu_hidden': !ThreeDotsActive }">
-                  </ThreeDotsMenu>
-          </div> -->
+          <div class="table-settings"
+               v-html="settingsIcon"
+               :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
+               @click="showTableSettings"></div>
 
-       </div>
+          <div class="delTable"
+               v-html="deleteIcon"
+               :class="{ 'delTable_hidden': !tableSettingsActive }"
+               v-on:click="askConfirmForDelete()"></div>
+
+        </div>
+      </div>
+
+      <div class="desk-btns__group-2 mr-2">
+
+        <div to="/login"
+             @click="logOut()"
+             class="t-header__profile btn-bg-white"
+             v-html="loginIcon">
+        </div>
+
+      </div>
     </div>
-    
 
     <HeaderSettings></HeaderSettings>
 
-    <ConfirmationWindow
-      :askConfirm="askConfirm"
-      @confirmResponse="delTable">
+    <ConfirmationWindow :askConfirm="askConfirm"
+                        @confirmResponse="delTable">
       <div slot="message">
         Confirm removing table
       </div>
@@ -113,13 +79,14 @@
       </div>
     </ConfirmationWindow>
 
-</div>
+  </div>
 </template>
 
 <script>
 import HeaderSettings from "./HeaderSettings.vue";
 import ThreeDotsMenu from "./HeaderDotsMenu.vue";
 import ConfirmationWindow from "./PopupConfirmation.vue";
+import SlideTablesMenu from "./SlideTablesMenu.vue";
 
 import { svgHeader } from "./../OtherSrc/svg.js";
 
@@ -175,12 +142,12 @@ export default {
       window.addEventListener("click", this.checkOuterClick);
     },
     checkOuterClick(el) {
-              // console.log("Идентифkkикатор", el);
+      // console.log("Идентифkkикатор", el);
 
       if (el.target != this.$refs.headerInput) {
         // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
-        window.removeEventListener("click",  this.checkOuterClick);
+        window.removeEventListener("click", this.checkOuterClick);
       }
     },
     //Новый список
@@ -332,7 +299,8 @@ export default {
   components: {
     HeaderSettings,
     ThreeDotsMenu,
-    ConfirmationWindow
+    ConfirmationWindow,
+    SlideTablesMenu
   },
   created() {
     console.log("Подтягиваем SVG", svgHeader.filter);
@@ -528,11 +496,11 @@ $h-small-icons-col: rgb(56, 56, 56);
       padding: 8px;
       // display: block;
       visibility: visible;
-      opacity: .95;
+      opacity: 0.95;
       & > div {
-          border: solid 1px #656565;
-          padding: 5px 10px 5px 5px;
-          justify-content: flex-start !important;
+        border: solid 1px #656565;
+        padding: 5px 10px 5px 5px;
+        justify-content: flex-start !important;
       }
     }
   }
