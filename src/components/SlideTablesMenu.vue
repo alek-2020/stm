@@ -1,5 +1,30 @@
 <template>
-    <div>
-        Привет
+    <div class="slideMenu"
+         :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}">
     </div>
 </template>
+
+<script>
+export default {
+  data: function() {
+    return {};
+  },
+  props: {
+    paddingTop: String
+  }
+};
+</script>
+
+<style lang="scss">
+@import "../scss/helpers/_variables.scss";
+
+.slideMenu {
+  //   height: calc(100vh - 40px);
+  width: 200px;
+  background: white;
+  position: absolute;
+  //   top: 40px;
+  left: 0;
+  z-index: $zi-slideMenu;
+}
+</style>

@@ -6,64 +6,62 @@
 
 <template>
   <div id="app">
-    <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
-    
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
+
     <!-- Фон -->
-    <transition
-    name="fade"
-    mode="out-in">
-      <div
-        :style="{ 'background': 'url(' + currentBgImg + ')'}"
-        class="bg" 
-      ></div>
+    <transition name="fade"
+                mode="out-in">
+      <div :style="{ 'background': 'url(' + currentBgImg + ')'}"
+           class="bg"></div>
     </transition>
 
-    <transition
-      name="fade"
-      mode="out-in">
-       <stmHeader v-if="authorised"></stmHeader>
+    <SlideTablesMenu paddingTop=40 />
+
+    <transition name="fade"
+                mode="out-in">
+      <stmHeader v-if="authorised"></stmHeader>
     </transition>
 
-    <transition
-      name="fade"
-      mode="out-in">
-        <tableList v-if="authorised"></tableList>
+    <transition name="fade"
+                mode="out-in">
+      <tableList v-if="authorised"></tableList>
     </transition>
 
     <!-- Авторизация -->
-    <transition
-    name="fade"
-    mode="out-in">
+    <transition name="fade"
+                mode="out-in">
       <router-view name="LogReg"></router-view>
     </transition>
 
-    <transition
-      name="fade"
-      mode="out-in">
-       <router-view name="TableContent"  v-if="authorised"></router-view>
-    </transition> 
+    <transition name="fade"
+                mode="out-in">
+      <router-view name="TableContent"
+                   v-if="authorised"></router-view>
+    </transition>
 
+    <router-view name="bigError"
+                 v-if="authorised"></router-view>
 
-       <router-view name="bigError"  v-if="authorised"></router-view>
-
-   <!-- <TableContent></TableContent>  -->
+    <!-- <TableContent></TableContent>  -->
 
     <!-- <router-view name="NotFoundComponent"></router-view> -->
 
-  <!-- <button
+    <!-- <button
    @click="test">
       test
   </button> -->
 
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic"
+          rel="stylesheet">
 
-      <!-- Окна сообщений -->
+    <!-- Окна сообщений -->
     <GoodBadNewsMessage/>
 
-      <transition name="fade">
-        <div class="table-load-spinner"
-        v-if="tableLoaderActive"/>
-      </transition>
+    <transition name="fade">
+      <div class="table-load-spinner"
+           v-if="tableLoaderActive" />
+    </transition>
   </div>
 </template>
 
@@ -73,6 +71,7 @@ import tableList from "./components/TableButtonsAll.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
 import TableContent from "./components/TableBody.vue";
+import SlideTablesMenu from "./components/SlideTablesMenu.vue";
 
 import * as firebase from "firebase";
 
@@ -88,7 +87,8 @@ export default {
     SignIn,
     stmHeader,
     TableContent,
-    GoodBadNewsMessage
+    GoodBadNewsMessage,
+    SlideTablesMenu
   },
 
   computed: {
@@ -104,10 +104,10 @@ export default {
       return this.$store.state.activeTableIndex;
     },
     tableLoaderActive() {
-      return this.$store.state.tableLoaderActive
+      return this.$store.state.tableLoaderActive;
     },
     allTasks() {
-      return this.$store.state.allTasks
+      return this.$store.state.allTasks;
     }
   },
   methods: {
@@ -164,8 +164,10 @@ export default {
     },
     //Cледим за изменением активного стола, что бы пушить новый адрес
     activeTableIndex(to) {
-      if(this.allTasks[this.activeTableIndex] != null) {
-        this.$store.state.appRouteLog.push(`Выполняем изменение роута из прослушки индекса стола в App`)
+      if (this.allTasks[this.activeTableIndex] != null) {
+        this.$store.state.appRouteLog.push(
+          `Выполняем изменение роута из прослушки индекса стола в App`
+        );
         this.$store.dispatch("pushActiveTableLink");
       }
     }
@@ -261,7 +263,7 @@ a {
 .table-load-spinner {
   height: 80px;
   width: 80px;
-  background: rgba(0, 0, 0, .6);
+  background: rgba(0, 0, 0, 0.6);
   background-image: url("../img/spinners/load-spinner-white.svg");
   border-radius: 10px;
   position: fixed;

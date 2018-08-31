@@ -1,7 +1,7 @@
 //TODO: Оформить страницу 404
 
 <template>
-  <div class="">
+  <div>
     <div class="t-header">
       <div class="desk-btns__group-1">
         <!--  добавление РС-->
@@ -86,7 +86,6 @@
 import HeaderSettings from "./HeaderSettings.vue";
 import ThreeDotsMenu from "./HeaderDotsMenu.vue";
 import ConfirmationWindow from "./PopupConfirmation.vue";
-import SlideTablesMenu from "./SlideTablesMenu.vue";
 
 import { svgHeader } from "./../OtherSrc/svg.js";
 
@@ -299,8 +298,7 @@ export default {
   components: {
     HeaderSettings,
     ThreeDotsMenu,
-    ConfirmationWindow,
-    SlideTablesMenu
+    ConfirmationWindow
   },
   created() {
     console.log("Подтягиваем SVG", svgHeader.filter);
@@ -309,12 +307,12 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../scss/helpers/_variables.scss";
+
 //--- VARIABLES ---//
 
 $h-icons-col: rgb(82, 82, 82);
-
 $h-icons-bg-col: rgba(255, 255, 255, 0.45);
-
 $h-small-icons-col: rgb(56, 56, 56);
 //-----------------//
 
@@ -326,6 +324,7 @@ $h-small-icons-col: rgb(56, 56, 56);
   display: flex;
   align-items: center;
   position: relative;
+  z-index: $zi-header;
 
   &__search {
     box-sizing: border-box;
