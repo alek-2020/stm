@@ -1,3 +1,8 @@
+/* Входные параметры компонента:
+ *** paddingTop - отступ сверху
+ ***
+*/
+
 <template>
     <div class="slideMenu"
          :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}">
