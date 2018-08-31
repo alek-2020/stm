@@ -509,10 +509,10 @@ export default {
     padding: 5px;
     border-radius: 4px;
     &_active {
-        background: rgba(255, 255, 255, 0.774);
-        border: solid 1px rgb(163, 163, 163);
-        user-select: unset;
-        text-align: left;
+      background: rgba(255, 255, 255, 0.774);
+      border: solid 1px rgb(163, 163, 163);
+      user-select: unset;
+      text-align: left;
     }
   }
   &__name-box {

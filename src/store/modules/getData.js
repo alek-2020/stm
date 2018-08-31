@@ -305,7 +305,7 @@ export default {
 
         ///Получаем задачи очередного списка
         getListTasks({ dispatch, commit, state, rootState }, { i, listId }) {
-            console.log('habra Сформировали id задач', rootState.masTasks, rootState.allTasks);
+            // console.log('habra Сформировали id задач', rootState.masTasks, rootState.allTasks);
             const ind = rootState.activeTableIndex;
             const activeTableId = rootState.masTables[ind].id
             let tasks = rootState.allTasks[ind].taskLists[i].tasks
