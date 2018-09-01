@@ -16,9 +16,10 @@
 
         <BtnTableSettings :visible="tableSettingsVisible"
                           :active="tableSettingsActive"
-                          @toggle="showTableSettings" />
+                          @click.native="showTableSettings" />
 
-        <BtnDelActiveTable :visible="tableSettingsActive" />
+        <BtnDelActiveTable :visible="tableSettingsActive"
+                           @click.native="askConfirmForDelete()" />
       </div>
 
       <BtnLogout class="t-header__profile btn-bg-white"

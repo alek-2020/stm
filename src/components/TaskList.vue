@@ -416,6 +416,7 @@ export default {
   width: 350px;
   max-height: 100%;
   box-shadow: 0 0 13px rgba(0, 0, 0, 0.25);
+  min-height: 150px;
 
   &__inputs-container {
     width: 100%;
