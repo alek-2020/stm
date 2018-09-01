@@ -457,8 +457,8 @@ export default {
   &__del {
     height: 40px;
     width: 70%;
-    background: #cacaca;
     font-family: Roboto;
+    border: solid 1px #a1a1a1;
   }
 
   &__bottom-box {
