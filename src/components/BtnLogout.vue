@@ -1,13 +1,13 @@
 <template>
-    <div to="/login"
-         @click="logOut()"
-         class="btnLogOut">
-        <svg xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 59.886 59.886"
-             v-html="logoutIcon"
-             :style="{ fill: iconColor }">
-        </svg>
-    </div>
+  <div to="/login"
+       @click="logOut()"
+       class="btnLogOut">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 59.886 59.886"
+         v-html="logoutIcon"
+         :style="{ fill: iconColor }">
+    </svg>
+  </div>
 </template>
 
 <script>

@@ -6,7 +6,7 @@
 
       <!-- Кнопка выезжающего меню -->
       <BtnIconTile :iconColor="iconsColor"
-                   class="t-header__slideMenuBtn  btn-bg-white" />
+                   class="t-header__slideMenuBtn" />
 
       <!-- Блок с названием и настройками стола -->
       <div class="t-header__name-box"
@@ -23,7 +23,7 @@
       </div>
 
       <!-- Выход из учетной записи -->
-      <BtnLogout class="t-header__logout btn-bg-white"
+      <BtnLogout class="t-header__logout"
                  :iconColor="iconsColor" />
     </div>
 
@@ -152,6 +152,7 @@ export default {
     position: relative;
     flex-grow: 1;
     display: flex;
+    margin-left: 10px;
   }
 }
 

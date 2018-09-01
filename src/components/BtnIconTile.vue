@@ -37,6 +37,9 @@ export default {
 
 <style lang="scss">
 .btnIconTile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   & svg {
     height: 25px;
     width: 25px;
