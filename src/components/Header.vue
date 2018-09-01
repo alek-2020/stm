@@ -207,6 +207,7 @@ $h-small-icons-col: rgb(56, 56, 56);
   align-items: center;
   position: relative;
   z-index: $zi-header;
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.25);
 
   &__slideMenu {
     left: 10px;

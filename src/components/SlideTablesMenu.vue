@@ -4,9 +4,9 @@
 */
 
 <template>
-    <div class="slideMenu"
-         :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}">
-    </div>
+  <div class="slideMenu"
+       :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}">
+  </div>
 </template>
 
 <script>
@@ -31,5 +31,6 @@ export default {
   //   top: 40px;
   left: 0;
   z-index: $zi-slideMenu;
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.25);
 }
 </style>
