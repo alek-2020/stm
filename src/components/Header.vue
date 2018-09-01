@@ -4,8 +4,10 @@
   <div>
     <div class="t-header">
       <div class="desk-btns__group-1">
+        <!-- Кнопка выезжающего меню -->
+        <BtnIconTile iconColor="iconsColor" />
         <!--  добавление РС-->
-        <div class=" btn-bg-white ml-2"
+        <div class="btn-bg-white ml-2"
              @click="AddTableBtn();"
              :class="{'desk-btns__h-add_active': hPlusActive}">
           <div class="desk-btns__h-add"
@@ -86,6 +88,7 @@
 import HeaderSettings from "./HeaderSettings.vue";
 import ThreeDotsMenu from "./HeaderDotsMenu.vue";
 import ConfirmationWindow from "./PopupConfirmation.vue";
+import BtnIconTile from "./BtnIconTile.vue";
 
 import { svgHeader } from "./../OtherSrc/svg.js";
 
@@ -94,57 +97,24 @@ import * as firebase from "firebase";
 export default {
   data() {
     return {
+      iconsColor: "gray",
       activeTableName: "Название стола",
       logoSVG:
         '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
       SVGCross: "<svg></svg>",
       ThreeDotsActive: false,
       inputActive: false,
-      tables: [
-        {
-          BtnId: 243,
-          name: "Название стола",
-          colOne: "#fff",
-          colTwo: "#ccc",
-          colorId: "4"
-        },
-        {
-          BtnId: 2453,
-          name: "Название стола",
-          colOne: "#fff",
-          colTwo: "#ccc",
-          colorId: "4"
-        },
-        {
-          BtnId: 23435,
-          name: "Название стола",
-          colOne: "#fff",
-          colTwo: "#ccc",
-          colorId: "4"
-        },
-        {
-          BtnId: 223,
-          name: "Название стола",
-          colOne: "#fff",
-          colTwo: "#ccc",
-          colorId: "4"
-        }
-      ],
       askConfirm: false
     };
   },
   methods: {
     tableActivation() {
       let t = this;
-      // console.log("Раз");
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
     checkOuterClick(el) {
-      // console.log("Идентифkkикатор", el);
-
       if (el.target != this.$refs.headerInput) {
-        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
         window.removeEventListener("click", this.checkOuterClick);
       }
@@ -237,6 +207,9 @@ export default {
     deleteIcon() {
       return svgHeader.delete;
     },
+    iconTile() {
+      return svgHeader.tile;
+    },
     //
     lastTableColor() {
       return this.$store.dispatch("lastTableColor");
@@ -273,15 +246,8 @@ export default {
     // },
     actTabName: {
       //и запишем название нашего стола для хедера
-
       get: function() {
         if (this.allTasks.length > 0) {
-          // console.log(
-          //   "get table name ",
-          //   this.allTasks,
-          //   this.actTableIndex,
-          //   this.allTasks[0].name
-          // );
           if (this.allTasks[this.actTableIndex]) {
             return this.allTasks[this.actTableIndex].name;
           }
@@ -298,7 +264,8 @@ export default {
   components: {
     HeaderSettings,
     ThreeDotsMenu,
-    ConfirmationWindow
+    ConfirmationWindow,
+    BtnIconTile
   },
   created() {
     console.log("Подтягиваем SVG", svgHeader.filter);
