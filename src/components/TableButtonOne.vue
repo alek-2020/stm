@@ -6,12 +6,17 @@
   v-bind:class="{'desk-btns__last': ifLasBtn}"
   v-bind:id=" 'tableBtn-' + table.BtnId"
   v-on:click = 'changeActiveTable(index); changeUrl(table.tableUrl)'
+  @dblclick="tableActivation"
   >
 
       <!-- input для вывода названия -->
       <input 
+      :class="{'desk-btns__input_active':inputActive}"
       class="desk-btns__input" 
       type="text"
+      ref="tableBtnInput"
+      :disabled="!inputActive"
+      placeholder=""
       v-model="table.name"
       @focusout='changeTableTitle(table.name)'
       @keyup.enter='changeTableTitle(table.name)'
@@ -31,64 +36,70 @@
 
 </button>
 
-  <!-- <div>
-  {{ people.work }}
-  {{ people.name }}
-  her index 
-  {{ index }}
-  <input type="text" v-model="people.name">
-  </div> -->
 </template>
 
 
 <script>
-// import Vue from "vue";
 
 export default ({
   data() {
     return {
-      gradients: [
-        {
-          colId: 1,
-          colorOne: "#d24242",
-          colorTwo: "#af4242"
-        },
-        {
-          colId: 2,
-          colorOne: "#f85725",
-          colorTwo: "#8a5e41"
-        },
-        {
-          colId: 3,
-          colorOne: "#e15656",
-          colorTwo: "#825a5a"
-        },
-        {
-          colId: 4,
-          colorOne: "#8fb554",
-          colorTwo: "#5b917d"
-        },
-        {
-          colId: 5,
-          colorOne: "#2a2a39",
-          colorTwo: "#535472"
-        },
-        {
-          colId: 6,
-          colorOne: "#535472",
-          colorTwo: "#2a2a39"
-        },
-        {
-          colId: 7,
-          colorOne: "#582121",
-          colorTwo: "#bf3737"
-        }
-      ] //,
+      inputActive: false,
+      // gradients: [
+      //   {
+      //     colId: 1,
+      //     colorOne: "#d24242",
+      //     colorTwo: "#af4242"
+      //   },
+      //   {
+      //     colId: 2,
+      //     colorOne: "#f85725",
+      //     colorTwo: "#8a5e41"
+      //   },
+      //   {
+      //     colId: 3,
+      //     colorOne: "#e15656",
+      //     colorTwo: "#825a5a"
+      //   },
+      //   {
+      //     colId: 4,
+      //     colorOne: "#8fb554",
+      //     colorTwo: "#5b917d"
+      //   },
+      //   {
+      //     colId: 5,
+      //     colorOne: "#2a2a39",
+      //     colorTwo: "#535472"
+      //   },
+      //   {
+      //     colId: 6,
+      //     colorOne: "#535472",
+      //     colorTwo: "#2a2a39"
+      //   },
+      //   {
+      //     colId: 7,
+      //     colorOne: "#582121",
+      //     colorTwo: "#bf3737"
+      //   }
+      // ] //,
     };
   },
   props: ["table", "index", "ifLasBtn"],
   methods: {
-
+    tableActivation() {
+      let t = this;
+      // console.log("Раз");
+      this.inputActive = true;
+      window.addEventListener("click", this.checkOuterClick);
+    },
+    checkOuterClick(el) {
+      // console.log("Идентифkkикатор", el);
+      if (el.target != this.$refs.tableBtnInput) {
+        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        this.inputActive = false;
+        window.removeEventListener("click",  this.checkOuterClick);
+      }
+    },
     changeUrl(url) {
       this.$store.dispatch('linksHandler', { toLink: `/table/${url}` });
     },
@@ -124,7 +135,7 @@ export default ({
 .desk-btns {
   //  базовые стили кнопки
   &__one {
-    padding: 7px;
+    padding: 0 6px;
     font-family: "Roboto", sans-serif;
     background: linear-gradient(to bottom, #d24242, #af4242);
     display: inline-block;
@@ -155,15 +166,11 @@ export default ({
 
   // инпут внутри кнопки
   &__input {
-    /*            margin-left: 10px;*/
-    /*            height: 40px;*/
-    box-sizing: content-box;
-    border-radius: 7px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    height: 76%;
+    border-radius: 4px;
+    padding: 0 8px;
     border-right: none;
     outline: none;
-    /*            padding: 0 0 0 12px;*/
     font-size: 16px;
     font-weight: 600;
     border: none;
@@ -171,8 +178,13 @@ export default ({
     color: white;
     font-family: "Open Sans", sans-serif;
     white-space: nowrap;
-    /*            min-width: 100px;*/
     box-sizing: border-box;
+    z-index: 10;
+    &_active {
+      background: rgb(255, 255, 255);
+      user-select: unset;
+      color: #6b6b6b;
+    }
   }
 
   // буффер для инпута
@@ -198,6 +210,8 @@ export default ({
     left: -4px;
     border-radius: 7px;
     box-sizing: border-box;
+    //Что бы не перекрывала инпут задвигаем кнопку назад
+    z-index: -1;
   }
 }
 </style>

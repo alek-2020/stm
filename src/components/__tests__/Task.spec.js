@@ -35,8 +35,8 @@ describe('Компонент задачи Task.vue', () => {
         let t = wrapper.vm.task.index;
 
         wrapper.find('.one-task__text').setValue("alice")
-        console.log(wrapper.html());
-        console.log(wrapper.props().task.text);
+        // console.log(wrapper.html());
+        // console.log(wrapper.props().task.text);
         expect(true).toBe(true);
     })
 

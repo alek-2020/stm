@@ -87,7 +87,7 @@ export default {
     props: ["MainListColor", "activeTableIndex", "taskListIndex", "emojiState"],
     methods: {
       cnangeEmoji(index) {
-          console.log(index);
+        //   console.log(index);
           const taskListInd= this.taskListIndex;
           this.$store.dispatch('changeEmojiIndex', {index, taskListInd});
       },
@@ -99,14 +99,14 @@ export default {
       }
     },
     mounted() {
-        console.log('Получили emoji', this.listOfEmoji);
+        // console.log('Получили emoji', this.listOfEmoji);
     },
     watch: {
        //Закрытие меню из родительского компонента
        // FIXME: Почему то сдесь присваивание работает , но не отражается на сстоянии списка
        
       emojiState: (val) => {
-           console.log('Пришел пропс ', val);
+        //    console.log('Пришел пропс ', val);
            this.emojiListActive = val;
            this.emojiListActive = this.emojiState;
            console.log('Пришел пjпс ', this.emojiListActive);

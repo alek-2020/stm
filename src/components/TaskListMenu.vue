@@ -119,7 +119,7 @@ export default {
     /*активно меню выбора цвета на списке задач*/
     switchDotsCol: function() {
       this.persHide.activeDotsCol = !this.persHide.activeDotsCol;
-      console.log(this.persHide.activeDotsCol);
+      // console.log(this.persHide.activeDotsCol);
     },
 
     //Отправляет новый цвет в родительский компонент

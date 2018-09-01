@@ -14,7 +14,7 @@ export default {
             // 1.Проверка 'если плюс активен'
             dispatch('checkTableInput')
                 .then(response => {
-                    console.log('Плюс активен ', response);
+                    // console.log('Плюс активен ', response);
                     //1.5 Получим цвет нового стола 
                     return dispatch('getNewColId');
                 })
@@ -23,12 +23,12 @@ export default {
                     return dispatch('AddTableBtn', newColor);
                 })
                 .then(newTable => {
-                    console.log('Новый стол готов ', newTable);
+                    // console.log('Новый стол готов ', newTable);
                     // 3. Отправим стол на сервер в tables
                     return dispatch("pushNewTable", newTable);
                 })
                 .then(newTableId => {
-                    console.log('Запушили стол в локальный массив в Tables на серв. ', newTableId);
+                    // console.log('Запушили стол в локальный массив в Tables на серв. ', newTableId);
                     //Пушим ключ стола в него же 
                     dispatch('pushKeyToTable', newTableId);
                     //Послу пушв в локальный массив проскролим столы, что бы новый было видно
@@ -49,7 +49,7 @@ export default {
                     return dispatch('apdateTablesList', newTableId);
                 })
                 .then(response => {
-                    console.log('Залили новый список столов в user/tables', response);
+                    // console.log('Залили новый список столов в user/tables', response);
                 })
                 .catch(error => {
                     console.log(error);
@@ -82,7 +82,7 @@ export default {
         getNewColId({ dispatch, commit, state, rootState, getters }) {
             return new Promise((resolve, reject) => {
                 let lastTableId, newTableCol;
-                console.log('getcol Последний idd', rootState.allTasks.length);
+                // console.log('getcol Последний idd', rootState.allTasks.length);
                 
                 //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
                           
@@ -91,7 +91,7 @@ export default {
                     newTableCol = 0;
                 } else {
                     lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
-                    console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
+                    // console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
                     newTableCol = rootState.allTasks[lastTableId].colorId + 1;
         
                     if( newTableCol > (rootState.gradients.length - 1)) {
@@ -99,8 +99,8 @@ export default {
                     }
                 }
         
-                console.log('getcol Последний id', lastTableId);
-                console.log('getcol Возвращаем ', newTableCol)
+                // console.log('getcol Последний id', lastTableId);
+                // console.log('getcol Возвращаем ', newTableCol)
                 resolve(newTableCol);
                 // return 3;
             })
@@ -116,7 +116,7 @@ export default {
                     newTableIndex = rootState.allTasks[rootState.allTasks.length - 1].tableIndex + 1
                 }
 
-                console.log('getcol ', colId);
+                // console.log('getcol ', colId);
                 const newTableBtn = {
                     name: "Новый стол",
                     colorOne: rootState.gradients[colId].colorOne,
@@ -153,7 +153,7 @@ export default {
                         
                         //Пушим урл
                         //Нужно запушить урл нового стола в адресную стр.
-                        console.log('Пушим в роутер');
+                        // console.log('Пушим в роутер');
                         let fourCharId = newTableId.slice(newTableId.length - 6);
                         // router.push('/table/' + fourCharId);
                         dispatch('linksHandler', { toLink: `/table/'${fourCharId}`})
@@ -170,13 +170,13 @@ export default {
 
         // 1.5 Допушиваем в стол его же id
         pushKeyToTable({ dispatch, commit, state, rootState }, TableKey) {
-            console.log('kk ',TableKey);
+            // console.log('kk ',TableKey);
             firebase
             .database()
             .ref("tables/" + TableKey + "/id")
             .set(TableKey)
             .then(data => { 
-               console.log('.newTable. запушили в стол его id ', data);
+            //    console.log('.newTable. запушили в стол его id ', data);
             })
             .catch(error => {
                 console.log('Полный провал. Ошибка: ', error);
@@ -227,7 +227,7 @@ export default {
                     .ref("users/" + userId + "/tables/" + tableId)
                     .set(tableId)
                     .then(data => {
-                        console.log('.newTable. Закинули стол в user');
+                        // console.log('.newTable. Закинули стол в user');
                         resolve(data);
                         
                     })

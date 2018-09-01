@@ -1,3 +1,6 @@
+// TODO: Покрутить цвета списков, что бы смотрелись нормально
+// TODO: Сделать цвета списков привязанными к заставке, так что при смене они тоже менялись, кроме тех, где юзер поставил свой цвет 
+
 <template>
   <!-- Block fixed -->
   <div class="log__bg"
@@ -13,42 +16,44 @@
 
             <div class="log__title-block">
                 <span class="log__title">
-                    Авторизация
+                   {{ reg ? 'Регистрация' : 'Авторизация' }} 
                 </span>
                 <span class="log__or">
-                    или <router-link to="/registration/"
+                    или <router-link :to='returnLink'
                          @keypress="wipeErrors(); stopSpinner();"
-                         >Регистрация</router-link>
+                         >{{ reg ? 'Авторизация' : 'Регистрация' }}</router-link>
                 </span>  
             </div>
       <form class="log__form" action="" 
-       @submit.prevent="onSignIn(); runSpinner();">
-        <input 
-        name="email"
-        label="Mail"
-        v-model="email"
-        id="email"
-        type="email"
-        required
-        class="inp__mail"
-        placeholder="Enter your mail"
-        @keypress="wipeErrors">
+       @submit.prevent="submitForm(); runSpinner();">
+       <label for="email" class="log__input-label log__input-label_mail">
+          <input 
+          name="email"
+          v-model="email"
+          id="email"
+          type="email"
+          required
+          class="inp__mail"
+          placeholder="Enter your mail"
+          @keypress="wipeErrors">
+      </label>
 
-
+      <label for="password" class="log__input-label log__input-label_password">
         <input 
         name="password"
-        label="Password"
         v-model="password"
         id="password"
         type="password"
         class="inp__pass"
         placeholder="Your password"
         @keypress="wipeErrors">
-
+      </label>
 
         <button type="submit">
             <span
-             v-if="!spinnerActive">Вход</span>
+             v-if="!spinnerActive">
+              {{ reg ? 'Регистрация' : 'Вход' }}  
+            </span>
             <img
              v-else
              height="30px" src='../../img/spinners/load-spinner-white.svg'>
@@ -69,6 +74,8 @@ import RegAuthError from "./PopupSignInError.vue";
 export default {
   data() {
     return {
+      //Триггер для включения режима регистрации
+      reg: false,
       spinnerActive: false,
       email: "",
       password: "",
@@ -90,10 +97,13 @@ export default {
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
     },
+    submitForm() {
+       this.reg ? this.onSignUp() : this.onSignIn() 
+    },
     onSignIn() {
       // vuex
-
-      console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
+      
+      // console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
       const t = this;
       //Перед авторизацией делаем сессию бесконечной
       firebase
@@ -109,26 +119,96 @@ export default {
             id: user.user.uid
             //this.registerelM
           };
-          console.log("Авторизовались, все ОК", newUser.id);
+          // console.log("Авторизовались, все ОК", newUser.id);
           this.$store.state.userId = newUser.id;
-          console.log("Получили UserData по Id ");
-
+          // console.log("Получили UserData по Id ");
+          this.$store.dispatch('linksHandler', {link: this.route})
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("startGetTasks");
-          // this.$store.dispatch("linksHandlier", { link: "null", toLink: "/table/" });
+          this.$store.state.appRouteLog.push('routeHandler - вызываем послу авторизации')
+          this.$store.dispatch("linksHandler", { toLink: "/" });
         })
         .catch(error => {
           this.$store.state.authErrorMessage = error.message;
           this.stopSpinner();
-         console.log("Это провал. Ошибка: ", error);
-       
-       });
+          console.log("Это провал. Ошибка: ", error);
+        });
+    },  
+    onSignUp() {
+      // vuex
+
+      // console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
+        //Создаем юзера в файрбазе
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(user => {
+            // console.log("Это успех. id юзера ", this.id);
+
+            this.$store.state.userId = user.uid;
+            // console.log("Получили id ", user.uid);
+            //Сейвим стандартный бг
+            this.$store.dispatch("saveBg");
+
+            //Раз все ок грузим данные и переходим в столы
+            this.$store.dispatch("startGetTasks");
+            this.$store.state.appRouteLog.push('routeHandler - вызываем послу авторизации')
+            this.$store.dispatch("linksHandler", { toLink: "/" });
+            // this.$store.dispatch('linksHandler', {link: this.route})
+
+          
+          })
+          .catch(error => {
+            console.log("Полный провал. Ошибка: ", error);
+            this.$store.state.authErrorMessage = error.message;
+            this.stopSpinner();
+
+         });
     },
+
+    //     onSignIn() {
+    //   email = this.email
+    //   password = this.password
+    //   this.$store.dispatch('onSignIn', {email, password})
+    // },
+    // onSignup() {
+    //   email = this.email
+    //   password = this.password
+    //   this.$store.dispatch('onSignup', {email, password})
+    // },
+    enableRegMode() {
+         //Если компонент появился на стр регистрации
+        if (this.route == "/registration/") {
+          this.reg = true
+          // console.log('включили регмод')
+        } else {
+          this.reg = false
+        }
+    },
+    
+
     // goBack() {
     //   window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     // }
   },
+
+  mounted() {
+ 
+  }, 
+  watch: {
+     route: {
+       handler: 'enableRegMode',
+       immediate: true
+     }
+  },
   computed: {
+    returnLink() {
+      if(this.reg) {
+        return '/login/'
+      } else {
+        return '/registration/'
+      }
+    },
     userIdmeth() {
       return this.$store.state.userIdBro;
     },
@@ -137,6 +217,9 @@ export default {
     },
     authorised() {
       return this.$store.state.authorised;
+    },
+    route() {
+      return this.$route.path;
     }
   },
   components: {
@@ -182,6 +265,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 60%;
+    min-width: 250px;
 
     & > *:not(:first-child) {
       margin-top: 15px;
@@ -238,7 +322,7 @@ export default {
   border-radius: 3px;
   border: solid 1px #bebebe;
   box-sizing: border-box;
-  padding-left: 45px;
+  padding-left: 40px;
   /*Отступ для центрирования по большим символам*/
   padding-top: 4px;
   font-size: 18px;
@@ -253,20 +337,29 @@ export default {
   }
 }
 
-.inp {
-  &__mail {
-    background-image: url("/img/icons/envelope.svg");
-    background-size: 23px;
-    background-position: 10px, 50%;
+.log__input-label {
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    background-size: contain;
+    background-position: center;
     background-repeat: no-repeat;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 8px;
+    position: absolute;
+    height: 60%;
+    width: 25px;
   }
+}
 
-  &__pass {
-    background-image: url("/img/icons/padlock.svg");
-    background-size: 23px;
-    background-position: 10px, 50%;
-    background-repeat: no-repeat;
-  }
+.log__input-label_mail:before {
+  background-image: url("/img/icons/envelope.svg");
+}
+
+.log__input-label_password:before {
+  background-image: url("/img/icons/padlock.svg");
 }
 </style>
 

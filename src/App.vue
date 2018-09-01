@@ -6,71 +6,72 @@
 
 <template>
   <div id="app">
-    <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
-    
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
+
     <!-- Фон -->
-    <transition
-    name="fade"
-    mode="out-in">
-      <div
-        :style="{ 'background': 'url(' + currentBgImg + ')'}"
-        class="bg" 
-      ></div>
+    <transition name="fade"
+                mode="out-in">
+      <div :style="{ 'background': 'url(' + currentBgImg + ')'}"
+           class="bg"></div>
     </transition>
 
-    <transition
-      name="fade"
-      mode="out-in">
-       <stmHeader v-if="authorised"></stmHeader>
+    <SlideTablesMenu paddingTop=40 />
+
+    <transition name="fade"
+                mode="out-in">
+      <stmHeader v-if="authorised"></stmHeader>
     </transition>
 
-    <transition
-      name="fade"
-      mode="out-in">
-        <tableList v-if="authorised"></tableList>
+    <transition name="fade"
+                mode="out-in">
+      <tableList v-if="authorised"></tableList>
     </transition>
 
     <!-- Авторизация -->
-    <transition
-    name="fade"
-    mode="out-in">
+    <transition name="fade"
+                mode="out-in">
       <router-view name="LogReg"></router-view>
     </transition>
 
-    <transition
-      name="fade"
-      mode="out-in">
-       <router-view name="TableContent"  v-if="authorised"></router-view>
-    </transition> 
+    <transition name="fade"
+                mode="out-in">
+      <router-view name="TableContent"
+                   v-if="authorised"></router-view>
+    </transition>
 
+    <router-view name="bigError"
+                 v-if="authorised"></router-view>
 
-       <router-view name="bigError"  v-if="authorised"></router-view>
-
-   <!-- <TableContent></TableContent>  -->
+    <!-- <TableContent></TableContent>  -->
 
     <!-- <router-view name="NotFoundComponent"></router-view> -->
 
-  <!-- <button
+    <!-- <button
    @click="test">
       test
   </button> -->
 
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic"
+          rel="stylesheet">
 
-      <!-- Окна сообщений -->
-    <GoodBadNewsMessage>
-    </GoodBadNewsMessage>
+    <!-- Окна сообщений -->
+    <GoodBadNewsMessage/>
 
+    <transition name="fade">
+      <div class="table-load-spinner"
+           v-if="tableLoaderActive" />
+    </transition>
   </div>
 </template>
 
 <script>
-import GoodBadNewsMessage from  "./components/MessageNewsGoodBad.vue"
+import GoodBadNewsMessage from "./components/MessageNewsGoodBad.vue";
 import tableList from "./components/TableButtonsAll.vue";
-import SignUp from "./components/PopupSignUp.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
 import TableContent from "./components/TableBody.vue";
+import SlideTablesMenu from "./components/SlideTablesMenu.vue";
 
 import * as firebase from "firebase";
 
@@ -83,30 +84,36 @@ export default {
   },
   components: {
     tableList,
-    SignUp,
     SignIn,
     stmHeader,
     TableContent,
-    GoodBadNewsMessage
+    GoodBadNewsMessage,
+    SlideTablesMenu
   },
 
   computed: {
     ...mapGetters({
       currentBgImg: "currentBgImg",
-      authorised: "authorised",
+      authorised: "authorised"
     }),
-    
+
     getRoute() {
       return this.$route.path;
     },
     activeTableIndex() {
-      return this.$store.state.activeTableIndex
+      return this.$store.state.activeTableIndex;
+    },
+    tableLoaderActive() {
+      return this.$store.state.tableLoaderActive;
+    },
+    allTasks() {
+      return this.$store.state.allTasks;
     }
   },
   methods: {
     callLinksHandler(link) {
-        if(!link) link = this.getRoute;
-        this.$store.dispatch('linksHandler', {link});
+      if (!link) link = this.getRoute;
+      this.$store.dispatch("linksHandler", { link });
     }
   },
   created() {
@@ -119,13 +126,13 @@ export default {
         t.$store.state.activeTableUrl = url;
         t.$store.dispatch("startGetTasks");
         t.$store.state.authorised = true;
-        this.callLinksHandler()
-        console.log("User is signed in", firebase.auth().currentUser.uid);
+        this.callLinksHandler();
+        // console.log("User is signed in", firebase.auth().currentUser.uid);
       } else {
-        console.log("No user is signed in");
+        // console.log("No user is signed in");
         //Засейвим фон
         t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
-        this.callLinksHandler()
+        this.callLinksHandler();
       }
     });
   },
@@ -137,31 +144,33 @@ export default {
 
     $route(to, from) {
       // Отправим упл на проверку
-      console.log('Мониторим урл ', to.path);
+      // console.log("Мониторим урл ", to.path);
       this.callLinksHandler(to.path);
-      
+
       //Если в приходил ссылка на конкретный стол, то выполняем смену стола
       //Тут расчет на то, что узер вбил ссылку, но минус в том, что метод будет выполняться и когда мы програмно меняем урл
       if (to.params.link != null) {
-        console.log("Есть ссылка на стол");
+        // console.log("Есть ссылка на стол");
         this.$store.dispatch("changeActiveTable", this.$route.params.link);
       } else {
         //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
-        if( to.path.indexOf("/table/") === 0 ) {
+        if (to.path.indexOf("/table/") === 0) {
           // this.$store.dispatch("pushActiveTableLink");
         } else {
           //Пока что ничего не делаем
           // console.log("Нет ссылка на стол");
         }
-
       }
     },
     //Cледим за изменением активного стола, что бы пушить новый адрес
     activeTableIndex(to) {
-      console.log('Новый индексссс', to);
-      this.$store.dispatch('pushActiveTableLink');
+      if (this.allTasks[this.activeTableIndex] != null) {
+        this.$store.state.appRouteLog.push(
+          `Выполняем изменение роута из прослушки индекса стола в App`
+        );
+        this.$store.dispatch("pushActiveTableLink");
+      }
     }
-      
   }
 };
 </script>
@@ -249,5 +258,19 @@ a {
 .fade-enter,
 .fade-leave-active {
   opacity: 0;
+}
+
+.table-load-spinner {
+  height: 80px;
+  width: 80px;
+  background: rgba(0, 0, 0, 0.6);
+  background-image: url("../img/spinners/load-spinner-white.svg");
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 </style>

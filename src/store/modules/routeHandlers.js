@@ -1,3 +1,5 @@
+// FIXME: Пропадает выделение активного стола через несколько секунд
+// TODO: состояние загрузки столов, списков, задач, загрузка задач ,это так же триггер полной загрузки стола
 import router from './../../Router.js'
 
 export default {
@@ -18,17 +20,25 @@ export default {
             if (!link) { link = 'null' }
             if (!toLink) { toLink = 'null' }
             if (!linkId) { linkId = 'null' }
-            console.log('нажали упарвляющая функция жива', rootState.authorised, toLink.indexOf("/table/"), link, toLink);
-   
-            //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
-            if (!rootState.authorised && link != "/login/" && link != "/registration/") {
+            // console.log('нажали управляющая функция жива', rootState.authorised, toLink.indexOf("/table/"), link, toLink);
+
+            rootState.appRouteLog.push(`linksHandler - зашли с параметрами ${link + ' ' + toLink + ' ' + linkId + ' ' + (toLink == '/')}`)
+           
+    
+            if (toLink == '/') {
+                rootState.appRouteLog.push(`Пушим на ${toLink} из linksHandler`)
+                router.push(toLink);
+            } else if (!rootState.authorised && link != "/login/" && link != "/registration/") {
+                //Если юзер не авторизован разрешаем ему только авторизацию и регистрацию
                 router.push('/login/');
                 dispatch('showBadNews', 'Сначала авторизуйтесь или зарегистрируйтесь 😡')
-                // } else if(toLink === "/table/" && rootState.authorised) {
-                //     //При авторизации. поидее сейчас мы делаем не правильно и нам нужно поставить адрес активного стола
-                //     router.push(toLink);
-            } else if(rootState.authorised && (link == "/login/" || link == "/registration/")) {
+            } else if (toLink === "/table/" && rootState.authorised) {
+                //При авторизации. поидее сейчас мы делаем не правильно и нам нужно поставить адрес активного стола
+                router.push(toLink);
+            } else if (rootState.authorised && (link == "/login/" || link == "/registration/")) {
                 //Если мы на странице авторизации и узер авторизован-перекинем его на активный рс
+                // console.log('Управляющая 43');
+                rootState.appRouteLog.push('routeHandler - вызываем из linksHandler')
                 dispatch('pushActiveTableLink');
             } else if (toLink.indexOf("/table/") >= 0 && !rootState.authorised) {
                 //Если направили на столы и чувак не авторизован значит, что-то не так. оправим его на авторизацию
@@ -39,8 +49,17 @@ export default {
                 router.push(toLink);
             } else if (toLink === '/error/') {
                 //Если пушим ошибку юзеру
+                rootState.appRouteLog.push(`Пушим на ${toLInk} из linksHandler`)
                 router.push(toLink);
-            }
+            } 
+            
+
+
+
+            // if (link === '/registration/') {
+            //     //Переключаем модалку в режим регистрации
+
+            // }
 
             // дописать linksHadler
             // вывести ошибку при ошибку получения данных
@@ -53,17 +72,18 @@ export default {
             var obj = rootState.allTasks;
             var correctUrl = false;
             obj.forEach((element, index) => {
-                console.log(index, element.tableUrl);
+                // console.log(index, element.tableUrl);
                 if (element.tableUrl == url) {
-                    console.log('Индексы сошлись', url);
+                    // console.log('Индексы сошлись', url);
                     rootState.activeTableIndex = index;
                     correctUrl = true;
                 }
             });
 
             if (!correctUrl) {
+                rootState.appRouteLog.push('routeHandler - вызываем из changeActiveTable')
                 dispatch('pushActiveTableLink');
-                console.log('Ссылка фигня пушим активный стол');
+                // console.log('Ссылка фигня пушим активный стол');
             }
 
             //  for (var prop in obj) {
@@ -78,11 +98,18 @@ export default {
         pushActiveTableLink({ dispatch, commit, rootState }) {
             // console.log(router.match(location));
             // console.log('Пушим ссылку, так как нет никакой', rootState.activeTableIndex, rootState.allTasks);
+            rootState.appRouteLog.push(`Пушим роут активного стола`)
+
             let activeTable = rootState.allTasks[rootState.activeTableIndex];
-            if(activeTable != null) {
-                let url = activeTable.id.slice(activeTable.id.length - 6);
+            if (activeTable != null) {
+                let url = activeTable.tableUrl
+                rootState.appRouteLog.push(`Пушим ссылку ${url}, активный стол ${activeTable.name}`)
                 // router.push({ path: `/table/${url}` });
                 dispatch('linksHandler', { toLink: `/table/${url}` });
+            } 
+            else {
+                rootState.appRouteLog.push(`Роут. Попытка получить роут незаписанного стола.`)
+                // dispatch('linksHandler', { toLink: `/table/404` });
             }
         },
 

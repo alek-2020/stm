@@ -1,102 +1,73 @@
 //TODO: Оформить страницу 404
 
 <template>
- <div class="">
-  <div class="t-header">
+  <div>
+    <div class="t-header">
+      <div class="desk-btns__group-1">
+        <!--  добавление РС-->
+        <div class=" btn-bg-white ml-2"
+             @click="AddTableBtn();"
+             :class="{'desk-btns__h-add_active': hPlusActive}">
+          <div class="desk-btns__h-add"
+               v-html="plusIcon"></div>
 
-        <!-- <div class="t-header__logo"
-            v-html="logoSVG">  
-        </div> -->
-<div class="desk-btns__group-1">
-       <!--  добавление РС-->
-      <div class=" btn-bg-white ml-2"
-        @click="AddTableBtn();"
-         :class = "{'desk-btns__h-add_active': hPlusActive}"
-      >
-        <div class="desk-btns__h-add"
-        v-html="plusIcon"></div>
+          <div class=" desk-btns__check-add">
+            <div class="btn btn_hover_gray btn_icon_window text"
+                 @click="HeaderAdd();">{{ $t("message.newTable") }}</div>
+            <div class="btn btn_icon_list btn_hover_gray mt-2 text"
+                 @click="addList()"> Список задач</div>
+          </div>
 
-        <div class=" desk-btns__check-add"
-          >
-          <div class="btn btn_hover_gray text px-3"
-           @click="HeaderAdd();"
-          >Новый стол</div>
-          <div class="btn btn btn_hover_gray text"
-          @click="addList()"
-          > Список задач</div>
         </div>
 
       </div>
-              <!-- v-bind:style="{ 'background': lastTableColor() }" -->
-      <!-- Кнопка фильтра -->
-      <!-- <div class="btn-filter btn-bg-white ml-2" v-html="filterIcon">
-      </div> -->
-</div>
 
-        <!-- <input class="t-header__search" placeholder="Search"> -->
-        
-        <div class="t-header__desk-name"
-          @mouseover="showSettings"
-          @mouseout="hideSettings"
-          >
-            <div class="t-header__desk-name-abs">
-              <div class="actTabName__box">
-                <input class="actTabName__inp" type="text"
-                  v-model="actTabName"
-                  placeholder="Стол"
+      <div class="t-header__desk-name"
+           @mouseover="showSettings"
+           @mouseout="hideSettings">
+        <div class="t-header__desk-name-abs">
+          <div class="actTabName__box"
+               @dblclick="tableActivation">
+            <input class="actTabName__inp"
+                   type="text"
+                   :class="{'actTabName__inp_active':inputActive}"
+                   v-model="actTabName"
+                   :disabled="!inputActive"
+                   placeholder="Название стола"
+                   ref="headerInput"
                    @focusout='changeTableTitle(actTabName)'
                    @keyup.enter='changeTableTitle(actTabName)'>
-                <span class="actTabName__buffer">{{ actTabName }}</span>
-              </div>
-
-              <div class="table-settings"
-                v-html="settingsIcon"
-                :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
-                @click="showTableSettings"
-                ></div>
-              
-              <div class="delTable"
-              v-html="deleteIcon"
-              :class="{ 'delTable_hidden': !tableSettingsActive }"
-              v-on:click="askConfirmForDelete()"              
-              ></div>
-              
-            </div>
-        </div>
-        
-        <!-- <div class="t-header__logout">
-            EXIT
-        </div> -->
-     <div class="desk-btns__group-2 mr-2">
-          
-          <div to="/login"
-           @click="logOut()" 
-            class="t-header__profile btn-bg-white"
-            v-html="loginIcon">
-            <!-- <img src="/img/icons/log-in.svg" alt=""> -->
+            <span class="actTabName__buffer">{{ actTabName }}</span>
           </div>
 
-          <!-- <div class="t-header__star"><img src="/img/icons/star.svg" alt=""></div> -->
-          
-          <!-- <div class="t-header__menu btn-bg-white mx-2"
-            @click="ActivateDots"
-            >
-            <img src="../../../img/icons/more-dots.svg">
-                 
-                  <ThreeDotsMenu
-                  :class="{ 'header-menu_hidden': !ThreeDotsActive }">
-                  </ThreeDotsMenu>
-          </div> -->
+          <div class="table-settings"
+               v-html="settingsIcon"
+               :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
+               @click="showTableSettings"></div>
 
-       </div>
+          <div class="delTable"
+               v-html="deleteIcon"
+               :class="{ 'delTable_hidden': !tableSettingsActive }"
+               v-on:click="askConfirmForDelete()"></div>
+
+        </div>
+      </div>
+
+      <div class="desk-btns__group-2 mr-2">
+
+        <div to="/login"
+             @click="logOut()"
+             class="t-header__profile btn-bg-white"
+             v-html="loginIcon">
+        </div>
+
+      </div>
     </div>
-    
 
     <HeaderSettings></HeaderSettings>
 
-    <ConfirmationWindow
-      :askConfirm="askConfirm"
-      @confirmResponse="delTable">
+    <ConfirmationWindow :askConfirm="askConfirm"
+                        @confirmResponse="delTable">
       <div slot="message">
         Confirm removing table
       </div>
@@ -108,7 +79,7 @@
       </div>
     </ConfirmationWindow>
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -118,20 +89,17 @@ import ConfirmationWindow from "./PopupConfirmation.vue";
 
 import { svgHeader } from "./../OtherSrc/svg.js";
 
-import * as firebase from 'firebase'
+import * as firebase from "firebase";
 
 export default {
   data() {
     return {
-      // hPlusActive: false,
-      activeTableName: 'Название стола',
+      activeTableName: "Название стола",
       logoSVG:
         '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
-      //    activeTableName: 'Стол Василия',
       SVGCross: "<svg></svg>",
       ThreeDotsActive: false,
-      // actTabName: "Колбасный Стол",
-
+      inputActive: false,
       tables: [
         {
           BtnId: 243,
@@ -162,17 +130,32 @@ export default {
           colorId: "4"
         }
       ],
-      askConfirm: false,
-    }
+      askConfirm: false
+    };
   },
   methods: {
+    tableActivation() {
+      let t = this;
+      // console.log("Раз");
+      this.inputActive = true;
+      window.addEventListener("click", this.checkOuterClick);
+    },
+    checkOuterClick(el) {
+      // console.log("Идентифkkикатор", el);
+
+      if (el.target != this.$refs.headerInput) {
+        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        this.inputActive = false;
+        window.removeEventListener("click", this.checkOuterClick);
+      }
+    },
     //Новый список
     addList() {
-      this.$store.dispatch('addTaskList');
+      this.$store.dispatch("addTaskList");
     },
     //Выход
     logOut() {
-        this.$store.dispatch('logOut');
+      this.$store.dispatch("logOut");
     },
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;
@@ -180,31 +163,32 @@ export default {
     },
 
     showSettings() {
-         this.$store.state.tableSettingsVisible = true;
+      this.$store.state.tableSettingsVisible = true;
     },
     hideSettings() {
-         console.log('Срабатывает mouseout');
-         this.$store.state.tableSettingsVisible = false;
-        //  this.$store.state.tableSettingsActive = false;
+      // console.log("Срабатывает mouseout");
+      this.$store.state.tableSettingsVisible = false;
+      //  this.$store.state.tableSettingsActive = false;
     },
 
-     changeTableTitle(NewName) {
-      const TableId = this.$store.state.allTasks[this.$store.state.activeTableIndex].id;
+    changeTableTitle(NewName) {
+      const TableId = this.$store.state.allTasks[
+        this.$store.state.activeTableIndex
+      ].id;
       this.$store.dispatch("changeTableTitle", { NewName, TableId });
     },
 
     //Скроллим наш список столов в конец для добавления нового
     //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
     HeaderAdd() {
-    
-      this.$store.dispatch('addNewTable');
-   },
+      this.$store.dispatch("addNewTable");
+    },
 
     //добавление рс
     AddTableBtn: function() {
-    // this.$store.state.plusActive = !this.$store.state.plusActive;
-    //  this.HeaderAdd();
-     this.$store.state.addMenuActive = !this.hPlusActive;
+      // this.$store.state.plusActive = !this.$store.state.plusActive;
+      //  this.HeaderAdd();
+      this.$store.state.addMenuActive = !this.hPlusActive;
     },
 
     //     lastTableColor() {
@@ -217,16 +201,15 @@ export default {
     // },
 
     askConfirmForDelete() {
-       this.askConfirm = true;
+      this.askConfirm = true;
     },
     delTable(val) {
-      if(val) {
-         this.$store.dispatch("delActiveTable");
+      if (val) {
+        this.$store.dispatch("delActiveTable");
       }
       this.askConfirm = false;
     },
     showTableSettings() {
-      console.log('Показали настроюшки');
       this.$store.state.tableSettingsActive = !this.$store.state
         .tableSettingsActive;
     }
@@ -280,7 +263,7 @@ export default {
     //   return this.$store.state.allTasks;
     // },
     allTasks() {
-        return this.$store.state.allTasks;
+      return this.$store.state.allTasks;
     },
     actTableIndex() {
       return this.$store.state.activeTableIndex;
@@ -289,22 +272,26 @@ export default {
     //   return this.$store.state.allTasks[this.$store.state.activeTableIndex].id;
     // },
     actTabName: {
-      
-           //и запишем название нашего стола для хедера
+      //и запишем название нашего стола для хедера
 
-     get: function() {
-            if(this.allTasks.length > 0) {
-                console.log('get table name ', this.allTasks, this.actTableIndex, this.allTasks[0].name);
-                if(this.allTasks[this.actTableIndex]) {
-                  return this.allTasks[this.actTableIndex].name;
-                }
-           } else {
-               return 'Название рабочего стола'
-           }      },
+      get: function() {
+        if (this.allTasks.length > 0) {
+          // console.log(
+          //   "get table name ",
+          //   this.allTasks,
+          //   this.actTableIndex,
+          //   this.allTasks[0].name
+          // );
+          if (this.allTasks[this.actTableIndex]) {
+            return this.allTasks[this.actTableIndex].name;
+          }
+        } else {
+          return "Название рабочего стола";
+        }
+      },
 
       set: function(newValue) {
-       
-       this.allTasks[this.actTableIndex].name = newValue;
+        this.allTasks[this.actTableIndex].name = newValue;
       }
     }
   },
@@ -320,12 +307,12 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../scss/helpers/_variables.scss";
+
 //--- VARIABLES ---//
 
 $h-icons-col: rgb(82, 82, 82);
-
 $h-icons-bg-col: rgba(255, 255, 255, 0.45);
-
 $h-small-icons-col: rgb(56, 56, 56);
 //-----------------//
 
@@ -333,10 +320,11 @@ $h-small-icons-col: rgb(56, 56, 56);
   height: 40px;
   width: 100%;
   min-width: 300px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.85);
   display: flex;
   align-items: center;
   position: relative;
+  z-index: $zi-header;
 
   &__search {
     box-sizing: border-box;
@@ -503,16 +491,27 @@ $h-small-icons-col: rgb(56, 56, 56);
     height: 50px;
     & .desk-btns__check-add {
       max-height: 400px;
-      padding: 5px;
+      max-width: 400px;
+      padding: 8px;
+      // display: block;
+      visibility: visible;
+      opacity: 0.95;
+      & > div {
+        border: solid 1px #656565;
+        padding: 5px 10px 5px 5px;
+        justify-content: flex-start !important;
+      }
     }
   }
 
   &__check-add {
+    visibility: hidden;
+    // visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
-    margin-top: 35px;
-    opacity: .95;
+    margin-top: 45px;
+    opacity: 0;
     // background: $h-icons-bg-col;
     background: #efefef;
     border-radius: 4px;
@@ -522,7 +521,8 @@ $h-small-icons-col: rgb(56, 56, 56);
     white-space: nowrap;
     overflow: hidden;
     transition: all 0.3s;
-    max-height: 0;
+    max-height: 20px;
+    max-width: 20px;
     padding: 0 5px;
   }
 }
@@ -533,17 +533,20 @@ $h-small-icons-col: rgb(56, 56, 56);
     position: relative;
     height: 30px;
     max-width: 100%;
+    min-width: 50px;
   }
 
   &__buffer {
     position: relative;
     left: 0;
-    padding: 0 5px;
+    padding: 0 8px;
     font-family: "Roboto", sans-serif;
     font-size: 18px;
     font-weight: 400;
     height: 0;
     opacity: 0;
+    width: 20px;
+    z-index: -10;
   }
 
   &__inp {
@@ -567,6 +570,12 @@ $h-small-icons-col: rgb(56, 56, 56);
     font-size: 18px;
     max-width: 100%;
     box-sizing: border-box;
+    user-select: none;
+    &_active {
+      background: rgba(255, 255, 255, 0.774);
+      border: solid 1px rgb(163, 163, 163);
+      user-select: unset;
+    }
   }
 }
 
@@ -576,12 +585,12 @@ $h-small-icons-col: rgb(56, 56, 56);
   z-index: 5;
   width: 25px;
   opacity: 1;
-  transition: all .2s;
+  transition: all 0.2s;
   position: relative;
   left: 0;
   margin: 0 5px;
 
-  &:hover svg{
+  &:hover svg {
     fill: $h-small-icons-col;
   }
   &_hidden {
@@ -593,7 +602,7 @@ $h-small-icons-col: rgb(56, 56, 56);
     height: 20px;
     margin: auto;
     fill: gray;
-    transition: fill .1s;
+    transition: fill 0.1s;
   }
 }
 
@@ -606,7 +615,7 @@ $h-small-icons-col: rgb(56, 56, 56);
   margin: 0 5;
   transition: all 0.2s;
 
-  &:hover svg{
+  &:hover svg {
     fill: $h-small-icons-col;
   }
 

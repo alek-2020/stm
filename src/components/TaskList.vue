@@ -24,12 +24,22 @@
                     :activeTableIndex="activeTableIndex"
                     :emojiState="emojiState"></Emoji>
                   <transition
-                    name="fade">  
-                      <input class="task-list__name" type="text"  
-                      v-model="TList.name"
-                      v-show="nameVisible"
-                      @focusout='changeListTitle(TList.name)'
-                      @keyup.enter='changeListTitle(TList.name)'>
+                    name="fade">
+                      <div
+                        class="task-list__name-box"
+                        @dblclick="tableActivation"
+                      >  
+                        <input class="task-list__name" type="text"  
+                        :class="{'task-list__name_active':inputActive}"
+                        :disabled="!inputActive"
+
+                        ref="listHeaderInput"
+                        placeholder="Название списка задач"
+                        v-model="TList.name"
+                        v-show="nameVisible"
+                        @focusout='changeListTitle(TList.name)'
+                        @keyup.enter='changeListTitle(TList.name)'>
+                      </div>
                   </transition>
                   <listMenu class="task-list__menu"
                     @newColor="changeMainColor"
@@ -38,7 +48,9 @@
             </div>
                                  <!-- v-once :settings="settings" -->
 
-              <VuePerfectScrollbar class="task-list__scroll-box"
+              <VuePerfectScrollbar 
+                class="task-list__scroll-box"
+                ref="ps"
                 :style="{height: taskBoxHeight}">
                   <div class="task-list__inputs-container"
                     ref="inputsContainer">
@@ -132,6 +144,7 @@ import ConfirmationWindow from "./PopupConfirmation.vue";
 export default {
   data: function() {
     return {
+      inputActive: false,
       taskBoxHeight: 0,
       maxBoxHeight: 0,
       onlyDoneTasks: false,
@@ -141,7 +154,7 @@ export default {
       nameVisible: true,
       emojiState: false,
       menuState: false,
-      askConfirm: false,
+      askConfirm: false
     };
   },
   //   events: {
@@ -150,56 +163,81 @@ export default {
   //    },
   // },
   methods: {
+    tableActivation() {
+      let t = this;
+      // console.log("Раз");
+      this.inputActive = true;
+      window.addEventListener("click", this.checkOuterClick);
+    },
+    checkOuterClick(el) {
+      // console.log("Идентифkkикатор", el);
+      if (el.target != this.$refs.listHeaderInput) {
+        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
+        this.inputActive = false;
+        window.removeEventListener("click", this.checkOuterClick);
+      }
+    },
     //Скрытие названия списка при открытом меню
     hideListName(val) {
-      if(this.emojiState || this.menuState) {
-          this.nameVisible = false;
-          console.log('Прячем заголовок списка ', this.emojiState, this.menuState);
+      if (this.emojiState || this.menuState) {
+        this.nameVisible = false;
+        // console.log(
+        //   "Прячем заголовок списка ",
+        //   this.emojiState,
+        //   this.menuState
+        // );
       } else {
-          this.nameVisible = true;
-          console.log('Покажем заголовок списка ', this.emojiState, this.menuState);
+        this.nameVisible = true;
+        // console.log(
+        //   "Покажем заголовок списка ",
+        //   this.emojiState,
+        //   this.menuState
+        // );
       }
-      
+
       // this.nameVisible = !val;
     },
     changeEmojiState(val) {
       this.emojiState = val;
-      if(val == true) {
+      if (val == true) {
         this.menuState = false;
       }
       this.hideListName(val);
     },
     changeMenuState(val) {
       this.menuState = val;
-      console.log('Пришел пропс тест ', val);
-      if(val == true) {
+      // console.log("Пришел пропс тест ", val);
+      if (val == true) {
         this.emojiState = false;
       }
       this.hideListName(val);
     },
     //Принимает новый цвет из палитны и меняем
     changeMainColor(index) {
-      console.log('Новый цвет брат ', index);
-      console.log('данные листа ', this.activeTableIndex, this.taskListIndex);
+      // console.log("Новый цвет брат ", index);
+      // console.log("данные листа ", this.activeTableIndex, this.taskListIndex);
 
-      this.$store.state.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color = index;
+      this.$store.state.allTasks[this.activeTableIndex].taskLists[
+        this.taskListIndex
+      ].color = index;
       //Push color id to firebase
       let allData = new Object();
       allData.colIndex = index;
       allData.actTableInd = this.activeTableIndex;
       allData.taskListInd = this.taskListIndex;
 
-      this.$store.dispatch('pushListColor', allData);
+      this.$store.dispatch("pushListColor", allData);
     },
     afterLeave() {
       this.changeHeightOfList();
-      console.log("Пересчет высоты при завершении анимации");
+      // console.log("Пересчет высоты при завершении анимации");
     },
     changeHeightOfList() {
       if (this.$refs.inputsContainer != null) {
-        console.log('Высота контейнера в листе', this.taskBoxHeight);
+        // console.log("Высота контейнера в листе", this.taskBoxHeight);
         this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
-        console.log("Пересчет высоты", this.taskBoxHeight);
+        // console.log("Пересчет высоты", this.taskBoxHeight);
+        this.$refs.ps.update();
         // VuePerfectScrollbar.update();
       }
     },
@@ -210,7 +248,7 @@ export default {
     },
 
     a: function() {
-      console.log(this.themeColor);
+      // console.log(this.themeColor);
     },
 
     //Добавляем новую задачу (пока что просто пустой инпут)
@@ -225,21 +263,20 @@ export default {
     },
 
     removeList(id, taskListIndex, activeTableIndex) {
-       this.dataForRemoving = {
-           id,
-           taskListIndex,
-           activeTableIndex
-       }
+      this.dataForRemoving = {
+        id,
+        taskListIndex,
+        activeTableIndex
+      };
 
-       this.askConfirm = true;
-      
-    }, 
+      this.askConfirm = true;
+    },
     confirmedRemove(responce) {
-      if(responce) {
+      if (responce) {
         const id = this.dataForRemoving.id;
         const taskListIndex = this.dataForRemoving.taskListIndex;
         const activeTableIndex = this.dataForRemoving.activeTableIndex;
-        
+
         this.$store.dispatch("removeList", {
           id,
           taskListIndex,
@@ -248,7 +285,7 @@ export default {
       }
       this.askConfirm = false;
       this.dataForRemoving = {};
-      console.log('пришел с эммита', responce);
+      // console.log("пришел с эммита", responce);
     }
   },
   props: ["TList", "taskListIndex"],
@@ -264,15 +301,24 @@ export default {
   computed: {
     //Цветовая схема списка
     MainListColor() {
-      console.log( 'цвет списка', this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex], this.themeColorId, this.$store.state.gradients[this.themeColorId]);
+      // console.log(
+      //   "цвет списка",
+      //   this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex],
+      //   this.themeColorId,
+      //   this.$store.state.gradients[this.themeColorId]
+      // );
       return this.$store.state.gradients[this.themeColorId];
     },
     themeColorId() {
-
-      if(this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color != null ) {
-          return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color;
+      if (
+        this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex]
+          .color != null
+      ) {
+        return this.allTasks[this.activeTableIndex].taskLists[
+          this.taskListIndex
+        ].color;
       } else {
-         return 0
+        return 0;
       }
     },
     maxBoxHeightFunc() {
@@ -286,7 +332,7 @@ export default {
     },
     getListName() {
       const TLName = allTasks[activeTableIndex].taskLists[taskListIndex].name;
-      console.log("можно и отсюда вывести ", TLName);
+      // console.log("можно и отсюда вывести ", TLName);
       if (TLName) {
         return TLName;
       } else {
@@ -296,27 +342,30 @@ export default {
 
     //фильтруем список по сделанным задачам
     currentTasks() {
-      
-      const t = this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].tasks;
-      if(t != null) {
-          return t.filter(function(task) {
-            return !task.isDone;
-          });
+      const t = this.allTasks[this.activeTableIndex].taskLists[
+        this.taskListIndex
+      ].tasks;
+      if (t != null) {
+        return t.filter(function(task) {
+          return !task.isDone;
+        });
       } else {
-        return []
+        return [];
       }
       //  .filterBy(t.isDone);
     },
 
     doneTasks() {
-      const t = this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].tasks;
-      if(t != null) {
+      const t = this.allTasks[this.activeTableIndex].taskLists[
+        this.taskListIndex
+      ].tasks;
+      if (t != null) {
         return t.filter(function(task) {
           return task.isDone;
         });
         //  .filterBy(t.isDone);
       } else {
-        return []
+        return [];
       }
     }
 
@@ -335,10 +384,10 @@ export default {
     this.$nextTick(() => {
       // Code that will run only after the
       // entire view has been re-rendered
-      console.log("Элемент ", this.$refs);
+      // console.log("Элемент ", this.$refs);
       // this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
       this.changeHeightOfList();
-      console.log("Пересчет высоты при изменении древа");
+      // console.log("Пересчет высоты при изменении древа");
 
       //  if(this.$store.state.taskListBoxHeight != null) {
       //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';
@@ -454,11 +503,21 @@ export default {
     color: #1a1919;
     font-weight: 500;
     font-family: "Roboto", sans-serif;
-    // margin-bottom: 10px;
     width: 100%;
-    padding: 0 50px;
     text-overflow: elipsis;
     overflow: hidden;
+    padding: 5px;
+    border-radius: 4px;
+    &_active {
+      background: rgba(255, 255, 255, 0.774);
+      border: solid 1px rgb(163, 163, 163);
+      user-select: unset;
+      text-align: left;
+    }
+  }
+  &__name-box {
+    padding: 0 50px;
+    z-index: 10;
   }
 
   &__menu {
@@ -589,13 +648,6 @@ export default {
 //   }
 // }
 
-// @media screen and (min-width: 1150px) {
-//   .task-list {
-//     //( 100 - 3*3 )/2
-//      width: calc( 85% / 4 );
-//   }
-// }
-
 //Анимация для списка задач
 // .tasks-item {
 //     transition: all 1s;
@@ -650,5 +702,15 @@ export default {
 
 .doneBtn-enter-to {
   transition: opacity 0.5s;
+}
+
+// Подгоняем ширину списка на мобильных
+@media screen and (max-width: 400px) {
+  .task-list,
+  .add-list__bg {
+    //( 100 - 3*3 )/2
+    width: 94vw;
+    min-width: 250px;
+  }
 }
 </style>

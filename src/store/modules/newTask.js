@@ -83,7 +83,7 @@ export default {
                     .set(Key)
                     .then(data => {
 
-                        console.log('.newTask. Запушили в задачу её id');
+                        // console.log('.newTask. Запушили в задачу её id');
                         resolve();
                     })
                     .catch(error => {
