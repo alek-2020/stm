@@ -3,21 +3,30 @@
 <template>
   <div>
     <div class="t-header">
-      <div class="desk-btns__group-1">
-        <!-- Кнопка выезжающего меню -->
-        <BtnIconTile :iconColor="iconsColor"
-                     class="t-header__slideMenu" />
+
+      <!-- Кнопка выезжающего меню -->
+      <BtnIconTile :iconColor="iconsColor"
+                   class="t-header__slideMenu" />
+
+      <!-- Блок с названием и настройками стола -->
+      <div class="t-header__name-box"
+           @mouseover="showSettings"
+           @mouseout="hideSettings">
         <HeaderName />
+        <BtnTableSettings :visible="tableSettingsVisible"
+                          :active="tableSettingsActive"
+                          @click="showTableSettings" />
+        <BtnDelActiveTable :visible="tableSettingsActive" />
       </div>
 
-      <div class="desk-btns__group-2 mr-2">
-        <BtnLogout class="t-header__profile"
-                   :iconColor="iconsColor" />
-      </div>
+      <BtnLogout class="t-header__profile btn-bg-white"
+                 :iconColor="iconsColor" />
     </div>
 
-    <HeaderSettings />
+    <!-- Выбор темы оформления -->
+    <HeaderSettings :active="tableSettingsActive" />
 
+    <!-- Подтверждения удаления РС -->
     <ConfirmationWindow :askConfirm="askConfirm"
                         @confirmResponse="delTable">
       <div slot="message">
@@ -41,6 +50,9 @@ import ConfirmationWindow from "./PopupConfirmation.vue";
 import BtnIconTile from "./BtnIconTile.vue";
 import HeaderName from "./HeaderName.vue";
 import BtnLogout from "./BtnLogout.vue";
+import BtnDelActiveTable from "./BtnDelActiveTable.vue";
+import BtnTableSettings from "./BtnTableSettings.vue";
+import HeaderSettingsVue from "./HeaderSettings.vue";
 
 import { svgHeader } from "./../OtherSrc/svg.js";
 
@@ -55,16 +67,17 @@ export default {
         '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
       SVGCross: "<svg></svg>",
       ThreeDotsActive: false,
-      inputActive: false,
       askConfirm: false
     };
   },
   methods: {
-    checkOuterClick(el) {
-      if (el.target != this.$refs.headerInput) {
-        this.inputActive = false;
-        window.removeEventListener("click", this.checkOuterClick);
-      }
+    showSettings() {
+      this.$store.state.tableSettingsVisible = true;
+    },
+    hideSettings() {
+      // console.log("Срабатывает mouseout");
+      this.$store.state.tableSettingsVisible = false;
+      //  this.$store.state.tableSettingsActive = false;
     },
     //Новый список
     addList() {
@@ -83,13 +96,6 @@ export default {
       // console.log("Срабатывает mouseout");
       this.$store.state.tableSettingsVisible = false;
       //  this.$store.state.tableSettingsActive = false;
-    },
-
-    changeTableTitle(NewName) {
-      const TableId = this.$store.state.allTasks[
-        this.$store.state.activeTableIndex
-      ].id;
-      this.$store.dispatch("changeTableTitle", { NewName, TableId });
     },
 
     //Скроллим наш список столов в конец для добавления нового
@@ -129,35 +135,12 @@ export default {
     }
   },
   computed: {
-    hPlusActive() {
-      return this.$store.state.addMenuActive;
-    },
-    //Получим svg
-    filterIcon() {
-      return svgHeader.filter;
-    },
-    loginIcon() {
-      return svgHeader.login;
-    },
-    plusIcon() {
-      return svgHeader.plus;
-    },
-    menuIcon() {
-      return svgHeader.menu;
-    },
-    settingsIcon() {
-      return svgHeader.settings;
-    },
-    deleteIcon() {
-      return svgHeader.delete;
-    },
-    iconTile() {
-      return svgHeader.tile;
-    },
-    //
     lastTableColor() {
       return this.$store.dispatch("lastTableColor");
     },
+    // tableSettingBoxActive() {
+
+    // }
     // plusActive() {
     //   return this.$store.state.plusActive;
     // },
@@ -184,26 +167,10 @@ export default {
     },
     actTableIndex() {
       return this.$store.state.activeTableIndex;
-    },
+    }
     // activeTableId() {
     //   return this.$store.state.allTasks[this.$store.state.activeTableIndex].id;
     // },
-    actTabName: {
-      //и запишем название нашего стола для хедера
-      get: function() {
-        if (this.allTasks.length > 0) {
-          if (this.allTasks[this.actTableIndex]) {
-            return this.allTasks[this.actTableIndex].name;
-          }
-        } else {
-          return "Название рабочего стола";
-        }
-      },
-
-      set: function(newValue) {
-        this.allTasks[this.actTableIndex].name = newValue;
-      }
-    }
   },
   components: {
     HeaderSettings,
@@ -211,7 +178,9 @@ export default {
     ConfirmationWindow,
     BtnIconTile,
     HeaderName,
-    BtnLogout
+    BtnLogout,
+    BtnDelActiveTable,
+    BtnTableSettings
   },
   created() {
     console.log("Подтягиваем SVG", svgHeader.filter);
@@ -286,41 +255,10 @@ $h-small-icons-col: rgb(56, 56, 56);
     }
   }
 
-  &__desk-name {
-    font-family: "Open Sans", sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    white-space: nowrap;
-    position: relative;
-    // left: 50%;
-    // transform: translateX(-50%);
-    // width: calc(100vw - 120px);
-    overflow: hidden;
-    text-align: center;
-
-    // margin: 0 100px;
-    text-align: center;
-    margin: 0 10px;
-    height: 100%;
-
-    &-abs {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      max-width: 100%;
-    }
-  }
-
   &__star {
     & img {
       height: 20px;
     }
-  }
-
-  &__profile {
   }
 
   &__menu {
@@ -365,12 +303,13 @@ $h-small-icons-col: rgb(56, 56, 56);
 //   }
 // }
 
-.desk-btns {
-  &__group-1 {
+.t-header {
+  &__name-box {
     position: relative;
+    flex-grow: 1;
   }
 
-  &__group-1,
+  &__name-box,
   &__group-2 {
     display: flex;
   }
@@ -431,58 +370,6 @@ $h-small-icons-col: rgb(56, 56, 56);
     max-height: 20px;
     max-width: 20px;
     padding: 0 5px;
-  }
-}
-
-.actTabName {
-  &__box {
-    width: min-content;
-    position: relative;
-    height: 30px;
-    max-width: 100%;
-    min-width: 50px;
-  }
-
-  &__buffer {
-    position: relative;
-    left: 0;
-    padding: 0 8px;
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    height: 0;
-    opacity: 0;
-    width: 20px;
-    z-index: -10;
-  }
-
-  &__inp {
-    border-radius: 6px;
-    transition: all 0.2s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: left !important;
-    margin: 0 auto;
-    display: block;
-    border-radius: 5px;
-    padding: 0 5px;
-    border: none;
-    background: transparent;
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    max-width: 100%;
-    box-sizing: border-box;
-    user-select: none;
-    &_active {
-      background: rgba(255, 255, 255, 0.774);
-      border: solid 1px rgb(163, 163, 163);
-      user-select: unset;
-    }
   }
 }
 

@@ -1,18 +1,19 @@
 <template>
-  
+
   <div class="settings-block"
-    :class="{'settings-block_active': tableSettingsActive}" style="height: 110px; position: relative;">
-    <VuePerfectScrollbar style="width: 100%;">  
-       <div class="settings-block__abs" style="display: flex; position: absolute; top: 0; left: 0;">
-          <div
-            class="onePreview"
-            v-for="(bg, index) in imgForBg"
-            :key="index"
-            @click="changeBg(index); saveBg();"
-            :style="{background: 'url('+bg+')'}">
-          </div> 
-      </div> 
-    </VuePerfectScrollbar>  
+       :class="{'settings-block_active': active}"
+       style="height: 110px; position: relative;">
+    <VuePerfectScrollbar style="width: 100%;">
+      <div class="settings-block__abs"
+           style="display: flex; position: absolute; top: 0; left: 0;">
+        <div class="onePreview"
+             v-for="(bg, index) in imgForBg"
+             :key="index"
+             @click="changeBg(index); saveBg();"
+             :style="{background: 'url(' + bg + ')'}">
+        </div>
+      </div>
+    </VuePerfectScrollbar>
   </div>
 
 </template>
@@ -54,7 +55,7 @@ export default {
         "/img/bg/stm-bg-27.jpg",
         "/img/bg/stm-bg-28.jpg",
         "/img/bg/stm-bg-29.jpg",
-        "/img/bg/stm-bg-30.jpg",
+        "/img/bg/stm-bg-30.jpg"
       ]
     };
   },
@@ -66,18 +67,20 @@ export default {
     },
     saveBg() {
       this.$store.dispatch("saveBg");
-    },
-  },
-  computed: {
-    tableSettingsActive() {
-      return this.$store.state.tableSettingsActive;
     }
   },
+  // computed: {
+  //   tableSettingsActive() {
+  //     return this.$store.state.tableSettingsActive;
+  //   }
+  // },
 
   components: {
     VuePerfectScrollbar
   },
-
+  props: {
+    active: Boolean
+  }
 };
 </script>
 

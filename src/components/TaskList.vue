@@ -11,126 +11,117 @@
 // TODO: Убрать v-for и v-if с одного тега
 
 <template>
-           
-            <div class="task-list" 
-              :style="{ 'border-color': MainListColor.colorOne }"
-              ref="taskBox">
-            
-            <div class="task-list__header-box">
-                  <Emoji class="task-list__emoji"
-                    @listMenuOpen="changeEmojiState"
-                    :MainListColor="MainListColor"
-                    :taskListIndex="taskListIndex"
-                    :activeTableIndex="activeTableIndex"
-                    :emojiState="emojiState"></Emoji>
-                  <transition
-                    name="fade">
-                      <div
-                        class="task-list__name-box"
-                        @dblclick="tableActivation"
-                      >  
-                        <input class="task-list__name" type="text"  
-                        :class="{'task-list__name_active':inputActive}"
-                        :disabled="!inputActive"
 
-                        ref="listHeaderInput"
-                        placeholder="Название списка задач"
-                        v-model="TList.name"
-                        v-show="nameVisible"
-                        @focusout='changeListTitle(TList.name)'
-                        @keyup.enter='changeListTitle(TList.name)'>
-                      </div>
-                  </transition>
-                  <listMenu class="task-list__menu"
-                    @newColor="changeMainColor"
-                    @listMenuOpen="changeMenuState"
-                    ></listMenu>
-            </div>
-                                 <!-- v-once :settings="settings" -->
+  <div class="task-list"
+       :style="{ 'border-color': MainListColor.colorOne }"
+       ref="taskBox">
 
-              <VuePerfectScrollbar 
-                class="task-list__scroll-box"
-                ref="ps"
-                :style="{height: taskBoxHeight}">
-                  <div class="task-list__inputs-container"
-                    ref="inputsContainer">
-                      
-                    <transition-group
-                      name="tasks"
-                      class="tasks-list__transition-box"
-                      v-on:after-leave="afterLeave">
+    <div class="task-list__header-box">
+      <Emoji class="task-list__emoji"
+             @listMenuOpen="changeEmojiState"
+             :MainListColor="MainListColor"
+             :taskListIndex="taskListIndex"
+             :activeTableIndex="activeTableIndex"
+             :emojiState="emojiState"></Emoji>
+      <transition name="fade">
+        <div class="task-list__name-box"
+             @dblclick="tableActivation">
+          <input class="task-list__name"
+                 type="text"
+                 :class="{'task-list__name_active':inputActive}"
+                 :disabled="!inputActive"
+                 ref="listHeaderInput"
+                 placeholder="Название списка задач"
+                 v-model="TList.name"
+                 v-show="nameVisible"
+                 @focusout='changeListTitle(TList.name)'
+                 @keyup.enter='changeListTitle(TList.name)'>
+        </div>
+      </transition>
+      <listMenu class="task-list__menu"
+                @newColor="changeMainColor"
+                @listMenuOpen="changeMenuState"></listMenu>
+    </div>
+    <!-- v-once :settings="settings" -->
 
-                      <OneTask
-                        style="{display: flex; transition: all .5s;}"
-                        v-for="(task, index) in currentTasks"
-                        v-if="!onlyDoneTasks"
-                        :key="task.id"
-                        :task = 'task'
-                        :Index = 'index'
-                        :tableInd = 'activeTableIndex'
-                        :taskInd = 'taskListIndex'> 
-                      </OneTask> 
+    <VuePerfectScrollbar class="task-list__scroll-box"
+                         ref="ps"
+                         :style="{height: taskBoxHeight}">
+      <div class="task-list__inputs-container"
+           ref="inputsContainer">
 
-                      <OneDoneTask
-                        v-for="(task, index) in doneTasks"
-                        v-if="onlyDoneTasks"
-                        :key="task.id"
-                        :task = 'task'
-                        :Index = 'index'
-                        :tableInd = 'activeTableIndex'
-                        :taskInd = 'taskListIndex'>
-                      </OneDoneTask>
+        <transition-group name="tasks"
+                          class="tasks-list__transition-box"
+                          v-on:after-leave="afterLeave">
 
-                    </transition-group>
+          <OneTask style="{display: flex; transition: all .5s;}"
+                   v-for="(task, index) in currentTasks"
+                   v-if="!onlyDoneTasks"
+                   :key="task.id"
+                   :task='task'
+                   :Index='index'
+                   :tableInd='activeTableIndex'
+                   :taskInd='taskListIndex'>
+          </OneTask>
 
-                  </div>
-              </VuePerfectScrollbar>
-            
-                <div class="btn btn_icon_delete task-list__del"
-                  v-if="currentTasks.length < 1 && !onlyDoneTasks"
-                  @click="removeList(TList.id, taskListIndex, activeTableIndex)">
-                  Удалить список
-                </div>
+          <OneDoneTask v-for="(task, index) in doneTasks"
+                       v-if="onlyDoneTasks"
+                       :key="task.id"
+                       :task='task'
+                       :Index='index'
+                       :tableInd='activeTableIndex'
+                       :taskInd='taskListIndex'>
+          </OneDoneTask>
 
-                <div class="btn task-list__del"
-                  v-if="doneTasks.length < 1 && onlyDoneTasks">
-                  Выполненных пока нет
-                </div>
+        </transition-group>
 
-            <div class="task-list__bottom-box">
-                <transition name="doneBtn"> 
-                  <div class="task-list__add"
-                  v-show="!onlyDoneTasks"
-                  @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
-                      <div class="task-list__text"></div>
-                  </div>
-               </transition>
+      </div>
+    </VuePerfectScrollbar>
 
-                <div class="task-list__checked"
-                  @click="showDoneTasks">
-                
-                <transition name="doneBtn" 
-                 mode="out-in">
-                  <span :key="onlyDoneTasks">
-                    {{ onlyDoneTasks ? 'Текущие' : 'Выполненные' }}
-                  </span>
-                </transition>
+    <div class="btn btn_icon_delete task-list__del"
+         v-if="currentTasks.length < 1 && !onlyDoneTasks"
+         @click="removeList(TList.id, taskListIndex, activeTableIndex)">
+      Удалить список
+    </div>
 
-                </div>
+    <div class="btn task-list__del"
+         v-if="doneTasks.length < 1 && onlyDoneTasks">
+      Выполненных пока нет
+    </div>
 
-            </div>
+    <div class="task-list__bottom-box">
+      <transition name="doneBtn">
+        <div class="task-list__add"
+             v-show="!onlyDoneTasks"
+             @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
+          <div class="task-list__text"></div>
+        </div>
+      </transition>
 
-            <ConfirmationWindow
-              :askConfirm="askConfirm"
-              @confirmResponse="confirmedRemove">
-              <div slot="message">
-                Confirm removing list
-              </div>
-              <span slot="action">
-                Delete
-              </span>
-            </ConfirmationWindow>
-        </div>    
+      <div class="task-list__checked"
+           @click="showDoneTasks">
+
+        <transition name="doneBtn"
+                    mode="out-in">
+          <span :key="onlyDoneTasks">
+            {{ onlyDoneTasks ? 'Текущие' : 'Выполненные' }}
+          </span>
+        </transition>
+
+      </div>
+
+    </div>
+
+    <ConfirmationWindow :askConfirm="askConfirm"
+                        @confirmResponse="confirmedRemove">
+      <div slot="message">
+        Confirm removing list
+      </div>
+      <span slot="action">
+        Delete
+      </span>
+    </ConfirmationWindow>
+  </div>
 </template>
 
 <script>
@@ -410,7 +401,7 @@ export default {
 .task-list {
   // min-width: 250px;
   // max-width: 400px;
-  border: solid 3px #979797ad;
+  border: none;
   margin-left: 15px;
   padding: 0 1px 10px 1px;
   border-radius: 5px;
@@ -424,6 +415,7 @@ export default {
   height: min-content;
   width: 350px;
   max-height: 100%;
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.25);
 
   &__inputs-container {
     width: 100%;

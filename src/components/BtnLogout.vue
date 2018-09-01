@@ -1,7 +1,7 @@
 <template>
     <div to="/login"
          @click="logOut()"
-         class="btnLogOut btn-bg-white">
+         class="btnLogOut">
         <svg xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 59.886 59.886"
              v-html="logoutIcon"
