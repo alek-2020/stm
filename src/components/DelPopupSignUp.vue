@@ -1,65 +1,61 @@
 <template>
 
-  <div class="log__bg"
- > 
+  <div class="log__bg">
     <transition>
       <div class="log__form-block">
 
-            <!-- <div class="log__cancel"
+        <!-- <div class="log__cancel"
             v-if="authorised"
             @click="goBack">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 95.939 95.939" style="enable-background:new 0 0 95.939 95.939;" xml:space="preserve"><g>	<path d="M62.819,47.97l32.533-32.534c0.781-0.781,0.781-2.047,0-2.828L83.333,0.586C82.958,0.211,82.448,0,81.919,0   c-0.53,0-1.039,0.211-1.414,0.586L47.97,33.121L15.435,0.586c-0.75-0.75-2.078-0.75-2.828,0L0.587,12.608   c-0.781,0.781-0.781,2.047,0,2.828L33.121,47.97L0.587,80.504c-0.781,0.781-0.781,2.047,0,2.828l12.02,12.021   c0.375,0.375,0.884,0.586,1.414,0.586c0.53,0,1.039-0.211,1.414-0.586L47.97,62.818l32.535,32.535   c0.375,0.375,0.884,0.586,1.414,0.586c0.529,0,1.039-0.211,1.414-0.586l12.02-12.021c0.781-0.781,0.781-2.048,0-2.828L62.819,47.97   z" /></g></svg>
             </div>  -->
 
-            <div class="log__title-block">
-                <span class="log__title">
-                    Регистрация
-                </span>
-                <span class="log__or">
-                    or <router-link to="/login/"
-                        @keypress="wipeErrors(); stopSpinner();
+        <div class="log__title-block">
+          <span class="log__title">
+            Регистрация
+          </span>
+          <span class="log__or">
+            or
+            <router-link to="/login/"
+                         @keypress="wipeErrors(); stopSpinner();
                         ">Login</router-link>
-                </span>  
-            </div>
+          </span>
+        </div>
 
-      <form class="log__form" action="" 
-      @submit.prevent="onSignup(); runSpinner();">
+        <form class="log__form"
+              action=""
+              @submit.prevent="onSignup(); runSpinner();">
 
-        <input 
-        name="email"
-        label="Mail"
-        v-model="email"
-        id="email"
-        type="email"
-        required
-        class="inp__mail"
-        placeholder="Enter your mail"
-        @keypress="wipeErrors">
+          <input name="email"
+                 label="Mail"
+                 v-model="email"
+                 id="email"
+                 type="email"
+                 required
+                 class="inp__mail"
+                 placeholder="Enter your mail"
+                 @keypress="wipeErrors">
 
+          <input name="password"
+                 label="Password"
+                 v-model="password"
+                 id="password"
+                 type="password"
+                 class="inp__pass"
+                 placeholder="Your password"
+                 @keypress="wipeErrors">
 
-        <input 
-        name="password"
-        label="Password"
-        v-model="password"
-        id="password"
-        type="password"
-        class="inp__pass"
-        placeholder="Your password"
-        @keypress="wipeErrors">
+          <button type="submit">
+            <span v-if="!spinnerActive">Регистрация</span>
+            <img v-else
+                 height="30px"
+                 src='../../img/spinners/load-spinner-white.svg'>
+          </button>
 
+          <RegAuthError>
+          </RegAuthError>
 
-        <button type="submit">
-           <span
-             v-if="!spinnerActive">Регистрация</span>
-            <img
-             v-else
-             height="30px" src='../../img/spinners/load-spinner-white.svg'>
-        </button>
-
-      <RegAuthError>
-      </RegAuthError>
-  
-      </form>
+        </form>
       </div>
     </transition>
   </div>
@@ -80,7 +76,7 @@ export default {
     };
   },
   methods: {
-     //включаем спиннер
+    //включаем спиннер
     runSpinner() {
       this.spinnerActive = true;
     },
@@ -91,8 +87,7 @@ export default {
     //Убираем ошибку
     wipeErrors() {
       this.$store.state.authErrorMessage = "";
-    },
-  
+    }
 
     // goBack() {
     //   window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
@@ -105,7 +100,9 @@ export default {
     authorised() {
       return this.$store.state.authorised;
     },
-    userId() { return this.$store.state.userId },
+    userId() {
+      return this.$store.state.userId;
+    }
     // currentBg() {
 
     // }
