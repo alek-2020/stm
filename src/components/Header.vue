@@ -5,68 +5,18 @@
     <div class="t-header">
       <div class="desk-btns__group-1">
         <!-- Кнопка выезжающего меню -->
-        <BtnIconTile iconColor="iconsColor" />
-        <!--  добавление РС-->
-        <div class="btn-bg-white ml-2"
-             @click="AddTableBtn();"
-             :class="{'desk-btns__h-add_active': hPlusActive}">
-          <div class="desk-btns__h-add"
-               v-html="plusIcon"></div>
-
-          <div class=" desk-btns__check-add">
-            <div class="btn btn_hover_gray btn_icon_window text"
-                 @click="HeaderAdd();">{{ $t("message.newTable") }}</div>
-            <div class="btn btn_icon_list btn_hover_gray mt-2 text"
-                 @click="addList()"> Список задач</div>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="t-header__desk-name"
-           @mouseover="showSettings"
-           @mouseout="hideSettings">
-        <div class="t-header__desk-name-abs">
-          <div class="actTabName__box"
-               @dblclick="tableActivation">
-            <input class="actTabName__inp"
-                   type="text"
-                   :class="{'actTabName__inp_active':inputActive}"
-                   v-model="actTabName"
-                   :disabled="!inputActive"
-                   placeholder="Название стола"
-                   ref="headerInput"
-                   @focusout='changeTableTitle(actTabName)'
-                   @keyup.enter='changeTableTitle(actTabName)'>
-            <span class="actTabName__buffer">{{ actTabName }}</span>
-          </div>
-
-          <div class="table-settings"
-               v-html="settingsIcon"
-               :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
-               @click="showTableSettings"></div>
-
-          <div class="delTable"
-               v-html="deleteIcon"
-               :class="{ 'delTable_hidden': !tableSettingsActive }"
-               v-on:click="askConfirmForDelete()"></div>
-
-        </div>
+        <BtnIconTile :iconColor="iconsColor"
+                     class="t-header__slideMenu" />
+        <HeaderName />
       </div>
 
       <div class="desk-btns__group-2 mr-2">
-
-        <div to="/login"
-             @click="logOut()"
-             class="t-header__profile btn-bg-white"
-             v-html="loginIcon">
-        </div>
-
+        <BtnLogout class="t-header__profile"
+                   :iconColor="iconsColor" />
       </div>
     </div>
 
-    <HeaderSettings></HeaderSettings>
+    <HeaderSettings />
 
     <ConfirmationWindow :askConfirm="askConfirm"
                         @confirmResponse="delTable">
@@ -89,6 +39,8 @@ import HeaderSettings from "./HeaderSettings.vue";
 import ThreeDotsMenu from "./HeaderDotsMenu.vue";
 import ConfirmationWindow from "./PopupConfirmation.vue";
 import BtnIconTile from "./BtnIconTile.vue";
+import HeaderName from "./HeaderName.vue";
+import BtnLogout from "./BtnLogout.vue";
 
 import { svgHeader } from "./../OtherSrc/svg.js";
 
@@ -108,11 +60,6 @@ export default {
     };
   },
   methods: {
-    tableActivation() {
-      let t = this;
-      this.inputActive = true;
-      window.addEventListener("click", this.checkOuterClick);
-    },
     checkOuterClick(el) {
       if (el.target != this.$refs.headerInput) {
         this.inputActive = false;
@@ -123,10 +70,7 @@ export default {
     addList() {
       this.$store.dispatch("addTaskList");
     },
-    //Выход
-    logOut() {
-      this.$store.dispatch("logOut");
-    },
+
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;
       var a = this.ThreeDotsActive;
@@ -265,7 +209,9 @@ export default {
     HeaderSettings,
     ThreeDotsMenu,
     ConfirmationWindow,
-    BtnIconTile
+    BtnIconTile,
+    HeaderName,
+    BtnLogout
   },
   created() {
     console.log("Подтягиваем SVG", svgHeader.filter);
@@ -292,6 +238,10 @@ $h-small-icons-col: rgb(56, 56, 56);
   align-items: center;
   position: relative;
   z-index: $zi-header;
+
+  &__slideMenu {
+    left: 10px;
+  }
 
   &__search {
     box-sizing: border-box;
@@ -371,16 +321,6 @@ $h-small-icons-col: rgb(56, 56, 56);
   }
 
   &__profile {
-    // height: 22px;
-    // width: 21px;
-    // height: 100%;
-    // margin-right: 10px;
-    display: flex;
-    & svg {
-      height: 20px;
-      margin: auto;
-      fill: $h-icons-col;
-    }
   }
 
   &__menu {
