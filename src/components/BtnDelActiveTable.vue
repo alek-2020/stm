@@ -24,3 +24,33 @@ export default {
 };
 </script>
          
+<style lang="scss">
+@import "../scss/helpers/_variables.scss";
+
+.delTable {
+  width: 25px;
+  display: flex;
+  position: relative;
+  opacity: 1;
+  left: 0;
+  margin: 0 5;
+  transition: all 0.2s;
+
+  &:hover svg {
+    fill: $h-small-icons-col;
+  }
+
+  &_hidden {
+    left: -30px;
+    opacity: 0;
+    width: 0;
+    margin: 0;
+  }
+
+  & > svg {
+    height: 20px;
+    margin: auto;
+  }
+}
+</style>
+         

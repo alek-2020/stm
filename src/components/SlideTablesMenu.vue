@@ -16,6 +16,25 @@ export default {
   },
   props: {
     paddingTop: String
+  },
+  methods: {
+    //Скроллим наш список столов в конец для добавления нового
+    //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
+    HeaderAdd() {
+      this.$store.dispatch("addNewTable");
+    },
+    //добавление рс
+    AddTableBtn: function() {
+      // this.$store.state.plusActive = !this.$store.state.plusActive;
+      //  this.HeaderAdd();
+      this.$store.state.addMenuActive = !this.hPlusActive;
+    },
+    delTable(val) {
+      if (val) {
+        this.$store.dispatch("delActiveTable");
+      }
+      this.askConfirm = false;
+    }
   }
 };
 </script>
