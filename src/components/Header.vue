@@ -3,71 +3,34 @@
 <template>
   <div>
     <div class="t-header">
-      <div class="desk-btns__group-1">
-        <!-- Кнопка выезжающего меню -->
-        <BtnIconTile iconColor="iconsColor" />
-        <!--  добавление РС-->
-        <div class="btn-bg-white ml-2"
-             @click="AddTableBtn();"
-             :class="{'desk-btns__h-add_active': hPlusActive}">
-          <div class="desk-btns__h-add"
-               v-html="plusIcon"></div>
 
-          <div class=" desk-btns__check-add">
-            <div class="btn btn_hover_gray btn_icon_window text"
-                 @click="HeaderAdd();">{{ $t("message.newTable") }}</div>
-            <div class="btn btn_icon_list btn_hover_gray mt-2 text"
-                 @click="addList()"> Список задач</div>
-          </div>
+      <!-- Кнопка выезжающего меню -->
+      <BtnIconTile :iconColor="iconsColor"
+                   class="t-header__slideMenuBtn" />
 
-        </div>
+      <!-- Блок с названием и настройками стола -->
+      <div class="t-header__name-box"
+           @mouseover="showSettingsBtn"
+           @mouseout="hideSettingsBtn">
+
+        <HeaderName />
+        <BtnTableSettings :visible="tableSettingsBtnVisible"
+                          :active="tableSettingsActive"
+                          @click.native="showTableSettings" />
+        <BtnDelActiveTable :visible="tableSettingsActive"
+                           @click.native="askConfirmForDelete()" />
 
       </div>
 
-      <div class="t-header__desk-name"
-           @mouseover="showSettings"
-           @mouseout="hideSettings">
-        <div class="t-header__desk-name-abs">
-          <div class="actTabName__box"
-               @dblclick="tableActivation">
-            <input class="actTabName__inp"
-                   type="text"
-                   :class="{'actTabName__inp_active':inputActive}"
-                   v-model="actTabName"
-                   :disabled="!inputActive"
-                   placeholder="Название стола"
-                   ref="headerInput"
-                   @focusout='changeTableTitle(actTabName)'
-                   @keyup.enter='changeTableTitle(actTabName)'>
-            <span class="actTabName__buffer">{{ actTabName }}</span>
-          </div>
-
-          <div class="table-settings"
-               v-html="settingsIcon"
-               :class="{ 'table-settings_hidden': (!tableSettingsVisible && !tableSettingsActive) }"
-               @click="showTableSettings"></div>
-
-          <div class="delTable"
-               v-html="deleteIcon"
-               :class="{ 'delTable_hidden': !tableSettingsActive }"
-               v-on:click="askConfirmForDelete()"></div>
-
-        </div>
-      </div>
-
-      <div class="desk-btns__group-2 mr-2">
-
-        <div to="/login"
-             @click="logOut()"
-             class="t-header__profile btn-bg-white"
-             v-html="loginIcon">
-        </div>
-
-      </div>
+      <!-- Выход из учетной записи -->
+      <BtnLogout class="t-header__logout"
+                 :iconColor="iconsColor" />
     </div>
 
-    <HeaderSettings></HeaderSettings>
+    <!-- Выбор темы оформления -->
+    <HeaderSettingsBox :active="tableSettingsActive" />
 
+    <!-- Окно подтверждения удаления РС -->
     <ConfirmationWindow :askConfirm="askConfirm"
                         @confirmResponse="delTable">
       <div slot="message">
@@ -85,203 +48,86 @@
 </template>
 
 <script>
-import HeaderSettings from "./HeaderSettings.vue";
-import ThreeDotsMenu from "./HeaderDotsMenu.vue";
+import HeaderSettingsBox from "./HeaderSettings.vue";
 import ConfirmationWindow from "./PopupConfirmation.vue";
 import BtnIconTile from "./BtnIconTile.vue";
-
-import { svgHeader } from "./../OtherSrc/svg.js";
+import HeaderName from "./HeaderName.vue";
+import BtnLogout from "./BtnLogout.vue";
+import BtnDelActiveTable from "./BtnDelActiveTable.vue";
+import BtnTableSettings from "./BtnTableSettings.vue";
+import HeaderSettingsVue from "./HeaderSettings.vue";
 
 import * as firebase from "firebase";
 
 export default {
   data() {
     return {
-      iconsColor: "gray",
       activeTableName: "Название стола",
-      logoSVG:
-        '<svg fill="#7e7f87" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.5 41.5"><defs></defs><path class="a" d="M12.243,16.808l-2.9,2.905,9.338,9.337L39.425,8.3,36.52,5.4,18.675,23.24ZM37.35,20.75a16.6,16.6,0,1,1-16.6-16.6,16.182,16.182,0,0,1,4.565.623l3.32-3.32A25.256,25.256,0,0,0,20.75,0,20.75,20.75,0,1,0,41.5,20.75Z"/></svg>',
-      SVGCross: "<svg></svg>",
       ThreeDotsActive: false,
-      inputActive: false,
       askConfirm: false
     };
   },
   methods: {
-    tableActivation() {
-      let t = this;
-      this.inputActive = true;
-      window.addEventListener("click", this.checkOuterClick);
+    // Показать кнопку открытия настроек стола
+    showSettingsBtn() {
+      this.$store.state.tableSettingsVisible = true;
     },
-    checkOuterClick(el) {
-      if (el.target != this.$refs.headerInput) {
-        this.inputActive = false;
-        window.removeEventListener("click", this.checkOuterClick);
-      }
+    // Скрыть кнопку открытия настроек стола
+    hideSettingsBtn() {
+      this.$store.state.tableSettingsVisible = false;
     },
-    //Новый список
-    addList() {
-      this.$store.dispatch("addTaskList");
+    // Показать настройки стола
+    showTableSettings() {
+      console.log("Покажем настройки");
+
+      this.$store.state.tableSettingsActive = !this.$store.state
+        .tableSettingsActive;
     },
-    //Выход
-    logOut() {
-      this.$store.dispatch("logOut");
-    },
+    // Переключение состояния правого меню
     ActivateDots() {
       this.ThreeDotsActive = !this.ThreeDotsActive;
       var a = this.ThreeDotsActive;
     },
-
-    showSettings() {
-      this.$store.state.tableSettingsVisible = true;
-    },
-    hideSettings() {
-      // console.log("Срабатывает mouseout");
-      this.$store.state.tableSettingsVisible = false;
-      //  this.$store.state.tableSettingsActive = false;
-    },
-
-    changeTableTitle(NewName) {
-      const TableId = this.$store.state.allTasks[
-        this.$store.state.activeTableIndex
-      ].id;
-      this.$store.dispatch("changeTableTitle", { NewName, TableId });
-    },
-
-    //Скроллим наш список столов в конец для добавления нового
-    //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
-    HeaderAdd() {
-      this.$store.dispatch("addNewTable");
-    },
-
-    //добавление рс
-    AddTableBtn: function() {
-      // this.$store.state.plusActive = !this.$store.state.plusActive;
-      //  this.HeaderAdd();
-      this.$store.state.addMenuActive = !this.hPlusActive;
-    },
-
-    //     lastTableColor() {
-    //   var i = this.tables.length - 1;
-    //   var colOne = this.tables[i].colorOne;
-    //   var colTwo = this.tables[i].colorTwo;
-    //   console.log("linear-gradient( to bottom, " + colOne + ", " + colTwo);
-
-    //   return "linear-gradient( to bottom, " + colOne + ", " + colTwo;
-    // },
-
+    // Включение окна подтвержения удаления
     askConfirmForDelete() {
       this.askConfirm = true;
     },
+    // Удаление стола
     delTable(val) {
       if (val) {
         this.$store.dispatch("delActiveTable");
       }
       this.askConfirm = false;
-    },
-    showTableSettings() {
-      this.$store.state.tableSettingsActive = !this.$store.state
-        .tableSettingsActive;
     }
   },
   computed: {
-    hPlusActive() {
-      return this.$store.state.addMenuActive;
+    // Цвет иконок в хедере
+    iconsColor() {
+      return "gray";
     },
-    //Получим svg
-    filterIcon() {
-      return svgHeader.filter;
-    },
-    loginIcon() {
-      return svgHeader.login;
-    },
-    plusIcon() {
-      return svgHeader.plus;
-    },
-    menuIcon() {
-      return svgHeader.menu;
-    },
-    settingsIcon() {
-      return svgHeader.settings;
-    },
-    deleteIcon() {
-      return svgHeader.delete;
-    },
-    iconTile() {
-      return svgHeader.tile;
-    },
-    //
-    lastTableColor() {
-      return this.$store.dispatch("lastTableColor");
-    },
-    // plusActive() {
-    //   return this.$store.state.plusActive;
-    // },
+    // Состояние настроек(открыти или нет)
     tableSettingsActive() {
       return this.$store.state.tableSettingsActive;
     },
-    tableSettingsVisible() {
+    // Видимость кнопки настроек
+    tableSettingsBtnVisible() {
       return this.$store.state.tableSettingsVisible;
-    },
-    // visibleTables(){
-    //     return this.tasks.filter( user => {
-    //         return !tasks.visible
-    //     })
-    // }
-
-    // activeTableIndex() {
-    //   return this.$store.state.activeTableIndex;
-    // },
-    // allTasks() {
-    //   return this.$store.state.allTasks;
-    // },
-    allTasks() {
-      return this.$store.state.allTasks;
-    },
-    actTableIndex() {
-      return this.$store.state.activeTableIndex;
-    },
-    // activeTableId() {
-    //   return this.$store.state.allTasks[this.$store.state.activeTableIndex].id;
-    // },
-    actTabName: {
-      //и запишем название нашего стола для хедера
-      get: function() {
-        if (this.allTasks.length > 0) {
-          if (this.allTasks[this.actTableIndex]) {
-            return this.allTasks[this.actTableIndex].name;
-          }
-        } else {
-          return "Название рабочего стола";
-        }
-      },
-
-      set: function(newValue) {
-        this.allTasks[this.actTableIndex].name = newValue;
-      }
     }
   },
   components: {
-    HeaderSettings,
-    ThreeDotsMenu,
+    HeaderSettingsBox,
     ConfirmationWindow,
-    BtnIconTile
-  },
-  created() {
-    console.log("Подтягиваем SVG", svgHeader.filter);
+    BtnIconTile,
+    HeaderName,
+    BtnLogout,
+    BtnDelActiveTable,
+    BtnTableSettings
   }
 };
 </script>
 
 <style lang="scss">
 @import "../scss/helpers/_variables.scss";
-
-//--- VARIABLES ---//
-
-$h-icons-col: rgb(82, 82, 82);
-$h-icons-bg-col: rgba(255, 255, 255, 0.45);
-$h-small-icons-col: rgb(56, 56, 56);
-//-----------------//
 
 .t-header {
   height: 40px;
@@ -292,312 +138,21 @@ $h-small-icons-col: rgb(56, 56, 56);
   align-items: center;
   position: relative;
   z-index: $zi-header;
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.25);
 
-  &__search {
-    box-sizing: border-box;
-    height: 30px;
-    width: 100px;
-    background: white;
-    border-radius: 15px;
-    border: solid 1px #a2a2a2;
-    margin-left: 30px;
-    padding: 0 30px 0 12px;
-    font-size: 16px;
-    font-family: open sans;
-    outline: none;
-    transition: border 0.2s;
-    transition: width 0.4s;
-
-    background-image: url(/src/img/icons/magnifying-glass.svg);
-    background-size: 14px;
-    background-repeat: no-repeat;
-    background-position: calc(100% - 8px) 50%;
-
-    &:focus {
-      border-width: 2px;
-      width: 200px;
-    }
-
-    &::placeholder {
-      /* Chrome, Firefox, Opera, Safari 10.1+ */
-      color: #c4c4c4;
-      opacity: 1;
-      /* Firefox */
-    }
-
-    &:-ms-input-placeholder {
-      /* Internet Explorer 10-11 */
-      color: #c4c4c4;
-    }
-
-    &::-ms-input-placeholder {
-      /* Microsoft Edge */
-      color: #c4c4c4;
-    }
-  }
-
-  &__desk-name {
-    font-family: "Open Sans", sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    white-space: nowrap;
-    position: relative;
-    // left: 50%;
-    // transform: translateX(-50%);
-    // width: calc(100vw - 120px);
-    overflow: hidden;
-    text-align: center;
-
-    // margin: 0 100px;
-    text-align: center;
-    margin: 0 10px;
-    height: 100%;
-
-    &-abs {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      max-width: 100%;
-    }
-  }
-
-  &__star {
-    & img {
-      height: 20px;
-    }
-  }
-
-  &__profile {
-    // height: 22px;
-    // width: 21px;
-    // height: 100%;
-    // margin-right: 10px;
-    display: flex;
-    & svg {
-      height: 20px;
-      margin: auto;
-      fill: $h-icons-col;
-    }
-  }
-
-  &__menu {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    transition: background 0.2s;
-    transition: transform 0.3s;
-    // margin-left: 10px;
-    // margin-right: 20px;
-    border-radius: 7px;
-    transition: background 0.3s;
-    background: #0000000f;
-    position: relative;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    & img {
-      width: 15px;
-      margin: auto;
-      fill: $h-icons-col;
-    }
+  &__slideMenuBtn {
+    margin-left: 10px;
   }
 
   &__logout {
-    font-family: "Open Sans", sans-serif;
-    border: solid 2px rgb(75, 75, 75);
-    border-radius: 6px;
-    padding: 1px 5px;
     margin-right: 10px;
   }
-}
 
-// .delTable {
-//   margin-left: 5px;
-
-//   & svg {
-//     height: 10px;
-//     fill: $h-icons-col;
-//   }
-// }
-
-.desk-btns {
-  &__group-1 {
+  &__name-box {
     position: relative;
-  }
-
-  &__group-1,
-  &__group-2 {
+    flex-grow: 1;
     display: flex;
-  }
-
-  &__group-2 {
-    position: relative;
-    right: 0;
-  }
-
-  &__h-add {
-    position: relative;
-    transition: all 0.7s;
-    width: 100%;
-    height: 100%;
-    display: flex;
-
-    & svg {
-      height: 16px;
-      margin: auto;
-      fill: $h-icons-col;
-    }
-  }
-
-  &__h-add_active {
-    height: 50px;
-    & .desk-btns__check-add {
-      max-height: 400px;
-      max-width: 400px;
-      padding: 8px;
-      // display: block;
-      visibility: visible;
-      opacity: 0.95;
-      & > div {
-        border: solid 1px #656565;
-        padding: 5px 10px 5px 5px;
-        justify-content: flex-start !important;
-      }
-    }
-  }
-
-  &__check-add {
-    visibility: hidden;
-    // visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-top: 45px;
-    opacity: 0;
-    // background: $h-icons-bg-col;
-    background: #efefef;
-    border-radius: 4px;
-    font-family: Roboto, sans-serif;
-    z-index: 100;
-    line-height: 1.8;
-    white-space: nowrap;
-    overflow: hidden;
-    transition: all 0.3s;
-    max-height: 20px;
-    max-width: 20px;
-    padding: 0 5px;
-  }
-}
-
-.actTabName {
-  &__box {
-    width: min-content;
-    position: relative;
-    height: 30px;
-    max-width: 100%;
-    min-width: 50px;
-  }
-
-  &__buffer {
-    position: relative;
-    left: 0;
-    padding: 0 8px;
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    height: 0;
-    opacity: 0;
-    width: 20px;
-    z-index: -10;
-  }
-
-  &__inp {
-    border-radius: 6px;
-    transition: all 0.2s;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: left !important;
-    margin: 0 auto;
-    display: block;
-    border-radius: 5px;
-    padding: 0 5px;
-    border: none;
-    background: transparent;
-    font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    max-width: 100%;
-    box-sizing: border-box;
-    user-select: none;
-    &_active {
-      background: rgba(255, 255, 255, 0.774);
-      border: solid 1px rgb(163, 163, 163);
-      user-select: unset;
-    }
-  }
-}
-
-.table-settings {
-  width: 30px;
-  display: flex;
-  z-index: 5;
-  width: 25px;
-  opacity: 1;
-  transition: all 0.2s;
-  position: relative;
-  left: 0;
-  margin: 0 5px;
-
-  &:hover svg {
-    fill: $h-small-icons-col;
-  }
-  &_hidden {
-    opacity: 0;
-    width: 0;
-    margin: 0;
-  }
-  & > svg {
-    height: 20px;
-    margin: auto;
-    fill: gray;
-    transition: fill 0.1s;
-  }
-}
-
-.delTable {
-  width: 25px;
-  display: flex;
-  position: relative;
-  opacity: 1;
-  left: 0;
-  margin: 0 5;
-  transition: all 0.2s;
-
-  &:hover svg {
-    fill: $h-small-icons-col;
-  }
-
-  &_hidden {
-    left: -30px;
-    opacity: 0;
-    width: 0;
-    margin: 0;
-  }
-
-  & > svg {
-    height: 20px;
-    margin: auto;
-    // fill: $h-small-icons-col;
-    fill: gray;
+    margin-left: 10px;
   }
 }
 
@@ -608,23 +163,8 @@ $h-small-icons-col: rgb(56, 56, 56);
   background: $h-icons-bg-col;
   border-radius: 4px;
   display: flex;
-}
-
-.btn-filter {
-  & svg {
-    height: 18px;
-    margin: auto;
-    fill: $h-icons-col;
-  }
-}
-
-.header-menu_hidden {
-  width: 0 !important;
-  height: 0 !important;
-  opacity: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: none !important;
+  justify-content: center;
+  align-items: center;
 }
 </style>
 

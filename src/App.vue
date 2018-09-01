@@ -25,7 +25,8 @@
 
     <transition name="fade"
                 mode="out-in">
-      <tableList v-if="authorised"></tableList>
+      <tableList v-if="authorised"
+                 style="display: none;"></tableList>
     </transition>
 
     <!-- Авторизация -->
