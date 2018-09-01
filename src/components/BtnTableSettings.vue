@@ -1,6 +1,7 @@
 <template>
     <div class="table-settings"
-         :class="{ 'table-settings_hidden': (!visible && !active) }">
+         :class="{ 'table-settings_hidden': (!visible && !active) }"
+         @click="toggle">
         <svg v-html="settingsIcon"
              xmlns="http://www.w3.org/2000/svg"
              viewBox="0 0 26.987 26.988">
@@ -19,6 +20,39 @@ export default {
   props: {
     visible: Boolean,
     active: Boolean
+  },
+  methods: {
+    toggle() {
+      this.$emit("toggle");
+    }
   }
 };
 </script>
+
+<style lang="scss">
+.table-settings {
+  display: flex;
+  z-index: 5;
+  width: 25px;
+  opacity: 0.8;
+  transition: all 0.2s;
+  position: relative;
+  left: 0;
+  margin: 0 5px;
+
+  &:hover svg {
+    opacity: 1;
+  }
+  &_hidden {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+  }
+  & > svg {
+    height: 20px;
+    margin: auto;
+    fill: gray;
+    transition: fill 0.1s;
+  }
+}
+</style>

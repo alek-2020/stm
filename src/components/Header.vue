@@ -13,9 +13,11 @@
            @mouseover="showSettings"
            @mouseout="hideSettings">
         <HeaderName />
+
         <BtnTableSettings :visible="tableSettingsVisible"
                           :active="tableSettingsActive"
-                          @click="showTableSettings" />
+                          @toggle="showTableSettings" />
+
         <BtnDelActiveTable :visible="tableSettingsActive" />
       </div>
 
@@ -130,6 +132,8 @@ export default {
       this.askConfirm = false;
     },
     showTableSettings() {
+      console.log("Покажем настройки");
+
       this.$store.state.tableSettingsActive = !this.$store.state
         .tableSettingsActive;
     }
@@ -374,33 +378,6 @@ $h-small-icons-col: rgb(56, 56, 56);
   }
 }
 
-.table-settings {
-  width: 30px;
-  display: flex;
-  z-index: 5;
-  width: 25px;
-  opacity: 1;
-  transition: all 0.2s;
-  position: relative;
-  left: 0;
-  margin: 0 5px;
-
-  &:hover svg {
-    fill: $h-small-icons-col;
-  }
-  &_hidden {
-    opacity: 0;
-    width: 0;
-    margin: 0;
-  }
-  & > svg {
-    height: 20px;
-    margin: auto;
-    fill: gray;
-    transition: fill 0.1s;
-  }
-}
-
 .delTable {
   width: 25px;
   display: flex;
@@ -424,8 +401,6 @@ $h-small-icons-col: rgb(56, 56, 56);
   & > svg {
     height: 20px;
     margin: auto;
-    // fill: $h-small-icons-col;
-    fill: gray;
   }
 }
 
