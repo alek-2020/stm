@@ -12,7 +12,6 @@
            type="text"
            ref="tableBtnInput"
            :disabled="!inputActive"
-           placeholder=""
            v-model="table.name"
            @focusout='changeTableTitle(table.name)'
            @keyup.enter='changeTableTitle(table.name)'>

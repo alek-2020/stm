@@ -4,12 +4,12 @@
        :class="{slideMenu_active: active}">
 
     <!-- Фильтр столов -->
-    <TablesSearch />
+    <TablesSearch @valueChanged="changeFilter" />
 
     <!-- Кнопки столов -->
     <VuePerfectScrollbar class="slideMenu__slider"
                          :settings="sliderSettings">
-      <TableListOne v-for="(table, index) in showAllTasks"
+      <TableListOne v-for="(table, index) in filteredTables"
                     :key="index"
                     :index='index'
                     :table='table' />
@@ -33,7 +33,8 @@ export default {
       //настройки для скролла
       sliderSettings: {
         suppressScrollX: true
-      }
+      },
+      searchText: ""
     };
   },
   props: {
@@ -44,12 +45,22 @@ export default {
     // Массив со всеми задачами
     showAllTasks() {
       return this.$store.state.allTasks;
+    },
+    // Фильтр столов
+    filteredTables() {
+      return this.showAllTasks.filter(table => {
+        return table.name.toLowerCase().includes(this.searchText.toLowerCase());
+      });
     }
   },
   methods: {
     // Новый стол
     HeaderAdd() {
       this.$store.dispatch("addNewTable");
+    },
+    // Изменение значения фильтра
+    changeFilter(inputData) {
+      this.searchText = inputData;
     }
   },
   components: {

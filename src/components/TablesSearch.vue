@@ -12,11 +12,9 @@ export default {
       inputData: ""
     };
   },
-  computed: {
-    filteredList() {
-      return this.postList.filter(post => {
-        return post.title.toLowerCase().includes(this.search.toLowerCase());
-      });
+  watch: {
+    inputData(val) {
+      this.$emit("valueChanged", this.inputData);
     }
   }
 };
