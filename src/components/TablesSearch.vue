@@ -1,8 +1,27 @@
 <template>
     <input type="text"
            placeholder="Быстрый поиск"
-           class="tablesSearch">
+           class="tablesSearch"
+           v-model="inputData">
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      inputData: ""
+    };
+  },
+  computed: {
+    filteredList() {
+      return this.postList.filter(post => {
+        return post.title.toLowerCase().includes(this.search.toLowerCase());
+      });
+    }
+  }
+};
+</script>
+
 
 <style lang="scss">
 .tablesSearch {

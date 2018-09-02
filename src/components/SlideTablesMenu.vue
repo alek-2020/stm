@@ -7,7 +7,8 @@
     <TablesSearch />
 
     <!-- Кнопки столов -->
-    <VuePerfectScrollbar class="slideMenu__slider">
+    <VuePerfectScrollbar class="slideMenu__slider"
+                         :settings="sliderSettings">
       <TableListOne v-for="(table, index) in showAllTasks"
                     :key="index"
                     :index='index'
@@ -28,7 +29,12 @@ import TablesSearch from "./TablesSearch.vue";
 
 export default {
   data: function() {
-    return {};
+    return {
+      //настройки для скролла
+      sliderSettings: {
+        suppressScrollX: true
+      }
+    };
   },
   props: {
     paddingTop: String,
@@ -41,8 +47,7 @@ export default {
     }
   },
   methods: {
-    //Скроллим наш список столов в конец для добавления нового
-    //Тут нам нужно бы вызвать хук из скроллера и после прокрутки начать создание стола
+    // Новый стол
     HeaderAdd() {
       this.$store.dispatch("addNewTable");
     }
@@ -54,7 +59,7 @@ export default {
     TablesSearch
   }
 };
-</script>
+</script> 
 
 <style lang="scss">
 @import "../scss/helpers/_variables.scss";
