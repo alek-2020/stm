@@ -1,7 +1,7 @@
 <template>
 
   <button class="btn tableBtn"
-          v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colorOne + ', ' + table.colorTwo }"
+          :style="{backgroundImage: 'url(' + btnBg + ')'}"
           v-bind:class="{'tableBtn__last': ifLasBtn}"
           v-on:click='changeActiveTable(index); changeUrl(table.tableUrl)'
           @dblclick="tableActivation">
@@ -63,6 +63,9 @@ export default {
   computed: {
     actTableInd() {
       return this.$store.state.activeTableIndex;
+    },
+    btnBg() {
+      return this.$store.state.imgForBg[this.table.bgIndex];
     }
   }
   //   ,
@@ -87,6 +90,8 @@ export default {
   transition: all 1s;
   height: 40px;
   width: 100%;
+  background-size: cover;
+  background-position: center;
 
   &:not(:first-child) {
     margin-top: 5px;

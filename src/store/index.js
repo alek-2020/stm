@@ -106,6 +106,39 @@ export const store = new Vuex.Store({
         colorOne: "#E67D49",
         colorTwo: "#D06B3F"
       }, ],
+      // Ссылки на фоновые изображения
+      imgForBg: [
+        "/img/bg/stm-bg-1.jpg",
+        "/img/bg/stm-bg-2.jpg",
+        "/img/bg/stm-bg-3.jpg",
+        "/img/bg/stm-bg-4.jpg",
+        "/img/bg/stm-bg-5.jpg",
+        "/img/bg/stm-bg-6.jpg",
+        "/img/bg/stm-bg-7.jpg",
+        "/img/bg/stm-bg-8.jpg",
+        "/img/bg/stm-bg-9.jpg",
+        "/img/bg/stm-bg-10.jpg",
+        "/img/bg/stm-bg-11.jpg",
+        "/img/bg/stm-bg-12.jpg",
+        "/img/bg/stm-bg-13.jpg",
+        "/img/bg/stm-bg-14.jpg",
+        "/img/bg/stm-bg-15.jpg",
+        "/img/bg/stm-bg-16.jpg",
+        "/img/bg/stm-bg-17.png",
+        "/img/bg/stm-bg-18.png",
+        "/img/bg/stm-bg-19.png",
+        "/img/bg/stm-bg-20.jpg",
+        "/img/bg/stm-bg-21.jpg",
+        "/img/bg/stm-bg-22.jpg",
+        "/img/bg/stm-bg-23.jpg",
+        "/img/bg/stm-bg-24.jpg",
+        "/img/bg/stm-bg-25.jpg",
+        "/img/bg/stm-bg-26.jpg",
+        "/img/bg/stm-bg-27.jpg",
+        "/img/bg/stm-bg-28.jpg",
+        "/img/bg/stm-bg-29.jpg",
+        "/img/bg/stm-bg-30.jpg"
+      ]
     }
   },
 
