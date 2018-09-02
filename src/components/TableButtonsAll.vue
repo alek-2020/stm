@@ -1,102 +1,43 @@
 <template>
   <div class="desk-btns"
-       :class="{smoothScroll: !mouseDownForScroll}"
-  >
-    <VuePerfectScrollbar  class="desk-btns__rel-cont" 
-     >
-     <!-- mousemove нужно сделать по докменту, что бы перетаскивание на сбрабывалось при выходе из области элемента -->
+       :class="{smoothScroll: !mouseDownForScroll}">
+    <VuePerfectScrollbar class="desk-btns__rel-cont">
+      <!-- Отслеживание драга мышью -->
       <div class="desk-btns__cont"
-        @mousedown="mDownOnTableList"
-        @mousemove="mMoveOnTableList"
-        @mouseout="stopScroll"
-        @mouseup="stopScroll"
-        >
-                        
-              <!-- удаление активного РС -->
-              <!-- <button
-              v-on:click="delTable">DEL
-              </button>
-               -->
-               <!-- <button
-               style="position: fixed; top: 0; left: 0;"
-              v-on:click="altDragTableList">BRO
-              </button> -->
+           @mousedown="mDownOnTableList"
+           @mousemove="mMoveOnTableList"
+           @mouseout="stopScroll"
+           @mouseup="stopScroll">
 
-              <!-- <transition-group
-                class="desk-btns__cont"
-                name="tablesList"
-                mode="in-out"
-                >  -->
-                  <!-- кнопка привязанная к РС -->
-                  <TableListOne
-                  v-for="(table, index) in showAllTasks"
-                  :key="index"
-                  :index = 'index'
-                  :table = 'table'
+        <!-- кнопка привязанная к РС -->
+        <TableListOne v-for="(table, index) in showAllTasks"
+                      :key="index"
+                      :index='index'
+                      :table='table'
+                      :ifLasBtn='LastBtn' />
 
-                  :ifLasBtn = 'LastBtn'
-                  > </TableListOne>
-              <!-- </transition-group> -->
-  
-                  <!--  добавление РС-->
-                  <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
-                    v-on:click="AddTableBtn"
-                    v-bind:style="{ 'background' : addBtnBg }"
-                  ></div>
-                    <!-- v-bind:class = "{'desk-btns__apply': plusActive}" -->
-
-                            <!-- v-bind:style="{ 'background': lastTableColor() }" -->
-
-              
+        <!--  добавление РС-->
+        <div class=" btn desk-btns__add btn_icon_add-white btn_icon_only"
+             v-on:click="AddTableBtn"
+             v-bind:style="{ 'background' : addBtnBg }">
+        </div>
       </div>
-    </VuePerfectScrollbar >
-
-     <!-- <div class="add-list__bg add-table"
-      @click="AddTableBtn">
-         <img src="../../../img/icons/add-plus-button.svg"
-          class='add-list__img'
-         >
-     </div>  -->
-
-
-
-
-      <!-- <TableListOne
-        v-for="(Btn, index) in tableList"
-        v-bind:key="index" 
-        @click="test2"
-        :Btn = Btn
-        :Index = index>
-      </TableListOne>   -->
-
-    <!-- <button
-     @click='getTableList'>
-     ПОЛУЧАЕМ БАЗУ
-     </button> -->
-     <!-- {{ tableList }} -->
-
+    </VuePerfectScrollbar>
   </div>
 </template>
 
-
 <script>
-import Vue from "vue";
-
 //скролл
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-
-//vuex
-import { store } from "../store";
-
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import TableListOne from "./TableButtonOne.vue";
 import { functions } from "firebase";
 // import * as firebase from "firebase";
 
-export default Vue.extend({
+export default {
   data() {
     return {
       //настройки для скролла
-       settings: {
+      settings: {
         maxScrollbarLength: 60,
         minScrollbarLength: 200,
         suppressScrollX: true,
@@ -104,59 +45,41 @@ export default Vue.extend({
       },
       tableList: "",
       LastBtn: false,
-      initialPosForScroll: '',
-      initialScroll: '',
+      initialPosForScroll: "",
+      initialScroll: "",
       mouseDownForScroll: false
-     
-     
     };
   },
 
   methods: {
-
-        AddTableBtn: function() {
+    AddTableBtn: function() {
       this.$store.dispatch("addNewTable");
-
     },
     mDownOnTableList(e) {
-        // console.log('down-down', e);
-        this.initialPosForScroll = e;
-        const container = document.querySelector('.ps-container');
-        this.initialScroll = container.scrollLeft;
-        this.mouseDownForScroll = true;
- 
+      // console.log('down-down', e);
+      this.initialPosForScroll = e;
+      const container = document.querySelector(".ps-container");
+      this.initialScroll = container.scrollLeft;
+      this.mouseDownForScroll = true;
     },
 
     mMoveOnTableList(e) {
-      if(this.mouseDownForScroll) {
+      if (this.mouseDownForScroll) {
         let diff = this.initialPosForScroll.pageX - e.pageX;
-        let container = document.querySelector('.ps-container');
+        let container = document.querySelector(".ps-container");
         container.scrollLeft = this.initialScroll + diff;
-                // console.log('move', diff);
+        // console.log('move', diff);
       }
     },
     stopScroll() {
       this.mouseDownForScroll = false;
     },
-    OutStopScroll() {
-
-    },
-    //   altDragTableList() {
-    //   // const list = document.getElementById('ball');
-    //   let container = document.querySelector('.ps-container');
-
-    //  container.scrollLeft += 50;
-    //   console.log('v', container.scrollLeft);
-    // },
+    OutStopScroll() {},
     //для скролла
-    scrollHanle(evt) {
-      // console.log(evt)
-    },
+    scrollHanle(evt) {},
 
     getAllBtns() {},
-    test2() {
-      // console.log("А тут Ок!");
-    },
+
     getTableList() {
       firebase
         .database()
@@ -171,13 +94,9 @@ export default Vue.extend({
         });
     },
 
-
-
-
     getTableBtnId: function() {
       let lastEl = this.tables.length - 1;
       let lastId = this.tables[lastEl].BtnId;
-      //console.log('id последнего элемента ', lastId, '. Его номер ', lastEl);
       //Если это первы рабочий стол
       if (typeof lastId == "undefined") {
         //ставим 0 исходя из того, что добавим 1 в return
@@ -204,14 +123,8 @@ export default Vue.extend({
       return lastTableId;
     },
     delTable: function() {
-      // console.log("Массив до удаления ", this.tables);
       var spliceRes = this.tables.splice(this.activeTable, 1);
-      // console.log(
-      //   "Массив после удаления ",
-      //   this.tables,
-      //   " Удаленные строки ",
-      //   spliceRes
-      // );
+
       this.addTable();
     },
     ifLastBtn(Index) {
@@ -220,14 +133,12 @@ export default Vue.extend({
       } else {
         LastBtn = true;
       }
-    },
- 
+    }
   },
 
   components: {
     TableListOne,
-        VuePerfectScrollbar
-
+    VuePerfectScrollbar
   },
 
   computed: {
@@ -241,29 +152,35 @@ export default Vue.extend({
       return this.$store.state.allTasks;
     },
     plusActive() {
-            return this.$store.state.plusActive;
+      return this.$store.state.plusActive;
     },
     lastTableColor() {
-        return this.$store.dispatch('lastTableColor');
+      return this.$store.dispatch("lastTableColor");
     },
     addBtnBg() {
-      if(this.showAllTasks.length > 0) {
-        return ('linear-gradient( to bottom, ' +
-           this.showAllTasks[this.showAllTasks.length - 1].colorOne +
-            ', ' +
-           this.showAllTasks[this.showAllTasks.length - 1].colorTwo +
-           ')');
+      if (this.showAllTasks.length > 0) {
+        return (
+          "linear-gradient( to bottom, " +
+          this.showAllTasks[this.showAllTasks.length - 1].colorOne +
+          ", " +
+          this.showAllTasks[this.showAllTasks.length - 1].colorTwo +
+          ")"
+        );
       } else {
-          return 'linear-gradient( to bottom, ' + this.gradients[1].colorOne + ', ' + this.gradients[1].colorTwo + ')'
+        return (
+          "linear-gradient( to bottom, " +
+          this.gradients[1].colorOne +
+          ", " +
+          this.gradients[1].colorTwo +
+          ")"
+        );
       }
-  },
-  gradients() {
-    return this.$store.state.gradients;
+    },
+    gradients() {
+      return this.$store.state.gradients;
+    }
   }
-},
-  
-
-});
+};
 </script>
 
     
@@ -276,7 +193,7 @@ export default Vue.extend({
     width: 40px;
     margin-left: 10px;
     border-radius: 4px;
-  } 
+  }
 
   &__cont {
     padding: 7px;
@@ -284,7 +201,6 @@ export default Vue.extend({
     position: absolute;
     top: 7px;
     left: 0;
-    
 
     /*
             & *:not(:first-child) {
@@ -300,9 +216,7 @@ export default Vue.extend({
     overflow-y: hidden;
     height: 68px;
     // scroll-behavior: smooth;
-
   }
-
 
   &__apply {
     // margin-left: -10px;
@@ -320,110 +234,93 @@ export default Vue.extend({
     }
   }
 
+  /////////////////////////
+  // КАСТОМИЗАЦИЯ СКРОЛЛА
+  /////////////////////////
 
+  ////////ОБЫЧНОЕ СОТОЯНИЕ
 
-
-/////////////////////////
-// КАСТОМИЗАЦИЯ СКРОЛЛА
-/////////////////////////
-
-////////ОБЫЧНОЕ СОТОЯНИЕ
-
-//Область скролла
-& .ps.ps--active-x >
-.ps__scrollbar-x-rail {
+  //Область скролла
+  & .ps.ps--active-x > .ps__scrollbar-x-rail {
     display: block;
     background-color: #ffffff31;
     height: 5px;
-    transition: height .3s;
+    transition: height 0.3s;
     opacity: 1;
     border-radius: 0;
-}
+  }
 
-//скроллбар
-& .ps.ps--active-x >
-.ps__scrollbar-x-rail >
-.ps__scrollbar-x {
+  //скроллбар
+  & .ps.ps--active-x > .ps__scrollbar-x-rail > .ps__scrollbar-x {
     background-color: #ffffff4b;
     height: 5px;
-    transition: height .3s;
+    transition: height 0.3s;
     // opacity: 1;
     border-radius: 0;
     bottom: 0;
-}
+  }
 
+  ////////HOVER
 
-////////HOVER
-
-//Область скролла
-& .ps.ps--active-x >
-.ps__scrollbar-x-rail:hover {
-   height: 10px;
-   transition: height .2s;
+  //Область скролла
+  & .ps.ps--active-x > .ps__scrollbar-x-rail:hover {
+    height: 10px;
+    transition: height 0.2s;
     background-color: #ffffff31;
-}
+  }
 
-//скроллбар
-& .ps:hover >
-.ps__scrollbar-x-rail:hover >
-.ps__scrollbar-x {
+  //скроллбар
+  & .ps:hover > .ps__scrollbar-x-rail:hover > .ps__scrollbar-x {
     height: 10px;
     // padding: 0;
     background-color: rgba(255, 255, 255, 0.6);
     opacity: 1;
     border-radius: 0;
-    bottom:0
-}
+    bottom: 0;
+  }
 
+  //////АCTIVE
 
-//////АCTIVE
+  & .ps__scrollbar-x-rail {
+    top: -1px;
+  }
+  //область скролла
+  & .ps:hover.ps--in-scrolling.ps--x > .ps__scrollbar-x-rail {
+    background-color: #ffffff31;
+    opacity: 1;
+  }
 
-& .ps__scrollbar-x-rail {
-  top: -1px;
-}
-//область скролла
-& .ps:hover.ps--in-scrolling.ps--x > 
-.ps__scrollbar-x-rail {
-   background-color: #ffffff31;
-   opacity: 1;
-}
+  //скроллбар
 
-//скроллбар
-
-& .ps:hover.ps--in-scrolling.ps--x >
-.ps__scrollbar-x-rail >
-.ps__scrollbar-x {
+  &
+    .ps:hover.ps--in-scrolling.ps--x
+    > .ps__scrollbar-x-rail
+    > .ps__scrollbar-x {
     background-color: rgba(255, 255, 255, 0.6);
     opacity: 1;
-}
+  }
 
+  //////АCTIVE NOT HOVER
 
-//////АCTIVE NOT HOVER
+  //область скролла
+  & .ps.ps--in-scrolling.ps--x > .ps__scrollbar-x-rail {
+    background-color: #ffffff31;
+    opacity: 1;
+    height: 10px;
+  }
 
-//область скролла
-& .ps.ps--in-scrolling.ps--x > 
-.ps__scrollbar-x-rail {
-   background-color: #ffffff31;
-   opacity: 1;
-   height: 10px;
-}
+  //скроллбар
 
-//скроллбар
-
-& .ps.ps--in-scrolling.ps--x >
-.ps__scrollbar-x-rail >
-.ps__scrollbar-x {
+  & .ps.ps--in-scrolling.ps--x > .ps__scrollbar-x-rail > .ps__scrollbar-x {
     background-color: rgba(255, 255, 255, 0.6);
     opacity: 1;
-       height: 10px;
+    height: 10px;
+  }
 
-}
-
-//Сделано через родителя, потому что иначе перебиваются настройки плагина
-& .smoothScroll .desk-btns__rel-cont{
+  //Сделано через родителя, потому что иначе перебиваются настройки плагина
+  & .smoothScroll .desk-btns__rel-cont {
     scroll-behavior: smooth;
-}
-
+  }
 }
 </style>
 

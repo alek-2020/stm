@@ -21,12 +21,6 @@
       <stmHeader v-if="authorised"></stmHeader>
     </transition>
 
-    <transition name="fade"
-                mode="out-in">
-      <tableList v-if="authorised"
-                 style="display: none;"></tableList>
-    </transition>
-
     <!-- Авторизация -->
     <transition name="fade"
                 mode="out-in">

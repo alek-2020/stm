@@ -1,0 +1,79 @@
+.slideMenu__slider {
+  max-height: 100%;
+  width: 100%;
+
+  //Область скролла
+  & .ps.ps--active-x>.ps__scrollbar-x-rail {
+    display: block;
+    background-color: #ffffff31;
+    height: 5px;
+    transition: height 0.3s;
+    opacity: 1;
+    border-radius: 0;
+  }
+
+  //скроллбар
+  & .ps.ps--active-x>.ps__scrollbar-x-rail>.ps__scrollbar-x {
+    background-color: #ffffff4b;
+    height: 5px;
+    transition: height 0.3s;
+    // opacity: 1;
+    border-radius: 0;
+    bottom: 0;
+  }
+
+  ////////HOVER
+  //Область скролла
+  & .ps.ps--active-x>.ps__scrollbar-x-rail:hover {
+    height: 10px;
+    transition: height 0.2s;
+    background-color: #ffffff31;
+  }
+
+  //скроллбар
+  & .ps:hover>.ps__scrollbar-x-rail:hover>.ps__scrollbar-x {
+    height: 10px;
+    // padding: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: 1;
+    border-radius: 0;
+    bottom: 0;
+  }
+
+  //////АCTIVE
+  & .ps__scrollbar-x-rail {
+    top: -1px;
+  }
+
+  //область скролла
+  & .ps:hover.ps--in-scrolling.ps--x>.ps__scrollbar-x-rail {
+    background-color: #ffffff31;
+    opacity: 1;
+  }
+
+  //скроллбар
+  & .ps:hover.ps--in-scrolling.ps--x>.ps__scrollbar-x-rail>.ps__scrollbar-x {
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: 1;
+  }
+
+  //////АCTIVE NOT HOVER
+  //область скролла
+  & .ps.ps--in-scrolling.ps--x>.ps__scrollbar-x-rail {
+    background-color: #ffffff31;
+    opacity: 1;
+    height: 10px;
+  }
+
+  //скроллбар
+  & .ps.ps--in-scrolling.ps--x>.ps__scrollbar-x-rail>.ps__scrollbar-x {
+    background-color: rgba(255, 255, 255, 0.6);
+    opacity: 1;
+    height: 10px;
+  }
+
+  //Сделано через родителя, потому что иначе перебиваются настройки плагина
+  & .smoothScroll .desk-btns__rel-cont {
+    scroll-behavior: smooth;
+  }
+}
