@@ -5,17 +5,17 @@
           v-bind:class="{'tableBtn__last': ifLasBtn}"
           v-on:click='changeActiveTable(index); changeUrl(table.tableUrl)'
           @dblclick="tableActivation">
-
-    <!-- input для вывода названия -->
-    <input :class="{'tableBtn__input_active':inputActive}"
-           class="tableBtn__input"
-           type="text"
-           ref="tableBtnInput"
-           :disabled="!inputActive"
-           v-model="table.name"
-           @focusout='changeTableTitle(table.name)'
-           @keyup.enter='changeTableTitle(table.name)'>
-
+    <div class="tableBtn__nameBg">
+      <!-- input для вывода названия -->
+      <input :class="{'tableBtn__input_active':inputActive}"
+             class="tableBtn__input"
+             type="text"
+             ref="tableBtnInput"
+             :disabled="!inputActive"
+             v-model="table.name"
+             @focusout='changeTableTitle(table.name)'
+             @keyup.enter='changeTableTitle(table.name)'>
+    </div>
   </button>
 
 </template>
@@ -80,11 +80,10 @@ export default {
 <style lang="scss">
 .tableBtn {
   //  базовые стили кнопки
-  padding: 0 6px;
   font-family: "Roboto", sans-serif;
   display: inline-block;
   border-radius: 4px;
-  color: Gray;
+  padding: 0;
   position: relative;
   outline: none;
   transition: all 1s;
@@ -92,19 +91,28 @@ export default {
   width: 100%;
   background-size: cover;
   background-position: center;
+  overflow: hidden;
 
   &:not(:first-child) {
     margin-top: 5px;
   }
 
+  // Фон для назавния
+  &__nameBg {
+    background: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    margin: 0 0 0 0px;
+    display: flex;
+    align-items: center;
+  }
   // инпут внутри кнопки
   &__input {
     height: 76%;
     border-radius: 4px;
-    padding: 0 8px;
+    padding: 0 8px 0 25px;
     border-right: none;
     outline: none;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     border: none;
     background: transparent;
@@ -118,32 +126,6 @@ export default {
       user-select: unset;
       color: #6b6b6b;
     }
-  }
-
-  // буффер для инпута
-  &__inp-buffer {
-    font-size: 16px;
-    font-weight: 600;
-    font-family: "Open Sans", sans-serif;
-    white-space: nowrap;
-    position: absolute;
-    top: -1000px;
-    left: -1000px;
-    visibility: hidden;
-  }
-
-  // стили для рамки активной кн.
-  &__one-active {
-    position: absolute;
-    border: solid 2px #cb4242;
-    height: calc(100% + 8px);
-    width: calc(100% + 8px);
-    top: -4px;
-    left: -4px;
-    border-radius: 7px;
-    box-sizing: border-box;
-    //Что бы не перекрывала инпут задвигаем кнопку назад
-    z-index: -1;
   }
 }
 </style>
