@@ -16,8 +16,6 @@
            class="bg"></div>
     </transition>
 
-    <SlideTablesMenu paddingTop=40 />
-
     <transition name="fade"
                 mode="out-in">
       <stmHeader v-if="authorised"></stmHeader>
@@ -72,7 +70,6 @@ import tableList from "./components/TableButtonsAll.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
 import TableContent from "./components/TableBody.vue";
-import SlideTablesMenu from "./components/SlideTablesMenu.vue";
 
 import * as firebase from "firebase";
 
@@ -88,8 +85,7 @@ export default {
     SignIn,
     stmHeader,
     TableContent,
-    GoodBadNewsMessage,
-    SlideTablesMenu
+    GoodBadNewsMessage
   },
 
   computed: {

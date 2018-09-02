@@ -6,7 +6,8 @@
 
       <!-- Кнопка выезжающего меню -->
       <BtnIconTile :iconColor="iconsColor"
-                   class="t-header__slideMenuBtn" />
+                   class="t-header__slideMenuBtn"
+                   @click.native="toggleSlideMenu" />
 
       <!-- Блок с названием и настройками стола -->
       <div class="t-header__name-box"
@@ -44,6 +45,10 @@
       </div>
     </ConfirmationWindow>
 
+    <!-- Левое выезжающее меню -->
+    <SlideTablesMenu paddingTop="40"
+                     :active="slideMenuState" />
+
   </div>
 </template>
 
@@ -56,6 +61,7 @@ import BtnLogout from "./BtnLogout.vue";
 import BtnDelActiveTable from "./BtnDelActiveTable.vue";
 import BtnTableSettings from "./BtnTableSettings.vue";
 import HeaderSettingsVue from "./HeaderSettings.vue";
+import SlideTablesMenu from "./SlideTablesMenu.vue";
 
 import * as firebase from "firebase";
 
@@ -64,7 +70,8 @@ export default {
     return {
       activeTableName: "Название стола",
       ThreeDotsActive: false,
-      askConfirm: false
+      askConfirm: false,
+      slideMenuState: false
     };
   },
   methods: {
@@ -98,6 +105,11 @@ export default {
         this.$store.dispatch("delActiveTable");
       }
       this.askConfirm = false;
+    },
+    // Переключения состояния левого меню
+    toggleSlideMenu() {
+      this.slideMenuState = !this.slideMenuState;
+      console.log("клик");
     }
   },
   computed: {
@@ -121,7 +133,8 @@ export default {
     HeaderName,
     BtnLogout,
     BtnDelActiveTable,
-    BtnTableSettings
+    BtnTableSettings,
+    SlideTablesMenu
   }
 };
 </script>
@@ -154,17 +167,6 @@ export default {
     display: flex;
     margin-left: 10px;
   }
-}
-
-.btn-bg-white {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  background: $h-icons-bg-col;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
 

@@ -5,7 +5,8 @@
 
 <template>
   <div class="slideMenu"
-       :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}">
+       :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}"
+       :class="{slideMenu_active: active}">
   </div>
 </template>
 
@@ -15,7 +16,8 @@ export default {
     return {};
   },
   props: {
-    paddingTop: String
+    paddingTop: String,
+    active: Boolean
   },
   methods: {
     //Скроллим наш список столов в конец для добавления нового
@@ -28,12 +30,6 @@ export default {
       // this.$store.state.plusActive = !this.$store.state.plusActive;
       //  this.HeaderAdd();
       this.$store.state.addMenuActive = !this.hPlusActive;
-    },
-    delTable(val) {
-      if (val) {
-        this.$store.dispatch("delActiveTable");
-      }
-      this.askConfirm = false;
     }
   }
 };
@@ -43,13 +39,16 @@ export default {
 @import "../scss/helpers/_variables.scss";
 
 .slideMenu {
-  //   height: calc(100vh - 40px);
-  width: 200px;
+  width: 250px;
   background: white;
   position: absolute;
-  //   top: 40px;
+  transform: translateX(-100%);
+  transition: transform 0.4s;
   left: 0;
   z-index: $zi-slideMenu;
   box-shadow: 0 0 13px rgba(0, 0, 0, 0.25);
+  &_active {
+    transform: translateX(0);
+  }
 }
 </style>
