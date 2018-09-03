@@ -71,7 +71,7 @@ export default {
       activeTableName: "Название стола",
       ThreeDotsActive: false,
       askConfirm: false,
-      slideMenuState: true
+      slideMenuState: false
     };
   },
   methods: {

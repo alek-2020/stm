@@ -63,6 +63,11 @@ export default {
       this.searchText = inputData;
     }
   },
+  mounted() {
+    if (window.innerWidth > 1350) {
+      this.active = true;
+    }
+  },
   components: {
     TableListOne,
     VuePerfectScrollbar,

@@ -1,12 +1,10 @@
 <template>
-
   <button class="btn tableBtn"
           :style="{backgroundImage: 'url(' + btnBg + ')'}"
-          v-bind:class="{'tableBtn__last': ifLasBtn}"
-          v-on:click='changeActiveTable(index); changeUrl(table.tableUrl)'
-          @dblclick="tableActivation">
+          v-on:click='changeActiveTable(index);'
+          @dblclick="inputActivate">
     <div class="tableBtn__nameBg"
-         v-bind:class="{'tableBtn__nameBg_active': actTableInd === index }">
+         v-bind:class="{'tableBtn__nameBg_active': actTableInd === index && !inputActive }">
       <!-- input для вывода названия -->
       <input :class="{'tableBtn__input_active':inputActive}"
              class="tableBtn__input"
@@ -18,7 +16,6 @@
              @keyup.enter='changeTableTitle(table.name)'>
     </div>
   </button>
-
 </template>
 
 
@@ -31,11 +28,14 @@ export default {
   },
   props: ["table", "index", "ifLasBtn"],
   methods: {
-    tableActivation() {
+    // Активируем инпут для редактирования заголовка стола
+    inputActivate() {
       let t = this;
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
+
+    // Отслеживаем внешний клик, что бы выключить активный инпут
     checkOuterClick(el) {
       // console.log("Идентифkkикатор", el);
       if (el.target != this.$refs.tableBtnInput) {
@@ -44,10 +44,8 @@ export default {
         window.removeEventListener("click", this.checkOuterClick);
       }
     },
-    changeUrl(url) {
-      this.$store.dispatch("linksHandler", { toLink: `/table/${url}` });
-    },
 
+    // Переключаем стол во vuex на текущий
     changeActiveTable(index) {
       this.$store.state.activeTableIndex = index;
       //пишем на сервер index стола
@@ -56,24 +54,22 @@ export default {
       this.$store.dispatch("startGetTasks");
     },
 
+    // Корректировка заголовка стола
     changeTableTitle(NewName) {
       const TableId = this.table.id;
       this.$store.dispatch("changeTableTitle", { NewName, TableId });
     }
   },
   computed: {
+    // Индекс активного стола
     actTableInd() {
       return this.$store.state.activeTableIndex;
     },
+    // Фон для кнопки
     btnBg() {
       return this.$store.state.imgForBg[this.table.bgIndex];
     }
   }
-  //   ,
-  //     watch: {
-  //             people(newVal, oldVal) { // watch it
-  //               console.log(this.people)}
-  //             }
 };
 </script>
 
@@ -105,15 +101,17 @@ export default {
     margin: 0 0 0 0px;
     display: flex;
     align-items: center;
-    transition: margin 0.3s;
+    justify-content: center;
+    transition: margin 0.3s 0.3s;
     &_active {
       margin: 0 0 0 40px;
     }
   }
   // инпут внутри кнопки
   &__input {
-    height: 76%;
-    border-radius: 4px;
+    height: calc(100% - 6px);
+    width: calc(100% - 6px);
+    border-radius: 2px;
     padding: 0 8px 0 25px;
     border-right: none;
     outline: none;
@@ -126,10 +124,12 @@ export default {
     white-space: nowrap;
     box-sizing: border-box;
     z-index: 10;
+    transition: background 0.6s, margin 0.2s 0.6s;
     &_active {
       background: rgb(255, 255, 255);
       user-select: unset;
-      color: #6b6b6b;
+      color: #333;
+      padding: 0 10px;
     }
   }
 }

@@ -151,6 +151,7 @@ export default {
     opacity: 0;
     width: 20px;
     z-index: -10;
+    white-space: nowrap;
   }
 }
 </style>

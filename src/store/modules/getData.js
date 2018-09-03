@@ -40,10 +40,10 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          //если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
-          //   dispatch('linksHandler', {
-          //     toLink: '/error/'
-          //   });
+          // если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
+          dispatch('linksHandler', {
+            toLink: '/error/'
+          });
           commit('stopTableLoader')
           rootState.appLog.push('Ошибка загрузки стола в firstGettingData');
 

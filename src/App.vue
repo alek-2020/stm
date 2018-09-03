@@ -36,15 +36,6 @@
     <router-view name="bigError"
                  v-if="authorised"></router-view>
 
-    <!-- <TableContent></TableContent>  -->
-
-    <!-- <router-view name="NotFoundComponent"></router-view> -->
-
-    <!-- <button
-   @click="test">
-      test
-  </button> -->
-
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic"
           rel="stylesheet">
 
