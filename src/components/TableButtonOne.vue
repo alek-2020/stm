@@ -5,7 +5,8 @@
           v-bind:class="{'tableBtn__last': ifLasBtn}"
           v-on:click='changeActiveTable(index); changeUrl(table.tableUrl)'
           @dblclick="tableActivation">
-    <div class="tableBtn__nameBg">
+    <div class="tableBtn__nameBg"
+         v-bind:class="{'tableBtn__nameBg_active': actTableInd === index }">
       <!-- input для вывода названия -->
       <input :class="{'tableBtn__input_active':inputActive}"
              class="tableBtn__input"
@@ -104,6 +105,10 @@ export default {
     margin: 0 0 0 0px;
     display: flex;
     align-items: center;
+    transition: margin 0.3s;
+    &_active {
+      margin: 0 0 0 40px;
+    }
   }
   // инпут внутри кнопки
   &__input {
