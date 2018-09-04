@@ -1,56 +1,40 @@
 <template>
-    <transition name="scale-up"
-                appear>
-        <div class="confirm__bg"
-             @click="modalResponce(false)"
-             v-if="askConfirm">
-            <div class="confirm__box">
-                <div class="confirm__mes">
-                    <slot name="message">
-                        Confirm your action
-                    </slot>
-                </div>
-                <div class="confirm__btns-box">
-                    <button @click="modalResponce(false)"
-                            class="btn btn_black-b confirm__btn-cancel">Cancel</button>
-                    <button @click="modalResponce(true)"
-                            class="btn btn_orange-g confirm__btn-apply">
-                        <slot name="action">
-                            Confirm
-                        </slot>
-                    </button>
-                </div>
-            </div>
+  <transition name="scale-up"
+              appear>
+    <div class="confirm__bg"
+         @click="modalResponce(false)"
+         v-if="askConfirm">
+      <div class="confirm__box">
+        <div class="confirm__mes">
+          <slot name="message">
+            Confirm your action
+          </slot>
         </div>
-    </transition>
+        <div class="confirm__btns-box">
+          <button @click="modalResponce(false)"
+                  class="btn btn_black-b confirm__btn-cancel">Cancel</button>
+          <button @click="modalResponce(true)"
+                  class="btn btn_orange-g confirm__btn-apply">
+            <slot name="action">
+              Confirm
+            </slot>
+          </button>
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 тень на попапе
 поворот креста при наведении
 
 <script>
 export default {
-  data() {
-    return {
-      // modalVisible: true,
-    };
-  },
   methods: {
-    // modalCancel() {
-    //     this.modalVisible = false;
-    // },
-    // modalSubmit() {
-    //     this.modalVisible = false;
-    // }
     modalResponce(val) {
       this.$emit("confirmResponse", val);
     }
   },
-  props: ["askConfirm"],
-  watch: {
-    // askConfirm(val) {
-    //     console.log('Пришел с пропса',val);
-    // }
-  }
+  props: ["askConfirm"]
 };
 </script>
 
@@ -73,18 +57,14 @@ export default {
   min-width: 250px;
   height: auto;
   display: flex;
-  // margin: auto;
   border-radius: 4px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding: 15px;
   padding-top: 25px;
-  // box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
   color: #3c3c3c;
-  // position: relative;
-  // transition: height 2s;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

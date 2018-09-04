@@ -44,7 +44,6 @@ import VuePerfectScrollbar from "vue-perfect-scrollbar";
 export default {
     data() {
         return {
-        //    currentEmojiIndex: 1,
            emojiListActive: false,
            scrollSettings: {
                suppressScrollY: true,
@@ -73,21 +72,10 @@ export default {
         allTasks() {
             return this.$store.state.allTasks;
         },
-        // colors() {
-        //     return this.$store.state.gradients;
-        // },
-        // MainListColor() {
-        //     console.log( 'цвет списка', this.$store.state.gradients[this.themeColorId]);
-        //     return this.$store.state.gradients[this.themeColorId];
-        // },
-        // themeColorId() {
-        //     return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex].color;
-        // },
     },
     props: ["MainListColor", "activeTableIndex", "taskListIndex", "emojiState"],
     methods: {
       cnangeEmoji(index) {
-        //   console.log(index);
           const taskListInd= this.taskListIndex;
           this.$store.dispatch('changeEmojiIndex', {index, taskListInd});
       },
@@ -99,14 +87,12 @@ export default {
       }
     },
     mounted() {
-        // console.log('Получили emoji', this.listOfEmoji);
     },
     watch: {
        //Закрытие меню из родительского компонента
        // FIXME: Почему то сдесь присваивание работает , но не отражается на сстоянии списка
        
       emojiState: (val) => {
-        //    console.log('Пришел пропс ', val);
            this.emojiListActive = val;
            this.emojiListActive = this.emojiState;
            console.log('Пришел пjпс ', this.emojiListActive);

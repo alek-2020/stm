@@ -28,9 +28,7 @@ export default {
   },
   methods: {
     changeBg(index) {
-      // console.log("Работает");
       this.$store.state.currentBgImg = this.imgForBg[index];
-      // console.log("ВАСЯ!!!!!!!", this.$store.state.currentBgImg);
     },
     saveBg() {
       this.$store.dispatch("saveBg");
@@ -55,7 +53,6 @@ export default {
 <style lang="scss">
 .settings-block {
   width: 100%;
-  //   height: 100px;
   max-height: 0;
   transition: max-height 0.4s;
   overflow: hidden;

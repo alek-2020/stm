@@ -31,7 +31,6 @@
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import TableListOne from "./TableButtonOne.vue";
 import { functions } from "firebase";
-// import * as firebase from "firebase";
 
 export default {
   data() {
@@ -56,7 +55,6 @@ export default {
       this.$store.dispatch("addNewTable");
     },
     mDownOnTableList(e) {
-      // console.log('down-down', e);
       this.initialPosForScroll = e;
       const container = document.querySelector(".ps-container");
       this.initialScroll = container.scrollLeft;
@@ -68,7 +66,6 @@ export default {
         let diff = this.initialPosForScroll.pageX - e.pageX;
         let container = document.querySelector(".ps-container");
         container.scrollLeft = this.initialScroll + diff;
-        // console.log('move', diff);
       }
     },
     stopScroll() {
@@ -86,7 +83,6 @@ export default {
         .ref("users/" + "BjRdscIcrsdy4u4RNqCDb7DDTpj1")
         .once("value")
         .then(data => {
-          // console.log("Получили ", data);
           this.tableList = data;
         })
         .catch(error => {
@@ -109,9 +105,6 @@ export default {
       let lastTableEl = this.tables.length - 1;
       //Получим id цвета на этой кнопке
       let lastTableId = this.tables[lastTableEl].colorId;
-      // let lastId = this.gradients[lastEl].colId;
-      //console.log('выведем ', lastTableId);
-      //console.log(typeof(lastTableId) == "undefined");
       if (
         lastTableId >= this.gradients.length ||
         typeof lastTableId == "undefined"
@@ -215,12 +208,9 @@ export default {
     overflow-x: scroll;
     overflow-y: hidden;
     height: 68px;
-    // scroll-behavior: smooth;
   }
 
   &__apply {
-    // margin-left: -10px;
-
     &:before {
       content: "";
       display: block;

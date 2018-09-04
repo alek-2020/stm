@@ -37,9 +37,7 @@ export default {
 
     // Отслеживаем внешний клик, что бы выключить активный инпут
     checkOuterClick(el) {
-      // console.log("Идентифkkикатор", el);
       if (el.target != this.$refs.tableBtnInput) {
-        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
         window.removeEventListener("click", this.checkOuterClick);
       }

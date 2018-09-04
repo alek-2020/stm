@@ -28,12 +28,7 @@
     </VuePerfectScrollbar>
 
     <span style="color: white; font-weigth: 500; background: black;">
-
-      <!-- {{ allTasks }} -->
-      <!-- {{ activeTableIndex }}
-     {{ userData }} -->
     </span>
-    <!-- <router-link :to="'/table/fdGb'"><button>b</button></router-link> -->
 
   </div>
 </template>
@@ -52,7 +47,6 @@ export default {
     return {
       Text: "Всякая чухня",
       VarThisTableTaskLists: []
-      // goodNewsMess: "hello",
     };
   },
   computed: {
@@ -75,13 +69,8 @@ export default {
     userData() {
       return this.$store.state.userData;
     },
-    // allTasks() {
-    //   return this.$store.state.allTasks;
-    // },
     thisTableTaskLists() {
       if (this.$store.state.allTasks.length > 0) {
-        // console.log("получили индекс ", this.$store.state.allTasks);
-        // console.log("получили индекс ", this.$store.state.allTasks[1]);
         //Проверяем загрузку нужного стола
         if (
           this.$store.state.allTasks[this.$store.state.activeTableIndex] != null
@@ -95,32 +84,11 @@ export default {
   watch: {
     GetAllTasks(val) {
       this.VarThisTableTaskLists = this.thisTableTaskLists;
-      // console.log("следим ", val);
-      // console.log('Отсдеживание allTasks из table ', this.allTasks)
     }
   },
-
-  //  beforeRouteUpdate (to, from, next) {
-  //      console.log('Изменился адрес', to, from);
-  //   // не забываем вызвать next()
-  // },
   methods: {
     //Функция выполняется событием тача, когда убираем палец
     listPositionCalc() {
-      // this.$store.dispatch('showGoodNews', 'Выполняем!')
-      //Положение элемента в родительском элем
-      // console.log(this.$refs.list[1].$el.offsetLeft);
-      //Ширина элемента
-      // console.log(this.$refs.list[0].$el.clientWidth);
-      //Ширина скрола
-      // console.log(this.$refs.taskListBox.scrollWidth);
-      // текущий скролл
-      // console.log(this.$refs.ps.$el.clientWidth);
-      //Проверить подходит ли он по параметрам доводки, т.е. торчит достаточно, что бы его немного поправить
-      // if(Math.abs(this.$refs.list[1].$el.offsetLeft - this.$refs.ps.$el.scrollLeft) <= 20) {
-      //   console.log('Можно фокусить');
-      // }
-
       /*Найти выдимие части элементов и сфокусировать на той, которая больше видна*/
       //селектор списков
       let lists = this.$refs.list;
@@ -148,68 +116,33 @@ export default {
           if (elLeft < scrolled && elLeft + elWidth > scrolled) {
             //Запишим ширину видимой части и сравним с шириной видимой части следующего
             firstVisible = elLeft + elWidth - scrolled;
-            //  console.log('Элемент пересек экран слева', firstVisible);
 
             //Расстояние от элемента до экрана в сфокусированном сотоянии
             space = (clientWidth - elWidth) / 2;
 
             //Если сдедующий существует
             if (this.$refs.list[i + 1]) {
-              //  console.log('Следующий существует😃')
-              //  this.$store.dispatch('showGoodNews', 'Следующий существует😃')
               nextList = this.$refs.list[i + 1].$el;
               nextListLeft = nextList.offsetLeft;
               secondVisible = scrolled + clientWidth - nextListLeft;
 
               if (firstVisible > secondVisible) {
                 scrollTo = elLeft - space;
-                // console.log('У первого больше😃', scrollTo)
               } else {
                 scrollTo = nextListLeft - space;
-                // console.log('У второго больше😃', scrollTo, nextListLeft, elLeft, space)
               }
               this.scrollTo(this.$refs.ps.$el, scrollTo, scrolled);
 
               //Если правая часть первого видимого элемента больше
             } else if (elLeft + elWidth - scrolled > elWidth / 2) {
               scrollTo = elLeft - space;
-              //  console.log('Второго нет и у первого большая часть видна', scrollTo);
               this.scrollTo(this.$refs.ps.$el, scrollTo, scrolled);
             }
-
-            //  setTimeout(() => {
-            //     this.$refs.ps.$el.scroll({
-            //         top: 0,
-            //         left: scrollTo,
-            //         behavior: 'smooth'
-            //     });
-            //  }, 200)
-
-            //Если правая часть торчащего слева списка больше - чем невидимая, занчи проскроливаем его
-            // if(((elLeft + elWidth) - scrolled) > this.$refs.list[i].$el.clientWidth / 2 ) {
-            //   console.log('Торчит здоровенный кусок, скролим его');
-            //   let leftBrim = this.$refs.list[i].$el.offsetLeft
-            //   let space = (clientWidth - this.$refs.list[i].$el.clientWidth) / 2
-            //   let scrollTo = leftBrim - space
-            // this.$refs.ps.$el.scrollLeft = scrollTo
-            // let scrollDiff = scrollTo - scrolled
-            // document.querySelector('.table__taskList-box-rel').scrollBy({
-            //   top: 0,
-            //   left: -1000,
-            //   behavior: 'smooth'
-            // // });
-            //                 this.$refs.ps.$el.scroll({
-            //                   top: 0,
-            //                   left: scrollTo,
-            //                   behavior: 'smooth'
-            //                 });
-            //                 console.log('скролим к ', scrollTo, scrolled);
           }
         });
       }
     },
     scrollTo(element, sclollTo, scrolled) {
-      // function sideScroll(element,direction,speed,distance,step){
       let direction = "right";
       let distance = scrollTo - scrolled;
       if (distance < 0) {
@@ -240,42 +173,12 @@ export default {
       this.$store.state.addMenuActive = false;
     },
 
-    // testtest() {
-    //   console.log('resize');
-    // },
-    //Подтягиваем расчеты из хранилища
-    //1 cпособ
-    // showThing(Text) {
-    //   this.$store.commit("register", Text);
-    // },
-    // //2 способ
-    // showMeMore() {
-    //   this.$store.commit({
-    //     //название
-    //     type: "register",
-    //     //передаваемые парам
-    //     table: "Всякая чухня"
-    //   });
-    // },
-    // //так вызываем action, он дает что то вроде асинхронной загрузки для mutation
     callAction() {
       this.$store.dispatch("register", user.id);
     },
     addList() {
       this.$store.dispatch("addTaskList");
-    },
-
-    ttest() {
-      //  console.log("RRRResource conscious resize callback!", this.listBoxH);
     }
-  },
-
-  updated: function() {
-    this.$nextTick(function() {
-      // Code that will run only after the
-      // entire view has been re-rendered
-      // console.log('Высота поменялась updated ', this.$refs.taskListBox.clientHeight);
-    });
   },
 
   mounted() {
@@ -329,7 +232,6 @@ export default {
     //     )
 
     if (this.$route.params.link != null) {
-      // console.log("Есть ссылка на стол", this.$route.params.link);
       // this.$store.dispatch('checkUrl');
     } else {
       // console.log("Нет ссылка на стол");
@@ -337,7 +239,6 @@ export default {
     // console.log("Проверка route ", this.$route);
 
     //Запишем в хранилице высоту блока для расчетов
-    // console.log('Высота блока ', this.$refs.taskListBox.clientHeight);
     this.$store.state.taskListBoxHeight = this.$refs.taskListBox.clientHeight;
   },
   components: {
@@ -396,7 +297,6 @@ export default {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    // scroll-behavior: smooth;
   }
 }
 

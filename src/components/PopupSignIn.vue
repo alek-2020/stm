@@ -4,66 +4,60 @@
 <template>
   <!-- Block fixed -->
   <div class="log__bg"
-  v-if="logActive"> 
+       v-if="logActive">
 
-      <div class="log__form-block">
+    <div class="log__form-block">
 
-            <!-- <div class="log__cancel"
-              v-if="authorised"
-              @click="goBack">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 95.939 95.939" style="enable-background:new 0 0 95.939 95.939;" xml:space="preserve"><g>	<path d="M62.819,47.97l32.533-32.534c0.781-0.781,0.781-2.047,0-2.828L83.333,0.586C82.958,0.211,82.448,0,81.919,0   c-0.53,0-1.039,0.211-1.414,0.586L47.97,33.121L15.435,0.586c-0.75-0.75-2.078-0.75-2.828,0L0.587,12.608   c-0.781,0.781-0.781,2.047,0,2.828L33.121,47.97L0.587,80.504c-0.781,0.781-0.781,2.047,0,2.828l12.02,12.021   c0.375,0.375,0.884,0.586,1.414,0.586c0.53,0,1.039-0.211,1.414-0.586L47.97,62.818l32.535,32.535   c0.375,0.375,0.884,0.586,1.414,0.586c0.529,0,1.039-0.211,1.414-0.586l12.02-12.021c0.781-0.781,0.781-2.048,0-2.828L62.819,47.97   z" /></g></svg>
-            </div>  -->
+      <div class="log__title-block">
+        <span class="log__title">
+          {{ reg ? 'Регистрация' : 'Авторизация' }}
+        </span>
+        <span class="log__or">
+          или
+          <router-link :to='returnLink'
+                       @keypress="wipeErrors(); stopSpinner();">{{ reg ? 'Авторизация' : 'Регистрация' }}</router-link>
+        </span>
+      </div>
+      <form class="log__form"
+            action=""
+            @submit.prevent="submitForm(); runSpinner();">
+        <label for="email"
+               class="log__input-label log__input-label_mail">
+          <input name="email"
+                 v-model="email"
+                 id="email"
+                 type="email"
+                 required
+                 class="inp__mail"
+                 placeholder="Enter your mail"
+                 @keypress="wipeErrors">
+        </label>
 
-            <div class="log__title-block">
-                <span class="log__title">
-                   {{ reg ? 'Регистрация' : 'Авторизация' }} 
-                </span>
-                <span class="log__or">
-                    или <router-link :to='returnLink'
-                         @keypress="wipeErrors(); stopSpinner();"
-                         >{{ reg ? 'Авторизация' : 'Регистрация' }}</router-link>
-                </span>  
-            </div>
-      <form class="log__form" action="" 
-       @submit.prevent="submitForm(); runSpinner();">
-       <label for="email" class="log__input-label log__input-label_mail">
-          <input 
-          name="email"
-          v-model="email"
-          id="email"
-          type="email"
-          required
-          class="inp__mail"
-          placeholder="Enter your mail"
-          @keypress="wipeErrors">
-      </label>
-
-      <label for="password" class="log__input-label log__input-label_password">
-        <input 
-        name="password"
-        v-model="password"
-        id="password"
-        type="password"
-        class="inp__pass"
-        placeholder="Your password"
-        @keypress="wipeErrors">
-      </label>
+        <label for="password"
+               class="log__input-label log__input-label_password">
+          <input name="password"
+                 v-model="password"
+                 id="password"
+                 type="password"
+                 class="inp__pass"
+                 placeholder="Your password"
+                 @keypress="wipeErrors">
+        </label>
 
         <button type="submit">
-            <span
-             v-if="!spinnerActive">
-              {{ reg ? 'Регистрация' : 'Вход' }}  
-            </span>
-            <img
-             v-else
-             height="30px" src='../../img/spinners/load-spinner-white.svg'>
+          <span v-if="!spinnerActive">
+            {{ reg ? 'Регистрация' : 'Вход' }}
+          </span>
+          <img v-else
+               height="30px"
+               src='../../img/spinners/load-spinner-white.svg'>
         </button>
 
-      <RegAuthError>
-      </RegAuthError>
+        <RegAuthError>
+        </RegAuthError>
 
       </form>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -98,12 +92,9 @@ export default {
       this.$store.state.authErrorMessage = "";
     },
     submitForm() {
-       this.reg ? this.onSignUp() : this.onSignIn() 
+      this.reg ? this.onSignUp() : this.onSignIn();
     },
     onSignIn() {
-      // vuex
-      
-      // console.log({ email: this.email, ConfirmPassword: this.confirmPassword });
       const t = this;
       //Перед авторизацией делаем сессию бесконечной
       firebase
@@ -117,15 +108,14 @@ export default {
         .then(user => {
           const newUser = {
             id: user.user.uid
-            //this.registerelM
           };
-          // console.log("Авторизовались, все ОК", newUser.id);
           this.$store.state.userId = newUser.id;
-          // console.log("Получили UserData по Id ");
-          this.$store.dispatch('linksHandler', {link: this.route})
+          this.$store.dispatch("linksHandler", { link: this.route });
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("startGetTasks");
-          this.$store.state.appRouteLog.push('routeHandler - вызываем послу авторизации')
+          this.$store.state.appRouteLog.push(
+            "routeHandler - вызываем послу авторизации"
+          );
           this.$store.dispatch("linksHandler", { toLink: "/" });
         })
         .catch(error => {
@@ -133,80 +123,53 @@ export default {
           this.stopSpinner();
           console.log("Это провал. Ошибка: ", error);
         });
-    },  
+    },
     onSignUp() {
-      // vuex
+      //Создаем юзера в файрбазе
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          this.$store.state.userId = user.uid;
+          //Сейвим стандартный бг
+          this.$store.dispatch("saveBg");
 
-      // console.log({ email: this.email, ConfirmPassword: this.confirmPassword }),
-        //Создаем юзера в файрбазе
-        firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
-          .then(user => {
-            // console.log("Это успех. id юзера ", this.id);
-
-            this.$store.state.userId = user.uid;
-            // console.log("Получили id ", user.uid);
-            //Сейвим стандартный бг
-            this.$store.dispatch("saveBg");
-
-            //Раз все ок грузим данные и переходим в столы
-            this.$store.dispatch("startGetTasks");
-            this.$store.state.appRouteLog.push('routeHandler - вызываем послу авторизации')
-            this.$store.dispatch("linksHandler", { toLink: "/" });
-            // this.$store.dispatch('linksHandler', {link: this.route})
-
-          
-          })
-          .catch(error => {
-            console.log("Полный провал. Ошибка: ", error);
-            this.$store.state.authErrorMessage = error.message;
-            this.stopSpinner();
-
-         });
+          //Раз все ок грузим данные и переходим в столы
+          this.$store.dispatch("startGetTasks");
+          this.$store.state.appRouteLog.push(
+            "routeHandler - вызываем послу авторизации"
+          );
+          this.$store.dispatch("linksHandler", { toLink: "/" });
+        })
+        .catch(error => {
+          console.log("Полный провал. Ошибка: ", error);
+          this.$store.state.authErrorMessage = error.message;
+          this.stopSpinner();
+        });
     },
-
-    //     onSignIn() {
-    //   email = this.email
-    //   password = this.password
-    //   this.$store.dispatch('onSignIn', {email, password})
-    // },
-    // onSignup() {
-    //   email = this.email
-    //   password = this.password
-    //   this.$store.dispatch('onSignup', {email, password})
-    // },
     enableRegMode() {
-         //Если компонент появился на стр регистрации
-        if (this.route == "/registration/") {
-          this.reg = true
-          // console.log('включили регмод')
-        } else {
-          this.reg = false
-        }
-    },
-    
-
-    // goBack() {
-    //   window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
-    // }
+      //Если компонент появился на стр регистрации
+      if (this.route == "/registration/") {
+        this.reg = true;
+      } else {
+        this.reg = false;
+      }
+    }
   },
 
-  mounted() {
- 
-  }, 
+  mounted() {},
   watch: {
-     route: {
-       handler: 'enableRegMode',
-       immediate: true
-     }
+    route: {
+      handler: "enableRegMode",
+      immediate: true
+    }
   },
   computed: {
     returnLink() {
-      if(this.reg) {
-        return '/login/'
+      if (this.reg) {
+        return "/login/";
       } else {
-        return '/registration/'
+        return "/registration/";
       }
     },
     userIdmeth() {

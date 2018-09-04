@@ -148,22 +148,15 @@ export default {
       askConfirm: false
     };
   },
-  //   events: {
-  //   newColor: function (argument) {
-  //          console.log(argument);
-  //    },
-  // },
+
   methods: {
     tableActivation() {
       let t = this;
-      // console.log("Раз");
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
     checkOuterClick(el) {
-      // console.log("Идентифkkикатор", el);
       if (el.target != this.$refs.listHeaderInput) {
-        // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
         window.removeEventListener("click", this.checkOuterClick);
       }
@@ -172,21 +165,9 @@ export default {
     hideListName(val) {
       if (this.emojiState || this.menuState) {
         this.nameVisible = false;
-        // console.log(
-        //   "Прячем заголовок списка ",
-        //   this.emojiState,
-        //   this.menuState
-        // );
       } else {
         this.nameVisible = true;
-        // console.log(
-        //   "Покажем заголовок списка ",
-        //   this.emojiState,
-        //   this.menuState
-        // );
       }
-
-      // this.nameVisible = !val;
     },
     changeEmojiState(val) {
       this.emojiState = val;
@@ -197,7 +178,6 @@ export default {
     },
     changeMenuState(val) {
       this.menuState = val;
-      // console.log("Пришел пропс тест ", val);
       if (val == true) {
         this.emojiState = false;
       }
@@ -205,9 +185,6 @@ export default {
     },
     //Принимает новый цвет из палитны и меняем
     changeMainColor(index) {
-      // console.log("Новый цвет брат ", index);
-      // console.log("данные листа ", this.activeTableIndex, this.taskListIndex);
-
       this.$store.state.allTasks[this.activeTableIndex].taskLists[
         this.taskListIndex
       ].color = index;
@@ -216,30 +193,19 @@ export default {
       allData.colIndex = index;
       allData.actTableInd = this.activeTableIndex;
       allData.taskListInd = this.taskListIndex;
-
       this.$store.dispatch("pushListColor", allData);
     },
     afterLeave() {
       this.changeHeightOfList();
-      // console.log("Пересчет высоты при завершении анимации");
     },
     changeHeightOfList() {
       if (this.$refs.inputsContainer != null) {
-        // console.log("Высота контейнера в листе", this.taskBoxHeight);
         this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
-        // console.log("Пересчет высоты", this.taskBoxHeight);
         this.$refs.ps.update();
-        // VuePerfectScrollbar.update();
       }
     },
     showDoneTasks() {
       this.onlyDoneTasks = !this.onlyDoneTasks;
-      //  this.changeHeightOfList();
-      //  console.log('Пересчет высоты при переключении');
-    },
-
-    a: function() {
-      // console.log(this.themeColor);
     },
 
     //Добавляем новую задачу (пока что просто пустой инпут)
@@ -249,7 +215,6 @@ export default {
 
     changeListTitle(NewName) {
       const ListId = this.TList.id;
-
       this.$store.dispatch("changeListTitle", { NewName, ListId });
     },
 
@@ -276,7 +241,6 @@ export default {
       }
       this.askConfirm = false;
       this.dataForRemoving = {};
-      // console.log("пришел с эммита", responce);
     }
   },
   props: ["TList", "taskListIndex"],
@@ -292,12 +256,6 @@ export default {
   computed: {
     //Цветовая схема списка
     MainListColor() {
-      // console.log(
-      //   "цвет списка",
-      //   this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex],
-      //   this.themeColorId,
-      //   this.$store.state.gradients[this.themeColorId]
-      // );
       return this.$store.state.gradients[this.themeColorId];
     },
     themeColorId() {
@@ -323,7 +281,6 @@ export default {
     },
     getListName() {
       const TLName = allTasks[activeTableIndex].taskLists[taskListIndex].name;
-      // console.log("можно и отсюда вывести ", TLName);
       if (TLName) {
         return TLName;
       } else {
@@ -343,7 +300,6 @@ export default {
       } else {
         return [];
       }
-      //  .filterBy(t.isDone);
     },
 
     doneTasks() {
@@ -354,43 +310,22 @@ export default {
         return t.filter(function(task) {
           return task.isDone;
         });
-        //  .filterBy(t.isDone);
       } else {
         return [];
       }
     }
-
-    //   taskBoxHeight() {
-    //     if(this.$refs.inputsContainer != null) {
-    //     console.log('Получили высоту элемента ', this.$refs);
-    //     // console.log('Получили высоту элемента ', this.$refs.inputsContainer.clientHeight);
-    //     return this.$refs.inputsContainer.clientHeight;
-    //  }
-    //  return '10px';
-    //     }
   },
 
   //Изменение dom
   updated() {
     this.$nextTick(() => {
-      // Code that will run only after the
-      // entire view has been re-rendered
-      // console.log("Элемент ", this.$refs);
-      // this.taskBoxHeight = this.$refs.inputsContainer.clientHeight + "px";
       this.changeHeightOfList();
-      // console.log("Пересчет высоты при изменении древа");
-
-      //  if(this.$store.state.taskListBoxHeight != null) {
-      //    this.maxBoxHeight = this.$store.state.taskListBoxHeight -  92 + 'px';
-      //  }
     });
   },
 
   mounted() {
-    //  console.log('Элемент ', this.$refs);
     //При первичной загрузке считаем высоту
     this.changeHeightOfList();
-    // this.$on('newColor', function(newCol) {changeMainColor(newCOl)});
   },
   filters: {}
 };
@@ -399,8 +334,6 @@ export default {
 
 <style  lang="scss">
 .task-list {
-  // min-width: 250px;
-  // max-width: 400px;
   border: none;
   margin-left: 15px;
   padding: 0 1px 10px 1px;
@@ -425,7 +358,6 @@ export default {
     left: 0;
     // что бы не обрезался кусок последнего инпута
     padding-bottom: 2px;
-    // padding-right: 15px;
   }
 
   &__scroll-box {
@@ -439,7 +371,6 @@ export default {
   &__add {
     height: 17px;
     width: 17px;
-    // background: gray;
     background-image: url(../../img/icons/add-task.svg);
     background-size: 100%;
     margin-top: 10px;
@@ -470,8 +401,6 @@ export default {
 //Header box
 .task-list {
   &__header-box {
-    // display: flex;
-    // justify-content: space-between;
     position: relative;
     width: 100%;
     top: 0;

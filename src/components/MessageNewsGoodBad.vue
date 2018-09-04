@@ -1,19 +1,17 @@
 <template>
   <div>
-    <transition 
-        name="fade">
-        <div class="goodNews"
-            v-if="goodNewsMes.length > 1">
+    <transition name="fade">
+      <div class="goodNews"
+           v-if="goodNewsMes.length > 1">
         {{ goodNewsMes }}
-        </div>
+      </div>
     </transition>
 
-    <transition 
-        name="fade">
-        <div class="badNews"
-            v-if="badNewsMes.length > 1">
-            {{ badNewsMes }}
-        </div>
+    <transition name="fade">
+      <div class="badNews"
+           v-if="badNewsMes.length > 1">
+        {{ badNewsMes }}
+      </div>
     </transition>
   </div>
 </template>
@@ -39,7 +37,6 @@ export default {
   padding-right: 35px;
   padding: 8px 15px;
   border: 1px solid transparent;
-  // border-radius: 4px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -65,7 +62,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-   z-index: 1500;
+  z-index: 1500;
 }
 </style>
 
