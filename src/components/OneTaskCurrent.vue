@@ -1,17 +1,17 @@
 <template>
-    <div class="one-task__box">
+  <div class="one-task__box">
 
-        <input type="text"
-               placeholder="Enter your task"
-               class="one-task__text"
-               v-model="task.text"
-               @focusout='changeText(task.text)'
-               @keyup.13='changeText(task.text)'>
+    <input type="text"
+           placeholder="Enter your task"
+           class="one-task__text"
+           v-model="task.text"
+           @focusout='changeText(task.text)'
+           @keyup.13='changeText(task.text)'>
 
-        <div class="check-box"
-             @click="checkTask">
-        </div>
+    <div class="check-box"
+         @click="checkTask">
     </div>
+  </div>
 
 </template>
 
@@ -49,7 +49,7 @@ export default {
 <style lang="scss">
 .one-task {
   &__box {
-    border: solid 1px rgb(170, 169, 169);
+    box-shadow: 0 0 7px #00000045;
     border-radius: 7px;
     height: 44px;
     width: auto;
@@ -58,10 +58,7 @@ export default {
     position: relative;
     background: rgba(255, 255, 255, 0.7);
     transition: all 0.5s;
-
-    &:not(:first-child) {
-      margin-top: 10px;
-    }
+    margin-top: 10px;
 
     &:hover .check-box,
     &:focus .check-box,
