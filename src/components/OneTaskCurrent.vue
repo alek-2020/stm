@@ -49,7 +49,7 @@ export default {
 <style lang="scss">
 .one-task {
   &__box {
-    border: solid 1px rgb(170, 169, 169);
+    box-shadow: 0 0 6px #9292928c;
     border-radius: 7px;
     height: 44px;
     width: auto;

@@ -103,15 +103,14 @@ export default {
     //Проверяем юзера на наличие авторизации
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        console.log('Юзер авторизован', firebase.auth().currentUser.uid);
         t.$store.state.userId = firebase.auth().currentUser.uid;
         let url = t.$route.params.link;
         t.$store.state.activeTableUrl = url;
         t.$store.dispatch("startGetTasks");
         t.$store.state.authorised = true;
         this.callLinksHandler();
-        // console.log("User is signed in", firebase.auth().currentUser.uid);
       } else {
-        // console.log("No user is signed in");
         //Засейвим фон
         t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
         this.callLinksHandler();
@@ -120,27 +119,19 @@ export default {
   },
   mounted() {},
   watch: {
-    //Мониторим урл узера и отпарвлям на проверку
-    // getRoute(link) {
-    // },
-
     $route(to, from) {
       // Отправим упл на проверку
-      // console.log("Мониторим урл ", to.path);
       this.callLinksHandler(to.path);
 
       //Если в приходил ссылка на конкретный стол, то выполняем смену стола
       //Тут расчет на то, что узер вбил ссылку, но минус в том, что метод будет выполняться и когда мы програмно меняем урл
       if (to.params.link != null) {
-        // console.log("Есть ссылка на стол");
         this.$store.dispatch("changeActiveTable", this.$route.params.link);
       } else {
         //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
         if (to.path.indexOf("/table/") === 0) {
-          // this.$store.dispatch("pushActiveTableLink");
         } else {
           //Пока что ничего не делаем
-          // console.log("Нет ссылка на стол");
         }
       }
     },

@@ -32,10 +32,11 @@ export default {
           dispatch('getSettings', settings);
           //Продолжаем, если есть столы
           if (response.tables != null) {
+            rootState.appLog.push('Есть столы ');
             return dispatch('getDataSecondChain');
           } else {
+            rootState.appLog.push('firstGettingData - Нет столов для загрузки', response);
             commit('stopTableLoader')
-            rootState.appLog.push('Нет столов для загрузки');
           }
         })
         .catch(error => {
@@ -211,7 +212,7 @@ export default {
               .ref("tables/" + tableId)
               .once('value')
               .then(data => {
-
+                rootState.appLog.push('getUserTables 3');
                 //Получим адрес стола. Это будут последние 6 цифр от id
                 let tableUrl = tableId.slice(tableId.length - 6);
                 // console.log('Вырезанный кусок id ', tableUrl, tableId);
@@ -243,6 +244,7 @@ export default {
 
                 // console.log('Итерация записи стола', tables);
                 // console.log('Итерация записи стола. Целевой массив', rootState.allTasks);
+                rootState.appLog.push('getUserTables 2');
 
                 if ((i + 1) == rootState.masTables.length) {
                   // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
@@ -261,8 +263,8 @@ export default {
           })
         } else {
           //Повтор проверки в вызывающей функции
-          // commit('stopTableLoader')
-          // rootState.appLog.push('Нет столов для загрузки');
+          commit('stopTableLoader')
+          rootState.appLog.push('Нет столов для загрузки');
         }
 
       });
@@ -272,9 +274,9 @@ export default {
     getTableTaskLists({
       dispatch,
       commit,
-      state,
       rootState
     }) {
+      console.log(rootState.masTables);
       const ind = rootState.activeTableIndex;
       const activeTableId = rootState.masTables[ind].id
       const list = rootState.allTasks[ind].taskLists
@@ -414,37 +416,25 @@ export default {
 
     //Записываем базовые настроки по юзеру
     getSettings({
-      dispatch,
-      commit,
-      state,
       rootState
     }, settings) {
       return new Promise((resolve, reject) => {
-        console.log('Получаем наши настройки ', settings);
         let localSettings = settings;
-        //проверим входные данные на undefined, это на тот случай, когда у юзера первый вход в лк
-        // if(typeof settings == 'undefined') {
-        //     console.log('Настройки не пришли');
-        //     localSettings = {};
-        //     localSettings.bg = '/img/bg/stm-bg-2.jpg';
-        //     localSettings.activeTable = -1;
-        // }
-        // console.log('getdata. Получили настройкли ', settings);
+
         if (typeof settings == 'undefined') {
           localSettings = {}
         }
 
         let bgImg = localSettings.bg;
         if (typeof localSettings.bg == 'undefined') {
-          console.log('фона нема ', typeof localSettings.bg);
           bgImg = '/img/bg/stm-bg-2.jpg';
         }
 
         rootState.currentBgImg = bgImg;
         rootState.activeTableIndex = localSettings.activeTable;
-        console.log('getdata. Получили настройкии ', localSettings, settings);
 
-
+        rootState.appLog.push('getSettings - Получили настройки');
+        resolve();
       })
 
 
