@@ -21,6 +21,7 @@ export default {
           dispatch("getSettings", settings);
           //Продолжаем, если есть столы
           if (response.tables != null) {
+<<<<<<< HEAD:src/store/modules/getData/getData.js
             rootState.appLog.push(
               "firstGettingData. Столы есть, работаем с ними."
             );
@@ -28,6 +29,13 @@ export default {
           } else {
             rootState.appLog.push("firstGettingData. Нет столов для загрузки");
             commit("stopTableLoader");
+=======
+            rootState.appLog.push('Есть столы ');
+            return dispatch('getDataSecondChain');
+          } else {
+            rootState.appLog.push('firstGettingData - Нет столов для загрузки', response);
+            commit('stopTableLoader')
+>>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
           }
         })
         .catch(error => {
@@ -138,6 +146,10 @@ export default {
               .ref("tables/" + tableId)
               .once("value")
               .then(data => {
+<<<<<<< HEAD:src/store/modules/getData/getData.js
+=======
+                rootState.appLog.push('getUserTables 3');
+>>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
                 //Получим адрес стола. Это будут последние 6 цифр от id
                 let tableUrl = tableId.slice(tableId.length - 6);
                 // console.log('Вырезанный кусок id ', tableUrl, tableId);
@@ -169,6 +181,7 @@ export default {
 
                 // console.log('Итерация записи стола', tables);
                 // console.log('Итерация записи стола. Целевой массив', rootState.allTasks);
+                rootState.appLog.push('getUserTables 2');
 
                 if (i + 1 == rootState.masTables.length) {
                   // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
@@ -189,14 +202,23 @@ export default {
           });
         } else {
           //Повтор проверки в вызывающей функции
-          // commit('stopTableLoader')
-          // rootState.appLog.push('Нет столов для загрузки');
+          commit('stopTableLoader')
+          rootState.appLog.push('Нет столов для загрузки');
         }
       });
     },
 
     ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
+<<<<<<< HEAD:src/store/modules/getData/getData.js
     getTableTaskLists({ dispatch, commit, state, rootState }) {
+=======
+    getTableTaskLists({
+      dispatch,
+      commit,
+      rootState
+    }) {
+      console.log(rootState.masTables);
+>>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
       const ind = rootState.activeTableIndex;
       const activeTableId = rootState.masTables[ind].id;
       const list = rootState.allTasks[ind].taskLists;
@@ -338,6 +360,7 @@ export default {
     },
 
     //Записываем базовые настроки по юзеру
+<<<<<<< HEAD:src/store/modules/getData/getData.js
     getSettings({ dispatch, commit, state, rootState }, settings) {
       return new Promise((resolve, reject) => {
         console.log("Получаем наши настройки ", settings);
@@ -358,10 +381,26 @@ export default {
         if (typeof localSettings.bg == "undefined") {
           console.log("фона нема ", typeof localSettings.bg);
           bgImg = "/img/bg/stm-bg-2.jpg";
+=======
+    getSettings({
+      rootState
+    }, settings) {
+      return new Promise((resolve, reject) => {
+        let localSettings = settings;
+
+        if (typeof settings == 'undefined') {
+          localSettings = {}
+        }
+
+        let bgImg = localSettings.bg;
+        if (typeof localSettings.bg == 'undefined') {
+          bgImg = '/img/bg/stm-bg-2.jpg';
+>>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
         }
 
         rootState.currentBgImg = bgImg;
         rootState.activeTableIndex = localSettings.activeTable;
+<<<<<<< HEAD:src/store/modules/getData/getData.js
         console.log("getdata. Получили настройкии ", localSettings, settings);
       });
     }
@@ -369,6 +408,14 @@ export default {
   mutations: {
     changeLoadingState({ rootState }, to) {
       rootState.tasksAreLoadingNow = to ? to : !to;
+=======
+
+        rootState.appLog.push('getSettings - Получили настройки');
+        resolve();
+      })
+
+
+>>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
     }
   }
 };
