@@ -42,10 +42,9 @@
     <!-- Окна сообщений -->
     <GoodBadNewsMessage/>
 
-    <transition name="fade">
-      <div class="table-load-spinner"
-           v-if="tableLoaderActive" />
-    </transition>
+    <!-- Спиннер загрузки задач -->
+    <BigLoadingSpinner :active="tasksAreLoadingNow" />
+
   </div>
 </template>
 
@@ -55,6 +54,7 @@ import tableList from "./components/TableButtonsAll.vue";
 import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
 import TableContent from "./components/TableBody.vue";
+import BigLoadingSpinner from "./components/BigLoadingSpinner.vue";
 
 import * as firebase from "firebase";
 
@@ -70,7 +70,8 @@ export default {
     SignIn,
     stmHeader,
     TableContent,
-    GoodBadNewsMessage
+    GoodBadNewsMessage,
+    BigLoadingSpinner
   },
 
   computed: {
@@ -90,6 +91,9 @@ export default {
     },
     allTasks() {
       return this.$store.state.allTasks;
+    },
+    tasksAreLoadingNow() {
+      return this.$store.state.tasksAreLoadingNow;
     }
   },
   methods: {
@@ -103,7 +107,7 @@ export default {
     //Проверяем юзера на наличие авторизации
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log('Юзер авторизован', firebase.auth().currentUser.uid);
+        console.log("Юзер авторизован", firebase.auth().currentUser.uid);
         t.$store.state.userId = firebase.auth().currentUser.uid;
         let url = t.$route.params.link;
         t.$store.state.activeTableUrl = url;
@@ -231,19 +235,5 @@ a {
 .fade-enter,
 .fade-leave-active {
   opacity: 0;
-}
-
-.table-load-spinner {
-  height: 80px;
-  width: 80px;
-  background: rgba(0, 0, 0, 0.6);
-  background-image: url("../img/spinners/load-spinner-white.svg");
-  border-radius: 10px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-repeat: no-repeat;
-  background-position: center;
 }
 </style>
