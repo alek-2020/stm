@@ -24,7 +24,7 @@ export default {
 
           .catch(error => {
             console.log("getUserData - ошибка: ", error);
-            reject();
+            reject("getUserData - ошибка: ", error);
           });
       });
     },
@@ -48,12 +48,6 @@ export default {
             const userTablesObject = data.val();
             let userTablesArray = [];
 
-            // for (var prop in objLists) {
-            //   userTaskLists.push(
-            //     objLists[prop]
-            //   );
-            // }
-
             // Преобразуем в массив столы
             for (var tableKey in userTablesObject) {
               let tablesInArray = userTablesArray.push(
@@ -69,14 +63,11 @@ export default {
 
             rootState.appLog.push("Записали столы", userTablesArray);
 
-            // dispatch("pushActiveTableLink");
             resolve(userTablesArray);
           })
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
-            rootState.appLog.push(
-              "Ошибка на этапе: Получили столы юзера " + error
-            );
+            reject("getUserTables - ошибка:", error);
           });
       });
     },
@@ -86,12 +77,6 @@ export default {
       return new Promise((resolve, reject) => {
         const userId = rootState.userId;
         const tables = rootState.allTasks;
-
-        // Если столов нет - первываем
-        // if (!rootState.allTasks) {
-        //   rootState.appLog.push("Загрузка стола завершена. У стола нет списков.");
-        //   reject()
-        // }
 
         // Получаем все списки юзера
         firebase
@@ -113,48 +98,10 @@ export default {
             }
 
             resolve(userTaskLists);
-            // Присвоим каждому столу свои списки
-            // console.log('Преобразовали в массив', userTaskLists)
-            // let allTasks = rootState.allTasks;
-
-            // allTasks.forEach((table, index) => {
-            //   // Выбираем списки содержащие id стола
-            //   let fittedTaskLists = userTaskLists.filter(function (oneTaskList) {
-            //     return table.id === oneTaskList.tableId
-            //   })
-            //   console.log('Нафильтровали списков', fittedTaskLists, table.id, userTaskLists);
-            // })
-
-            // for (let taskListId in userTaskLists) {
-            //   let taskListTableId = userTaskLists[taskListId].tableId
-            //   let taskList = userTaskLists[taskListId]
-            //   let asd = allTasks.filter(table => table.id == taskListTableId)
-            //   // console.log('язь', asd)
-            //   allTasks.forEach(table => {
-            //     // console.log('Итерация поиска подходящего стола', table.id, taskListTableId)
-
-            //     if (table.id === taskListTableId) {
-            //       table.taskLists.push(taskList);
-            //       // console.log('Сошлось-запушили', allTasks)
-            //     }
-            //   })
-            // }
-
-            // list.push({
-            //   id: listId,
-            //   tableId: activeTableId,
-            //   name: data.val().name,
-            //   color: data.val().color,
-            //   tasks: [],
-            //   listIndex: data.val().listIndex,
-            //   emojiIndex: data.val().emojiIndex
-            // });
           })
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
-            rootState.appLog.push(
-              "Ошибка на этапе получения списков задач юзера"
-            );
+            reject("getTableTaskLists - ошибка:", error);
           });
 
         rootState.appLog.push("Получили списки задач юзера");
@@ -186,28 +133,28 @@ export default {
           })
           .catch(error => {
             console.log("Полный провал. Ошибка получения задач: ", error);
+            reject("getTasks - ошибка:", error);
           });
       });
     },
 
     // ЗАПИСЫВАЕМ НАСТРОЙКИ
-    getSettings({ rootState }, settings) {
-      return new Promise((resolve, reject) => {
+    writeSettings({ rootState }, settings = {}) {
+      return new Promise(resolve => {
         let localSettings = settings;
 
-        if (typeof settings == "undefined") {
-          localSettings = {};
-        }
-
-        let bgImg = localSettings.bg;
-        if (typeof localSettings.bg == "undefined") {
-          bgImg = "/img/bg/stm-bg-2.jpg";
-        }
-
+        // Присвоим фон
+        let bgImg = settings.bg || rootState.imgForBg[0];
         rootState.currentBgImg = bgImg;
-        rootState.activeTableIndex = localSettings.activeTable;
 
-        rootState.appLog.push("getSettings - Получили настройки");
+        // Активный стол
+        rootState.activeTableIndex = settings.activeTable;
+
+        // Запишем настройки (не помню нужны ли они кучей, поэтому выключу пока)
+        // rootState.userData = {
+        //   settings
+        // };
+
         resolve();
       });
     },

@@ -76,10 +76,16 @@ export default {
 
   computed: {
     ...mapGetters({
-      currentBgImg: "currentBgImg",
       authorised: "authorised"
     }),
 
+    currentBgImg() {
+      const bgIndex = this.allTasks[this.activeTableIndex].bgIndex;
+      return this.getBackgrounds[bgIndex];
+    },
+    getBackgrounds() {
+      return this.$store.state.imgForBg;
+    },
     getRoute() {
       return this.$route.path;
     },

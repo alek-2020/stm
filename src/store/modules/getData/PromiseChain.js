@@ -6,18 +6,18 @@ export default {
   actions: {
     // ПЕРВИЧНОЕ ПОЛУЧЕНИЕ ДАННЫХ
     firstFetchingData({ dispatch, commit, rootState }) {
-      // Основные данные юзера
+      let userData;
+      // 1. Основные данные юзера
       dispatch("getUserData")
-        .then(response => {
-          // 2. Пишем рабочие столы из tables в allTasks
-          const settings = response.settings;
-          rootState.userData = {
-            settings
-          };
-          dispatch("getSettings", settings);
+        .then(uData => {
+          userData = uData;
+          const settings = uData.settings;
+          return dispatch("writeSettings", settings);
+        })
+        .then(() => {
           //Продолжаем, если есть столы
-          if (response.tables != null) {
-            rootState.appLog.push("Есть столы ");
+          if (userData.tables != null) {
+            rootState.appLog.push("firstFetchingData - Есть столы ");
             return dispatch("getDataSecondChain");
           } else {
             // Состояние загрузки
