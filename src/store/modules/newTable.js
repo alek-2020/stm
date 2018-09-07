@@ -129,7 +129,7 @@ export default {
       getters
     }, colId) {
       return new Promise((resolve, reject) => {
-
+        let userId = rootState.userId;
         let newTableIndex = 0;
         //Получим id последнего рабочего стола массиве, если столов нет - оставим 0
         if (rootState.allTasks.length > 0) {
@@ -147,7 +147,8 @@ export default {
           colorId: colId,
           taskLists: [],
           tableIndex: newTableIndex,
-          bgIndex: newBgIndes
+          bgIndex: newBgIndes,
+          userId
         };
 
         resolve(newTableBtn);

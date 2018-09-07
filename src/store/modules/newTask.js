@@ -34,22 +34,22 @@ export default {
                 })
         },
 
-        //Форминуем параметры задачи и закидываем новую задачу на сервер
+        //Формируем параметры задачи и закидываем новую задачу на сервер
         addTask({ dispatch, commit, state, rootState }, { tableInd, taskListInd }) {
             return new Promise((resolve, reject) => {
 
                 const tableId = rootState.allTasks[tableInd].id;
                 const taskListId = rootState.allTasks[tableInd].taskLists[taskListInd].id;
                 const taskColor = "gray";
+                const userId = rootState.userId;
 
                 const task = {
                     tableId,
                     taskListId,
                     taskColor,
-                    isDone: false
+                    isDone: false,
+                    userId
                 };
-
-                // mas.push(task);
 
                 firebase
                     .database()
@@ -57,9 +57,7 @@ export default {
                     .push(task)
                     .then(data => {
 
-                        // console.log('Готовехонько', data.key);
                         const Key = data.key;
-                        // dispatch('addTaskInTasks', { Key, tableInd, taskListInd });
                         resolve({Key, tableInd, taskListId, task});
 
                     })

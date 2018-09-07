@@ -40,9 +40,11 @@ export default {
             return new Promise((resolve, reject) => {
 
                 let tableInd = rootState.activeTableIndex;
+                console.log(rootState.allTasks[tableInd])
                 let TableLists = rootState.allTasks[tableInd].taskLists;
                 const tableId = rootState.allTasks[tableInd].id;
                 const lastTaskInd = rootState.allTasks[rootState.activeTableIndex].taskLists.length - 1;
+                const userId = rootState.userId;
 
                 //Получим уникальный id списка
                 let newListIndex = 0;
@@ -54,10 +56,11 @@ export default {
                 // console.log('.newTaskList. ', lastTaskInd, rootState.activeTableIndex, rootState.allTasks[rootState.activeTableIndex].taskLists.length, newListIndex);
                 //Формируем параметры нового списка
                 const newTaskList = {
-                    'name': '',
-                    'color': 1,
-                    'tasks': [],
-                    'listIndex': newListIndex
+                    name: '',
+                    color: 1,
+                    tasks: [],
+                    listIndex: newListIndex,
+                    userId
                 }
 
                 //если мы ещё не создавали списков, то будет undefined
