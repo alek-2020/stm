@@ -8,68 +8,22 @@ import * as firebase from "firebase";
 
 export default {
   actions: {
-    //Получаем данные юзера по его id из БД (users)
-    /*
-      На входе важен только userId
-      Возможные варианты: 
-      --Юзер id есть
-      ----Все проходит ок
-      ----Вылетает ошибка полключение либа любая др
-      --Юзер id нет
-      ----Мы 100% получаем эрор.
-     
-     Действия:
-        ====Если отсутствует userId то выполняем logOut и юзера автоматом кидает на авторизашку
-        ====Если ошибка выполнения функции Предлагаем перезагрузиться, кидаем ошибку аутентификации(получения user id)
-     */
+    // ПОЛУЧЕНИЕ НАЧАЛЬНЫХ ДАННЫХ ЮЗЕРА
     getUserData({ rootState, dispatch }) {
       return new Promise((resolve, reject) => {
         const uId = rootState.userId;
-        if (!uId) {
-          //Выход из лк и редирект на логин
-        }
 
         firebase
           .database()
           .ref("users/" + uId)
           .once("value")
           .then(data => {
-            rootState.appLog.push(
-              "Получили певичные данные по юзеру",
-              data.val()
-            );
-            //Преобразуем объекты столов в массивы
-            let arrayLists = [];
-            let objLists = {};
-            let obj = data.val();
-            //Если получили пустой массив-невыполняем часть операций
-            //И заменяем на пустой объет
-            if (data.val() != null) {
-              let objLists = data.val().tables;
-              for (var prop in objLists) {
-                arrayLists.push({
-                  id: objLists[prop]
-                });
-              }
-            } else {
-              obj = {};
-            }
-
-            rootState.userData = {
-              settings: obj.settings
-            };
-
-            //Пишем заготовки объектов с id для парсинга
-            rootState.masTables = arrayLists;
-            resolve(obj);
+            let userData = data.val();
+            resolve(userData);
           })
 
           .catch(error => {
-            console.log("Полный провал. Ошибка: ", error);
-            rootState.appLog.push(
-              "Ошибка на этапе: Первичное получение данных по юзеру"
-            );
-            dispatch("showBigError", error);
+            console.log("getUserData - ошибка: ", error);
             reject();
           });
       });

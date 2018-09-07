@@ -4,27 +4,31 @@
 
 export default {
   actions: {
-    // Управляющая функция для первичного получения данных
+    // ПЕРВИЧНОЕ ПОЛУЧЕНИЕ ДАННЫХ
     firstFetchingData({ dispatch, commit, rootState }) {
       // Основные данные юзера
       dispatch("getUserData")
         .then(response => {
           // 2. Пишем рабочие столы из tables в allTasks
           const settings = response.settings;
+          rootState.userData = {
+            settings
+          };
           dispatch("getSettings", settings);
           //Продолжаем, если есть столы
           if (response.tables != null) {
             rootState.appLog.push("Есть столы ");
             return dispatch("getDataSecondChain");
           } else {
-            rootState.appLog.push(
-              "firstFetchngData - Нет столов для загрузки",
-              response
-            );
+            // Состояние загрузки
+            rootState.tasksAreLoadingNow = false;
+            rootState.appLog.push("firstFetchngData - Нет столов для загрузки");
           }
         })
         .catch(error => {
-          console.log(error);
+          console.log("Ошибка получения данных юзера", error);
+          // Состояние загрузки
+          rootState.tasksAreLoadingNow = false;
           // если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
           dispatch("linksHandler", {
             toLink: "/error/"
