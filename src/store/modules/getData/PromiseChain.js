@@ -8,7 +8,7 @@
     ---Есть загруженные, но не загружен текущий
     ---Загружены все столы
 
-    Поидее нужно сделать: 
+    Нужно сделать: 
     1. При смене стола отправляем запрос на загрузку
     2. Загрузчик смотрит id стола(индекс наверное нет) и грузит по ним задачи
     3. Если задача уже загружена, то ничего не делает
@@ -24,7 +24,11 @@ import * as firebase from "firebase";
 export default {
   actions: {
     // Проверка состояния загрузки задач
-    startGetTasks({ dispatch, rootState, commit }) {
+    startGetTasks({
+      dispatch,
+      rootState,
+      commit
+    }) {
       return new Promise((resolve, reject) => {
         // 1. Если не загружено ни одного стола
         if (rootState.allTasks.length < 1) {
@@ -54,7 +58,11 @@ export default {
     },
 
     // Управляющая функция для первичного получения данных
-    firstGettingData({ dispatch, commit, rootState }) {
+    firstGettingData({
+      dispatch,
+      commit,
+      rootState
+    }) {
       firebase
         .database()
         .ref("tables")
@@ -106,15 +114,25 @@ export default {
 
     //Cледующая цепочка, которая выполняется только если у нас есть списки
 
-    getDataSecondChain({ dispatch, commit }) {
+    getDataSecondChain({
+      dispatch,
+      commit
+    }) {
       // console.log('Вторая цепочка пошла');
+      let tables, taskLists, tasks;
+
       dispatch("getUserTables")
-        .then(allTables => {
-          // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
-          dispatch("getTableTaskLists");
-        })
         .then(() => {
-          dispatch("checkUrl");
+          // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
+          return dispatch("getTableTaskLists");
+        })
+        .then((userTaskLists) => {
+          taskLists = userTaskLists
+          // return dispatch("checkUrl");
+          return dispatch('getListTasks')
+        })
+        then((userTasks) => {
+           tasks = userTasks
         })
         .catch(error => {
           console.log(error);
