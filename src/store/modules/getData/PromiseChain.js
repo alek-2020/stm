@@ -122,17 +122,25 @@ export default {
       let tables, taskLists, tasks;
 
       dispatch("getUserTables")
-        .then(() => {
+        .then((userTables) => {
+          tables = userTables
+          console.log('столы поидее пришли', tables)
           // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
           return dispatch("getTableTaskLists");
         })
         .then((userTaskLists) => {
           taskLists = userTaskLists
           // return dispatch("checkUrl");
-          return dispatch('getListTasks')
+          console.log("списки пришли, получаем задачи", userTaskLists)
+          return dispatch('getTasks')
         })
-        then((userTasks) => {
-           tasks = userTasks
+        .then((userTasks) => {
+          tasks = userTasks
+          console.log("Задачи пришли", userTasks)
+          return dispatch('writeData', {tables, taskLists, tasks});
+        })
+        .then(() => {
+          console.log('Получение данных и запись завершены');
         })
         .catch(error => {
           console.log(error);
