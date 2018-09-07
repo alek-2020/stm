@@ -43,13 +43,11 @@ export default {
             rootState.appLog.push(
               "Есть загруженные столы, нет загруженных списков на текущем"
             );
-            commit("startTableLoader");
             dispatch("getTableTaskLists");
           } else {
             // если так то это значит, что мы кликнули на уже загруженные РС, поэтому ничего не делаем
             // выполним проверку загруженных спиской и задач в них
             rootState.appLog.push("startGetTasks. Этот стол уже загружен");
-            commit("stopTableLoader");
           }
         }
       });

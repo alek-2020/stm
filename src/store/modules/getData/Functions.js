@@ -135,7 +135,6 @@ export default {
 
         // Если столов нет - первываем
         // if (!rootState.allTasks) {
-        //   commit("stopTableLoader");
         //   rootState.appLog.push("Загрузка стола завершена. У стола нет списков.");
         //   reject()
         // }

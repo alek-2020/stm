@@ -25,7 +25,6 @@ export default {
             return dispatch('getDataSecondChain');
           } else {
             rootState.appLog.push('firstGettingData - Нет столов для загрузки', response);
-            commit('stopTableLoader')
           }
         })
         .catch(error => {
@@ -34,7 +33,6 @@ export default {
           dispatch("linksHandler", {
             toLink: "/error/"
           });
-          commit("stopTableLoader");
           rootState.appLog.push("Ошибка загрузки стола в firstGettingData");
         });
     },
@@ -53,7 +51,6 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          commit("stopTableLoader");
         });
     },
 
@@ -189,7 +186,6 @@ export default {
           });
         } else {
           //Повтор проверки в вызывающей функции
-          commit('stopTableLoader')
           rootState.appLog.push('Нет столов для загрузки');
         }
       });
@@ -261,7 +257,6 @@ export default {
           }
         });
       } else {
-        commit("stopTableLoader");
         rootState.appLog.push("Загрузка стола завершена. У стола нет списков.");
       }
     },
@@ -331,7 +326,6 @@ export default {
               rootState.masTaskLists[ind].length - 1 == i)
           ) {
             //то проверим наш вывод на корректность
-            commit("stopTableLoader");
             rootState.appLog.push("Загрузка стола завершена");
 
             dispatch("verifyTable");

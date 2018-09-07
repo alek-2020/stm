@@ -42,12 +42,10 @@ export default {
             rootState.appLog.push(
               "Есть загруженные столы, нет загруженных списков на текущем"
             );
-            commit("startTableLoader");
             dispatch("getTableTaskLists");
           } else {
             // Этот стол уже загружен
             rootState.appLog.push("startGetTasks. Этот стол уже загружен");
-            commit("stopTableLoader");
           }
         }
       });
@@ -90,7 +88,6 @@ export default {
               "firstGettingData - Нет столов для загрузки",
               response
             );
-            commit("stopTableLoader");
           }
         })
         .catch(error => {
@@ -99,7 +96,6 @@ export default {
           dispatch("linksHandler", {
             toLink: "/error/"
           });
-          commit("stopTableLoader");
           rootState.appLog.push("Ошибка загрузки стола в firstGettingData");
         });
     },

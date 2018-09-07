@@ -86,9 +86,6 @@ export default {
     activeTableIndex() {
       return this.$store.state.activeTableIndex;
     },
-    tableLoaderActive() {
-      return this.$store.state.tableLoaderActive;
-    },
     allTasks() {
       return this.$store.state.allTasks;
     },
