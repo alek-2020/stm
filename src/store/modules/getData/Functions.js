@@ -75,24 +75,14 @@ export default {
       });
     },
 
-    ///Получаем рабочие столы с БД
+    // ПОЛУЧАЕМ СТОЛЫ
     getUserTables({
-      dispatch,
-      commit,
       rootState
     }) {
       return new Promise((resolve, reject) => {
+        rootState.appLog.push("столыaa");
 
         const userId = rootState.userId;
-        const tables = rootState.allTasks;
-
-        // Если нет столов
-        if (rootState.masTables == null) {
-          //Повтор проверки в вызывающей функции
-          commit("stopTableLoader");
-          rootState.appLog.push("Нет столов для загрузки");
-          reject('getUserTables - нет столов для загрузки');
-        }
 
         firebase
           .database()
@@ -101,29 +91,37 @@ export default {
           .equalTo(userId)
           .once("value")
           .then(data => {
+            rootState.appLog.push("столы");
 
-            // Пишем столы
-            const userTables = data.val()
 
-            for (var tableKey in userTables) {
+            const userTablesObject = data.val()
+            let userTablesArray = []
 
-              const table = userTables[tableKey];
-              const tableUrl = table.id.slice(table.id.length - 6);
 
-              let tablesInArray = tables.push(
-                table
+            // for (var prop in objLists) {
+            //   userTaskLists.push(
+            //     objLists[prop]
+            //   );
+            // }
+
+            // Преобразуем в массив столы
+            for (var tableKey in userTablesObject) {
+              let tablesInArray = userTablesArray.push(
+                userTablesObject[tableKey]
               );
 
               // Допишем свойства в этот стол
-              let lastTable = tables[tablesInArray - 1];
+              let lastTable = userTablesArray[tablesInArray - 1];
+              const tableUrl = lastTable.id.slice(lastTable.id.length - 6);
+
               lastTable.tableUrl = tableUrl;
-              lastTable.taskLists = [];
             }
 
-            rootState.appLog.push("Записали столы", tables);
+            rootState.appLog.push("Записали столы", userTablesArray);
 
-            dispatch("pushActiveTableLink");
-            resolve();
+            // dispatch("pushActiveTableLink");
+            resolve(userTablesArray);
+
           })
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
@@ -135,7 +133,7 @@ export default {
       });
     },
 
-    ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
+    // ПОЛУЧАЕМ СПИСКИ ЗАДАЧ
     getTableTaskLists({
       commit,
       rootState
@@ -145,11 +143,11 @@ export default {
         const tables = rootState.allTasks;
 
         // Если столов нет - первываем
-        if (!rootState.allTasks) {
-          commit("stopTableLoader");
-          rootState.appLog.push("Загрузка стола завершена. У стола нет списков.");
-          reject()
-        }
+        // if (!rootState.allTasks) {
+        //   commit("stopTableLoader");
+        //   rootState.appLog.push("Загрузка стола завершена. У стола нет списков.");
+        //   reject()
+        // }
 
         // Получаем все списки юзера
         firebase
@@ -159,10 +157,12 @@ export default {
           .equalTo(userId)
           .once("value")
           .then(data => {
-            console.log('Получили данные', data.val())
+            let objLists = data.val();
+
+            // Если ничего не получили, то прерываем
+            if (!objLists) reject();
 
             //Преобразуем объект в массив
-            let objLists = data.val();
             let userTaskLists = [];
             for (var prop in objLists) {
               userTaskLists.push(
@@ -171,7 +171,7 @@ export default {
             }
 
             resolve(userTaskLists)
-            // Присвоем каждому столу свои списки
+            // Присвоим каждому столу свои списки
             // console.log('Преобразовали в массив', userTaskLists)
             // let allTasks = rootState.allTasks;
 
@@ -222,91 +222,42 @@ export default {
 
     },
 
-    ///Получаем задачи очередного списка
-    getListTasks({
-      dispatch,
-      commit,
-      state,
+    // ПОЛУЧАЕМ ЗАДАЧИ
+    getTasks({
       rootState
-    }, {
-      i,
-      listId
     }) {
-      // console.log('habra Сформировали id задач', rootState.masTasks, rootState.allTasks);
-      const ind = rootState.activeTableIndex;
-      const activeTableId = rootState.masTables[ind].id;
-      let tasks = rootState.allTasks[ind].taskLists[i].tasks;
-      let indexChecker;
-      //Выполняем если есть привязанные к списку задачи
-      if (tasks.length > 0) {
-        rootState.masTasks[i].forEach((element, index) => {
-          indexChecker = index;
-          const taskId = element.id;
-          firebase
-            .database()
-            .ref("tasks/" + taskId)
-            .once("value")
-            .then(data => {
-              console.log(
-                ".getdata. получили данные с БД по задаче",
-                data.val()
+      return new Promise((resolve, reject) => {
+        const userId = rootState.userId;
+
+        firebase
+          .database()
+          .ref("tasks")
+          .orderByChild("userId")
+          .equalTo(userId)
+          .once("value")
+          .then(data => {
+            let userTasksObj = data.val();
+
+            //Преобразуем объект в массив
+            let userTasksArray = [];
+            for (var prop in userTasksObj) {
+              userTasksArray.push(
+                userTasksObj[prop]
               );
+            }
+            console.log("Задачи отправляю", userTasksArray)
 
-              // rootState.tasksFB.push(data.val());
+            resolve(userTasksArray)
 
-              //Пишем нашу задачу в супер JSON
+          })
+          .catch(error => {
+            console.log("Полный провал. Ошибка получения задач: ", error);
+          });
+      });
 
-              tasks.push({
-                id: taskId,
-                taskListId: listId,
-                tableId: activeTableId,
-                text: data.val().text,
-                isDone: data.val().isDone,
-                taskListId: data.val().taskListId
-              });
-              // let bigJSON = rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks;
-
-              //Если это первая задача - создадим под нее пустой массив
-              if (tasks == null) {
-                tasks = [];
-              }
-
-              // rootState.allTasks[rootState.activeTableIndex].taskLists[i].tasks.push(dbTask);
-            })
-            .catch(error => {
-              console.log("Полный провал. Ошибка: ", error);
-            });
-
-          rootState.appLog.push(
-            `Зашли в получение задачи с параметрами: Длина массива с задачами ${
-              rootState.masTasks[i].length
-            } Итерация получения задач ${index} Длинна массива со списками ${
-              rootState.masTaskLists[ind].length
-            } Итерация получения списков   ${i}`
-          );
-          //Если у нас последняя итерация-отправим массив allTasks на проверку корректности заполнения
-          // console.log('habrabra', rootState.allTasks);
-          /*Если последняя задача списка и последний список стола
-            Вторым условием учтем то, что задач может не быть, а список так же последний, тогда первое условие будет работаь некорректно*/
-          if (
-            (rootState.masTasks[i].length - 1 === index &&
-              rootState.masTaskLists[ind].length - 1 === i) ||
-            (rootState.masTasks[i].length == 0 &&
-              rootState.masTaskLists[ind].length - 1 == i)
-          ) {
-            //то проверим наш вывод на корректность
-            commit("stopTableLoader");
-            rootState.appLog.push("Загрузка стола завершена");
-
-            dispatch("verifyTable");
-          }
-        });
-      } else {
-        //У списка нет задач
-      }
     },
 
-    //Записываем базовые настроки по юзеру
+    // ЗАПИСЫВАЕМ НАСТРОЙКИ
     getSettings({
       rootState
     }, settings) {
@@ -328,6 +279,17 @@ export default {
         rootState.appLog.push("getSettings - Получили настройки");
         resolve();
       });
+    },
+
+    // ЗАПИСЬ ПОЛУЧЕННЫХ ДАННЫХ В ГЛОБАЛЬНЫЙ МАССИВ
+    writeData({
+      rootState
+    }, {
+      tables,
+      taskLists,
+      tasks
+    }) {
+        console.log('Данные дошли до обработки', tables, taskLists, tasks)
     }
   }
 };
