@@ -8,67 +8,6 @@ import * as firebase from "firebase";
 
 export default {
   actions: {
-    /***********************************************\
-      УПРАВЛЯЮЩАЯ Ф-ЦИЯ. ПЕРВИЧНОЕ ПОЛУЧЕНИЕ ЗАДАЧ
-    \***********************************************/
-    firstGettingData({ dispatch, commit, rootState }) {
-      // commit.changeLoadingState(true);
-      // 1. Получаем данные по id из users
-      dispatch("getUserData")
-        .then(response => {
-          // 2. Пишем рабочие столы из tables в allTasks
-          const settings = response.settings;
-          dispatch("getSettings", settings);
-          //Продолжаем, если есть столы
-          if (response.tables != null) {
-<<<<<<< HEAD:src/store/modules/getData/getData.js
-            rootState.appLog.push(
-              "firstGettingData. Столы есть, работаем с ними."
-            );
-            return dispatch("getDataSecondChain");
-          } else {
-            rootState.appLog.push("firstGettingData. Нет столов для загрузки");
-            commit("stopTableLoader");
-=======
-            rootState.appLog.push('Есть столы ');
-            return dispatch('getDataSecondChain');
-          } else {
-            rootState.appLog.push('firstGettingData - Нет столов для загрузки', response);
-            commit('stopTableLoader')
->>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          // если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
-          dispatch("linksHandler", {
-            toLink: "/error/"
-          });
-          commit("stopTableLoader");
-          rootState.appLog.push("Ошибка загрузки стола в firstGettingData");
-        });
-    },
-
-    //Cледующая цепочка, которая выполняется тольк если у нас есть
-
-    getDataSecondChain({ dispatch, commit }) {
-      // console.log('Вторая цепочка пошла');
-      dispatch("getUserTables")
-        .then(allTables => {
-          // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
-          dispatch("getTableTaskLists");
-        })
-        .then(() => {
-          dispatch("checkUrl");
-        })
-        .catch(error => {
-          console.log(error);
-          commit("stopTableLoader");
-        });
-    },
-
-  
-
     //Получаем данные юзера по его id из БД (users)
     /*
       На входе важен только userId
@@ -146,10 +85,7 @@ export default {
               .ref("tables/" + tableId)
               .once("value")
               .then(data => {
-<<<<<<< HEAD:src/store/modules/getData/getData.js
-=======
-                rootState.appLog.push('getUserTables 3');
->>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
+                rootState.appLog.push("getUserTables 3");
                 //Получим адрес стола. Это будут последние 6 цифр от id
                 let tableUrl = tableId.slice(tableId.length - 6);
                 // console.log('Вырезанный кусок id ', tableUrl, tableId);
@@ -181,7 +117,7 @@ export default {
 
                 // console.log('Итерация записи стола', tables);
                 // console.log('Итерация записи стола. Целевой массив', rootState.allTasks);
-                rootState.appLog.push('getUserTables 2');
+                rootState.appLog.push("getUserTables 2");
 
                 if (i + 1 == rootState.masTables.length) {
                   // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
@@ -202,23 +138,15 @@ export default {
           });
         } else {
           //Повтор проверки в вызывающей функции
-          commit('stopTableLoader')
-          rootState.appLog.push('Нет столов для загрузки');
+          commit("stopTableLoader");
+          rootState.appLog.push("Нет столов для загрузки");
         }
       });
     },
 
     ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
-<<<<<<< HEAD:src/store/modules/getData/getData.js
-    getTableTaskLists({ dispatch, commit, state, rootState }) {
-=======
-    getTableTaskLists({
-      dispatch,
-      commit,
-      rootState
-    }) {
+    getTableTaskLists({ dispatch, commit, rootState }) {
       console.log(rootState.masTables);
->>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
       const ind = rootState.activeTableIndex;
       const activeTableId = rootState.masTables[ind].id;
       const list = rootState.allTasks[ind].taskLists;
@@ -360,62 +288,25 @@ export default {
     },
 
     //Записываем базовые настроки по юзеру
-<<<<<<< HEAD:src/store/modules/getData/getData.js
-    getSettings({ dispatch, commit, state, rootState }, settings) {
+    getSettings({ rootState }, settings) {
       return new Promise((resolve, reject) => {
-        console.log("Получаем наши настройки ", settings);
         let localSettings = settings;
-        //проверим входные данные на undefined, это на тот случай, когда у юзера первый вход в лк
-        // if(typeof settings == 'undefined') {
-        //     console.log('Настройки не пришли');
-        //     localSettings = {};
-        //     localSettings.bg = '/img/bg/stm-bg-2.jpg';
-        //     localSettings.activeTable = -1;
-        // }
-        // console.log('getdata. Получили настройкли ', settings);
+
         if (typeof settings == "undefined") {
           localSettings = {};
         }
 
         let bgImg = localSettings.bg;
         if (typeof localSettings.bg == "undefined") {
-          console.log("фона нема ", typeof localSettings.bg);
           bgImg = "/img/bg/stm-bg-2.jpg";
-=======
-    getSettings({
-      rootState
-    }, settings) {
-      return new Promise((resolve, reject) => {
-        let localSettings = settings;
-
-        if (typeof settings == 'undefined') {
-          localSettings = {}
-        }
-
-        let bgImg = localSettings.bg;
-        if (typeof localSettings.bg == 'undefined') {
-          bgImg = '/img/bg/stm-bg-2.jpg';
->>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
         }
 
         rootState.currentBgImg = bgImg;
         rootState.activeTableIndex = localSettings.activeTable;
-<<<<<<< HEAD:src/store/modules/getData/getData.js
-        console.log("getdata. Получили настройкии ", localSettings, settings);
-      });
-    }
-  },
-  mutations: {
-    changeLoadingState({ rootState }, to) {
-      rootState.tasksAreLoadingNow = to ? to : !to;
-=======
 
-        rootState.appLog.push('getSettings - Получили настройки');
+        rootState.appLog.push("getSettings - Получили настройки");
         resolve();
-      })
-
-
->>>>>>> bca4fcc43f6f70bbc5cf71935782ea0bfe3c8831:src/store/modules/getData.js
+      });
     }
   }
 };

@@ -5,15 +5,13 @@ import actions from "./actions";
 import mutations from "./mutations";
 import getters from "./getters";
 
-import getData from "./modules/getData/getData";
-import startGetTasks from "./modules/getData/startGetTasks";
+import getDataFunctions from "./modules/getData/Functions";
+import getDataPromiseChain from "./modules/getData/PromiseChain";
 import newTable from "./modules/newTable";
 import newTaskList from "./modules/newTaskList";
 import newTask from "./modules/newTask";
 import routeHandlers from "./modules/routeHandlers";
 import tableVerification from "./modules/tableVerification";
-
-import * as firebase from "firebase";
 
 Vue.use(Vuex);
 
@@ -156,8 +154,8 @@ export const store = new Vuex.Store({
   getters,
 
   modules: {
-    getData,
-    startGetTasks,
+    getDataFunctions,
+    getDataPromiseChain,
     newTable,
     newTaskList,
     newTask,
