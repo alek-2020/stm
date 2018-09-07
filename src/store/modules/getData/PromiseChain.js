@@ -24,11 +24,7 @@ import * as firebase from "firebase";
 export default {
   actions: {
     // Проверка состояния загрузки задач
-    startGetTasks({
-      dispatch,
-      rootState,
-      commit
-    }) {
+    startGetTasks({ dispatch, rootState, commit }) {
       return new Promise((resolve, reject) => {
         // 1. Если не загружено ни одного стола
         if (rootState.allTasks.length < 1) {
@@ -58,11 +54,7 @@ export default {
     },
 
     // Управляющая функция для первичного получения данных
-    firstGettingData({
-      dispatch,
-      commit,
-      rootState
-    }) {
+    firstGettingData({ dispatch, commit, rootState }) {
       firebase
         .database()
         .ref("tables")
@@ -112,39 +104,37 @@ export default {
         });
     },
 
-    //Cледующая цепочка, которая выполняется только если у нас есть списки
-
-    getDataSecondChain({
-      dispatch,
-      commit
-    }) {
-      // console.log('Вторая цепочка пошла');
+    //Cледующая цепочка, которая выполняется только если у нас есть столы
+    getDataSecondChain({ dispatch, commit, rootState }) {
       let tables, taskLists, tasks;
 
       dispatch("getUserTables")
-        .then((userTables) => {
-          tables = userTables
-          console.log('столы поидее пришли', tables)
-          // 3. Загружаем списки из taskLists в allTasks на каждой итерации вызываю получение задач
+        .then(userTables => {
+          tables = userTables;
+          // 2. Получаем списки
           return dispatch("getTableTaskLists");
         })
-        .then((userTaskLists) => {
-          taskLists = userTaskLists
-          // return dispatch("checkUrl");
-          console.log("списки пришли, получаем задачи", userTaskLists)
-          return dispatch('getTasks')
+        .then(userTaskLists => {
+          taskLists = userTaskLists;
+          // 3. Получаем задачи
+          return dispatch("getTasks");
         })
-        .then((userTasks) => {
-          tasks = userTasks
-          console.log("Задачи пришли", userTasks)
-          return dispatch('writeData', {tables, taskLists, tasks});
+        .then(userTasks => {
+          tasks = userTasks;
+          // 4. Группируем все в один массив
+          return dispatch("groupData", { tables, taskLists, tasks });
         })
-        .then(() => {
-          console.log('Получение данных и запись завершены');
+        .then(userTables => {
+          // Вывод задач
+          rootState.allTasks = userTables;
+          // Состояние загрузки
+          rootState.tasksAreLoadingNow = false;
         })
         .catch(error => {
+          // Состояние загрузки
+          rootState.tasksAreLoadingNow = false;
+
           console.log(error);
-          commit("stopTableLoader");
         });
     }
   }

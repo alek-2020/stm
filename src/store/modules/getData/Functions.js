@@ -22,10 +22,7 @@ export default {
         ====Если отсутствует userId то выполняем logOut и юзера автоматом кидает на авторизашку
         ====Если ошибка выполнения функции Предлагаем перезагрузиться, кидаем ошибку аутентификации(получения user id)
      */
-    getUserData({
-      rootState,
-      dispatch
-    }) {
+    getUserData({ rootState, dispatch }) {
       return new Promise((resolve, reject) => {
         const uId = rootState.userId;
         if (!uId) {
@@ -37,7 +34,10 @@ export default {
           .ref("users/" + uId)
           .once("value")
           .then(data => {
-            rootState.appLog.push("Получили певичные данные по юзеру", data.val());
+            rootState.appLog.push(
+              "Получили певичные данные по юзеру",
+              data.val()
+            );
             //Преобразуем объекты столов в массивы
             let arrayLists = [];
             let objLists = {};
@@ -76,9 +76,7 @@ export default {
     },
 
     // ПОЛУЧАЕМ СТОЛЫ
-    getUserTables({
-      rootState
-    }) {
+    getUserTables({ rootState }) {
       return new Promise((resolve, reject) => {
         rootState.appLog.push("столыaa");
 
@@ -93,10 +91,8 @@ export default {
           .then(data => {
             rootState.appLog.push("столы");
 
-
-            const userTablesObject = data.val()
-            let userTablesArray = []
-
+            const userTablesObject = data.val();
+            let userTablesArray = [];
 
             // for (var prop in objLists) {
             //   userTaskLists.push(
@@ -121,7 +117,6 @@ export default {
 
             // dispatch("pushActiveTableLink");
             resolve(userTablesArray);
-
           })
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
@@ -129,15 +124,11 @@ export default {
               "Ошибка на этапе: Получили столы юзера " + error
             );
           });
-
       });
     },
 
     // ПОЛУЧАЕМ СПИСКИ ЗАДАЧ
-    getTableTaskLists({
-      commit,
-      rootState
-    }) {
+    getTableTaskLists({ commit, rootState }) {
       return new Promise((resolve, reject) => {
         const userId = rootState.userId;
         const tables = rootState.allTasks;
@@ -165,12 +156,10 @@ export default {
             //Преобразуем объект в массив
             let userTaskLists = [];
             for (var prop in objLists) {
-              userTaskLists.push(
-                objLists[prop]
-              );
+              userTaskLists.push(objLists[prop]);
             }
 
-            resolve(userTaskLists)
+            resolve(userTaskLists);
             // Присвоим каждому столу свои списки
             // console.log('Преобразовали в массив', userTaskLists)
             // let allTasks = rootState.allTasks;
@@ -182,7 +171,6 @@ export default {
             //   })
             //   console.log('Нафильтровали списков', fittedTaskLists, table.id, userTaskLists);
             // })
-
 
             // for (let taskListId in userTaskLists) {
             //   let taskListTableId = userTaskLists[taskListId].tableId
@@ -208,7 +196,6 @@ export default {
             //   listIndex: data.val().listIndex,
             //   emojiIndex: data.val().emojiIndex
             // });
-
           })
           .catch(error => {
             console.log("Полный провал. Ошибка: ", error);
@@ -219,13 +206,10 @@ export default {
 
         rootState.appLog.push("Получили списки задач юзера");
       });
-
     },
 
     // ПОЛУЧАЕМ ЗАДАЧИ
-    getTasks({
-      rootState
-    }) {
+    getTasks({ rootState }) {
       return new Promise((resolve, reject) => {
         const userId = rootState.userId;
 
@@ -241,26 +225,20 @@ export default {
             //Преобразуем объект в массив
             let userTasksArray = [];
             for (var prop in userTasksObj) {
-              userTasksArray.push(
-                userTasksObj[prop]
-              );
+              userTasksArray.push(userTasksObj[prop]);
             }
-            console.log("Задачи отправляю", userTasksArray)
+            console.log("Задачи отправляю", userTasksArray);
 
-            resolve(userTasksArray)
-
+            resolve(userTasksArray);
           })
           .catch(error => {
             console.log("Полный провал. Ошибка получения задач: ", error);
           });
       });
-
     },
 
     // ЗАПИСЫВАЕМ НАСТРОЙКИ
-    getSettings({
-      rootState
-    }, settings) {
+    getSettings({ rootState }, settings) {
       return new Promise((resolve, reject) => {
         let localSettings = settings;
 
@@ -281,15 +259,31 @@ export default {
       });
     },
 
-    // ЗАПИСЬ ПОЛУЧЕННЫХ ДАННЫХ В ГЛОБАЛЬНЫЙ МАССИВ
-    writeData({
-      rootState
-    }, {
-      tables,
-      taskLists,
-      tasks
-    }) {
-        console.log('Данные дошли до обработки', tables, taskLists, tasks)
+    // ГРУПИРОВКА ПОЛУЧЕННЫХ ДАННЫЙ
+    groupData({ rootState }, { tables = [], taskLists = [], tasks = [] }) {
+      return new Promise((resolve, reject) => {
+        // 1. Все списки разбирают свои задач
+        taskLists.forEach((oneTaskList, index) => {
+          // Выбираем задачи содержащие id списка
+          let filtedTasks = tasks.filter(function(oneTask) {
+            return oneTaskList.id === oneTask.taskListId;
+          });
+          // Пишем задачи в список
+          taskLists[index].tasks = filtedTasks;
+        });
+
+        // 2. Все столы разбирают свои списки
+        tables.forEach((oneTable, index) => {
+          // Выбираем задачи содержащие id списка
+          let filteredTaskLists = taskLists.filter(function(oneTaskList) {
+            return oneTable.id === oneTaskList.tableId;
+          });
+          // Пишем списки к столу
+          tables[index].taskLists = filteredTaskLists;
+        });
+
+        resolve(tables);
+      });
     }
   }
 };
