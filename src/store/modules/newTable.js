@@ -220,44 +220,8 @@ export default {
         })
     },
 
-    // 2. получим список столов из user/tables
-    // getTablesList({ dispatch, commit, state, rootState }, newTableId) {
-    //     return new Promise((resolve, reject) => {
-
-    //         const userId = rootState.userId;
-
-    //         firebase
-    //             .database()
-    //             .ref("users/" + userId + "/tables")
-    //             .once('value')
-    //             .then(data => {
-
-    //                 console.log('столы у нас такие!!! ', data.val());
-    //                 let allTables = data.val();
-
-    //                 //делаем проверку на undefined
-    //                 if (allTables == null) {
-    //                     console.log('Ещё нет столов', allTables);
-    //                     allTables = [newTableId]
-    //                 } else {
-    //                     console.log('Уже есть столы', allTables);
-    //                     allTables.push(newTableId);
-    //                 }
-
-    //                 resolve({ allTables, userId });
-
-    //             })
-    //             .catch(error => {
-    //                 console.log('Полный провал. Ошибка: ', error);
-    //             })
-    //     })
-    // },
-
     // 3. Пушим новый стол в список столов
     apdateTablesList({
-      dispatch,
-      commit,
-      state,
       rootState
     }, tableId) {
       return new Promise((resolve, reject) => {
@@ -269,7 +233,7 @@ export default {
           .ref("users/" + userId + "/tables/" + tableId)
           .set(tableId)
           .then(data => {
-            // console.log('.newTable. Закинули стол в user');
+            console.log('.newTable. Закинули стол в user');
             resolve(data);
 
           })

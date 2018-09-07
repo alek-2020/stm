@@ -22,7 +22,10 @@ export default {
         ====Если отсутствует userId то выполняем logOut и юзера автоматом кидает на авторизашку
         ====Если ошибка выполнения функции Предлагаем перезагрузиться, кидаем ошибку аутентификации(получения user id)
      */
-    getUserData({ rootState, dispatch }) {
+    getUserData({
+      rootState,
+      dispatch
+    }) {
       return new Promise((resolve, reject) => {
         const uId = rootState.userId;
         if (!uId) {
@@ -34,6 +37,7 @@ export default {
           .ref("users/" + uId)
           .once("value")
           .then(data => {
+            rootState.appLog.push("Получили певичные данные по юзеру", data.val());
             //Преобразуем объекты столов в массивы
             let arrayLists = [];
             let objLists = {};
@@ -57,7 +61,6 @@ export default {
 
             //Пишел заготовки объектов с id для парсинга
             rootState.masTables = arrayLists;
-            rootState.appLog.push("Первичное получение данных по юзеру");
             resolve(obj);
           })
 
@@ -73,79 +76,88 @@ export default {
     },
 
     ///Получаем рабочие столы с БД
-    getUserTables({ dispatch, commit, state, rootState }) {
+    getUserTables({
+      dispatch,
+      commit,
+      state,
+      rootState
+    }) {
       return new Promise((resolve, reject) => {
+
+        const userId = rootState.userId;
         const tables = rootState.allTasks;
-        // if (rootState.masTables.length > 0) {
-        if (rootState.masTables != null) {
-          rootState.masTables.forEach((element, i) => {
-            const tableId = element.id;
-            firebase
-              .database()
-              .ref("tables/" + tableId)
-              .once("value")
-              .then(data => {
-                rootState.appLog.push("getUserTables 3");
-                //Получим адрес стола. Это будут последние 6 цифр от id
-                let tableUrl = tableId.slice(tableId.length - 6);
-                // console.log('Вырезанный кусок id ', tableUrl, tableId);
 
-                //Преобразуем объекты в массивы
-                let objLists = data.val().taskLists;
-                let arrayLists = [];
-                for (var prop in objLists) {
-                  arrayLists.push({
-                    id: objLists[prop]
-                  });
-                }
-
-                rootState.masTaskLists.push(arrayLists);
-
-                console.log("получили", data.val().bgIndex);
-                //Дописываем получанные данные в массив
-                tables.push({
-                  id: tableId,
-                  name: data.val().name,
-                  colorId: data.val().colorId,
-                  colorOne: data.val().colorOne,
-                  colorTwo: data.val().colorTwo,
-                  taskLists: [],
-                  tableIndex: data.val().tableIndex,
-                  tableUrl: tableUrl,
-                  bgIndex: data.val().bgIndex
-                });
-
-                // console.log('Итерация записи стола', tables);
-                // console.log('Итерация записи стола. Целевой массив', rootState.allTasks);
-                rootState.appLog.push("getUserTables 2");
-
-                if (i + 1 == rootState.masTables.length) {
-                  // console.log('habra Полкучаем списки задач ', tables, rootState.masTaskLists);
-                  rootState.appLog.push("Получили столы юзера");
-                  rootState.appRouteLog.push(
-                    "routeHandlier - вызваем после получения списка столов"
-                  );
-                  dispatch("pushActiveTableLink");
-                  resolve(rootState.allTasks);
-                }
-              })
-              .catch(error => {
-                console.log("Полный провал. Ошибка: ", error);
-                rootState.appLog.push(
-                  "Ошибка на этапе: Получили столы юзера " + error
-                );
-              });
-          });
-        } else {
+        // Если нет столов
+        if (rootState.masTables == null) {
           //Повтор проверки в вызывающей функции
           commit("stopTableLoader");
           rootState.appLog.push("Нет столов для загрузки");
+          reject('getUserTables - нет столов для загрузки');
         }
+
+        firebase
+          .database()
+          .ref("tables")
+          .orderByChild("userId")
+          .equalTo(userId)
+          .once("value")
+          .then(data => {
+            console.log('Получили столы', data.val());
+            //Получим адрес стола. Это будут последние 6 цифр от id
+            // let tableUrl = tableId.slice(tableId.length - 6);
+
+            // Пишем столы
+            const userTables = data.val()
+            for (var tableKey in userTables) {
+              const table = userTables[tableKey]
+              tables.push({
+                table
+              });
+            }
+            rootState.appLog.push("Записали столы", tables);
+            console.log("Записали столы", tables);
+            
+            console.log("получили", data.val().bgIndex);
+            //Дописываем получанные данные в массив
+            tables.push({
+              id: tableId,
+              name: data.val().name,
+              colorId: data.val().colorId,
+              colorOne: data.val().colorOne,
+              colorTwo: data.val().colorTwo,
+              tableIndex: data.val().tableIndex,
+
+              bgIndex: data.val().bgIndex,
+              taskLists: []
+            });
+
+            rootState.appLog.push("getUserTables 2");
+
+            if (i + 1 == rootState.masTables.length) {
+              rootState.appLog.push("Получили столы юзера");
+              rootState.appRouteLog.push(
+                "routeHandlier - вызваем после получения списка столов"
+              );
+              dispatch("pushActiveTableLink");
+              resolve(rootState.allTasks);
+            }
+          })
+          .catch(error => {
+            console.log("Полный провал. Ошибка: ", error);
+            rootState.appLog.push(
+              "Ошибка на этапе: Получили столы юзера " + error
+            );
+          });
+
       });
     },
 
     ///ПОДТЯГИВАЕМ СПИСКИ ЗАДАЧ И НА КАЖДОЙ ИТЕРАЦИИ ВЫПОЛНЯЕМ ЦИКЛ ЗАГРУЗКИ ЗАДАЧ
-    getTableTaskLists({ dispatch, commit, rootState }) {
+    getTableTaskLists({
+      dispatch,
+      commit,
+      rootState
+    }) {
       console.log(rootState.masTables);
       const ind = rootState.activeTableIndex;
       const activeTableId = rootState.masTables[ind].id;
@@ -212,7 +224,15 @@ export default {
     },
 
     ///Получаем задачи очередного списка
-    getListTasks({ dispatch, commit, state, rootState }, { i, listId }) {
+    getListTasks({
+      dispatch,
+      commit,
+      state,
+      rootState
+    }, {
+      i,
+      listId
+    }) {
       // console.log('habra Сформировали id задач', rootState.masTasks, rootState.allTasks);
       const ind = rootState.activeTableIndex;
       const activeTableId = rootState.masTables[ind].id;
@@ -288,7 +308,9 @@ export default {
     },
 
     //Записываем базовые настроки по юзеру
-    getSettings({ rootState }, settings) {
+    getSettings({
+      rootState
+    }, settings) {
       return new Promise((resolve, reject) => {
         let localSettings = settings;
 
