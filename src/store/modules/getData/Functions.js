@@ -59,7 +59,7 @@ export default {
               settings: obj.settings
             };
 
-            //Пишел заготовки объектов с id для парсинга
+            //Пишем заготовки объектов с id для парсинга
             rootState.masTables = arrayLists;
             resolve(obj);
           })

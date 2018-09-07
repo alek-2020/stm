@@ -26,7 +26,7 @@ export default {
         //Если не загружено ни одного стола
         if (rootState.allTasks.length < 1) {
           rootState.appLog.push("Ниодного загруженного стола");
-          dispatch("firstGettingData");
+          dispatch("firstFetchingData");
         } else {
           //Чистим побочные массивы, если уже загружили столы
           /* 

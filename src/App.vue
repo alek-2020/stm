@@ -108,7 +108,7 @@ export default {
         t.$store.state.userId = firebase.auth().currentUser.uid;
         let url = t.$route.params.link;
         t.$store.state.activeTableUrl = url;
-        t.$store.dispatch("startGetTasks");
+        t.$store.dispatch("firstFetchingData");
         t.$store.state.authorised = true;
         this.callLinksHandler();
       } else {
