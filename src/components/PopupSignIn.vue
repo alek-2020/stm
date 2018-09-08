@@ -172,12 +172,8 @@ export default {
         return "/registration/";
       }
     },
-    userIdmeth() {
-      return this.$store.state.userIdBro;
-    },
-    getUserData() {
-      return this.store.commit("getUser");
-    },
+ 
+
     authorised() {
       return this.$store.state.authorised;
     },

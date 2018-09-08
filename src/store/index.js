@@ -59,12 +59,10 @@ export const store = new Vuex.Store({
 
       //Высота бокса со списками для расчетов
       taskListBoxHeight: "0px",
-      // activeTableName: 'Колбаса',
-      //Для баз данных//
 
       currentBgImg: "",
       tables: [],
-      userIdBro: "sdf",
+   
       userParams: "",
       settings: "",
       //градиенты кнопок столов
