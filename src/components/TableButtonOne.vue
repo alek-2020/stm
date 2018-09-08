@@ -4,7 +4,7 @@
           v-on:click='changeActiveTable(index);'
           @dblclick="inputActivate">
     <div class="tableBtn__nameBg"
-         v-bind:class="{'tableBtn__nameBg_active': actTableInd === index && !inputActive }">
+         v-bind:class="{'tableBtn__nameBg_active': activeTableIndex === index && !inputActive }">
       <!-- input для вывода названия -->
       <input :class="{'tableBtn__input_active':inputActive}"
              class="tableBtn__input"
@@ -20,6 +20,8 @@
 
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -28,9 +30,9 @@ export default {
   },
   props: ["table", "index", "ifLasBtn"],
   methods: {
+    ...mapActions(["updateActiveTable", "changeTableTitle"]),
     // Активируем инпут для редактирования заголовка стола
     inputActivate() {
-      let t = this;
       this.inputActive = true;
       window.addEventListener("click", this.checkOuterClick);
     },
@@ -47,22 +49,18 @@ export default {
     changeActiveTable(index) {
       this.$store.state.activeTableIndex = index;
       //пишем на сервер index стола
-      this.$store.dispatch("updateActiveTable", index);
-      //Стартуем подгрузку задач, я сказал стартуем
-      // this.$store.dispatch("startGetTasks");
+      this.updateActiveTable(index);
     },
 
     // Корректировка заголовка стола
     changeTableTitle(NewName) {
       const TableId = this.table.id;
-      this.$store.dispatch("changeTableTitle", { NewName, TableId });
+      this.changeTableTitle({ NewName, TableId });
     }
   },
   computed: {
-    // Индекс активного стола
-    actTableInd() {
-      return this.$store.state.activeTableIndex;
-    },
+    ...mapState(["activeTableIndex"]),
+
     // Фон для кнопки
     btnBg() {
       return this.$store.state.imgForBg[this.table.bgIndex];
