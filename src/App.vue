@@ -6,42 +6,21 @@
 
 <template>
   <div id="app">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=no">
 
     <!-- Фон -->
-    <transition name="fade"
-                mode="out-in">
-      <div :style="{ 'background': 'url(' + currentBgImg + ')'}"
-           class="bg"></div>
-    </transition>
-
-    <transition name="fade"
-                mode="out-in">
-      <stmHeader v-if="authorised"></stmHeader>
-    </transition>
-
+    <AppBg />
+    <!-- Хедер -->
+    <stmHeader v-if="authorised"></stmHeader>
     <!-- Авторизация -->
-    <transition name="fade"
-                mode="out-in">
-      <router-view name="LogReg"></router-view>
-    </transition>
-
-    <transition name="fade"
-                mode="out-in">
-      <router-view name="TableContent"
-                   v-if="authorised"></router-view>
-    </transition>
-
+    <router-view name="LogReg"></router-view>
+    <!-- Блок со списками -->
+    <router-view name="TableContent"
+                 v-if="authorised"></router-view>
+    <!-- Критическая ошибка -->
     <router-view name="bigError"
                  v-if="authorised"></router-view>
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Roboto:400,500,700&amp;subset=cyrillic"
-          rel="stylesheet">
-
     <!-- Окна сообщений -->
     <GoodBadNewsMessage/>
-
     <!-- Спиннер загрузки задач -->
     <BigLoadingSpinner :active="tasksAreLoadingNow" />
 
@@ -50,80 +29,54 @@
 
 <script>
 import GoodBadNewsMessage from "./components/MessageNewsGoodBad.vue";
-import tableList from "./components/TableButtonsAll.vue";
-import SignIn from "./components/PopUpSignIn.vue";
 import stmHeader from "./components/Header.vue";
-import TableContent from "./components/TableBody.vue";
 import BigLoadingSpinner from "./components/BigLoadingSpinner.vue";
+import AppBg from "./components/AppBg.vue";
 
 import * as firebase from "firebase";
 
-import { mapGetters } from "vuex";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "app",
-  data() {
-    return {};
-  },
+
   components: {
-    tableList,
-    SignIn,
     stmHeader,
-    TableContent,
     GoodBadNewsMessage,
-    BigLoadingSpinner
+    BigLoadingSpinner,
+    AppBg
   },
 
   computed: {
-    ...mapGetters(["authorised"]),
     ...mapState([
-      "imgForBg",
       "activeTableIndex",
       "allTasks",
-      "tasksAreLoadingNow"
+      "tasksAreLoadingNow",
+      "authorised"
     ]),
-
-    // Картинка фона стола
-    currentBgImg() {
-      const currentTable = this.allTasks[this.activeTableIndex];
-      const bgIndex = currentTable ? currentTable.bgIndex : 0;
-      return this.imgForBg[bgIndex];
-    },
 
     getRoute() {
       return this.$route.path;
     }
   },
+
   methods: {
+    ...mapActions(["authHandle"]),
+
     callLinksHandler(link) {
       if (!link) link = this.getRoute;
       this.$store.dispatch("linksHandler", { link });
     }
   },
+
   created() {
-    const t = this;
-    //Проверяем юзера на наличие авторизации
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("Юзер авторизован", firebase.auth().currentUser.uid);
-        t.$store.state.userId = firebase.auth().currentUser.uid;
-        let url = t.$route.params.link;
-        t.$store.state.activeTableUrl = url;
-        t.$store.dispatch("firstFetchingData");
-        t.$store.state.authorised = true;
-        this.callLinksHandler();
-      } else {
-        //Засейвим фон
-        t.$store.state.currentBgImg = "/img/bg/stm-bg-2.jpg";
-        this.callLinksHandler();
-      }
-    });
+    // Проверка статуса авторизации и запись данных юзера
+    this.authHandle();
   },
-  mounted() {},
+
   watch: {
     $route(to, from) {
-      // Отправим упл на проверку
+      // Отправим урл на проверку
       this.callLinksHandler(to.path);
 
       //Если в приходил ссылка на конкретный стол, то выполняем смену стола
@@ -198,27 +151,5 @@ li {
 
 a {
   color: #42b983;
-}
-
-.bg {
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition-duration: 0.3s;
-  transition-property: opacity;
-  transition-timing-function: ease;
-}
-
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
 }
 </style>

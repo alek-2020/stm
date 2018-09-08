@@ -3,10 +3,16 @@ import router from "./../Router.js";
 
 export default {
   //Отметить задачу как сделанную
-  checkTask(
-    { dispatch, commit, state },
-    { task, tableInd, taskListInd, taskId }
-  ) {
+  checkTask({
+    dispatch,
+    commit,
+    state
+  }, {
+    task,
+    tableInd,
+    taskListInd,
+    taskId
+  }) {
     // taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
 
     // console.log('ДЛЯ ОТМЕТКИ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
@@ -45,10 +51,16 @@ export default {
   // FIXME: HI
 
   //Удалить задачу
-  delTask(
-    { dispatch, commit, state },
-    { task, tableInd, taskListInd, taskId }
-  ) {
+  delTask({
+    dispatch,
+    commit,
+    state
+  }, {
+    task,
+    tableInd,
+    taskListInd,
+    taskId
+  }) {
     // taskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd].id;
 
     // console.log('ДЛЯ УДАЛЕНИЯ ЗАДАЧИ ПОЛУЧАЕМ ', task, tableInd, taskListInd, taskId);
@@ -88,7 +100,11 @@ export default {
 
   // Получение параметров стола
   // Определяем цвет последнего стола и возвращаем новый
-  lastTableColor({ dispatch, commit, state }) {
+  lastTableColor({
+    dispatch,
+    commit,
+    state
+  }) {
     var i = state.allTasks.length - 1;
     // console.log('длина, сам массив ', i, state.allTasks[i]);
     var id = state.allTasks[i].colorId;
@@ -103,7 +119,14 @@ export default {
   },
 
   ///Изменение поля в задаче
-  changeText({ dispatch, commit, state }, { text, task }) {
+  changeText({
+    dispatch,
+    commit,
+    state
+  }, {
+    text,
+    task
+  }) {
     // TaskId = state.allTasks[tableInd].taskLists[taskListInd].tasks[taskInd]
     // console.log('Вот наша задача ', task);
     const TaskId = task.id;
@@ -124,7 +147,14 @@ export default {
   },
 
   //Изменение заголовка списка
-  changeListTitle({ dispatch, commit, state }, { NewName, ListId }) {
+  changeListTitle({
+    dispatch,
+    commit,
+    state
+  }, {
+    NewName,
+    ListId
+  }) {
     firebase
       .database()
       .ref("taskLists/" + ListId + "/name")
@@ -138,7 +168,14 @@ export default {
   },
 
   //Меняем название стола
-  changeTableTitle({ dispatch, commit, state }, { NewName, TableId }) {
+  changeTableTitle({
+    dispatch,
+    commit,
+    state
+  }, {
+    NewName,
+    TableId
+  }) {
     firebase
       .database()
       .ref("tables/" + TableId + "/name")
@@ -152,7 +189,11 @@ export default {
   },
 
   ///УДАЛЕНИЕ АКТИВНОГО РАБОЧЕГО СТОЛА
-  delActiveTable({ dispatch, commit, state }) {
+  delActiveTable({
+    dispatch,
+    commit,
+    state
+  }) {
     const activeTableId = state.allTasks[state.activeTableIndex].id;
 
     let ind = state.allTasks[state.activeTableIndex].tableIndex;
@@ -211,7 +252,11 @@ export default {
   //     })
   // },
 
-  saveBg({ dispatch, commit, state }) {
+  saveBg({
+    dispatch,
+    commit,
+    state
+  }) {
     // console.log('Наш фон ', state.userId);
 
     const userId = state.userId;
@@ -235,7 +280,11 @@ export default {
   },
 
   //Делает посделний стол активным
-  makeLastTableActive({ dispatch, commit, state }) {
+  makeLastTableActive({
+    dispatch,
+    commit,
+    state
+  }) {
     // console.log('Переключаем последний стол на активный');
     const last = state.allTasks.length - 1;
     state.activeTableIndex = last;
@@ -243,7 +292,11 @@ export default {
   },
 
   //Апдейт активного стола
-  updateActiveTable({ dispatch, commit, state }, index) {
+  updateActiveTable({
+    dispatch,
+    commit,
+    state
+  }, index) {
     firebase
       .database()
       .ref("users/" + state.userId + "/settings/activeTable")
@@ -256,10 +309,15 @@ export default {
       });
   },
 
-  removeList(
-    { dispatch, commit, state },
-    { id, taskListIndex, activeTableIndex }
-  ) {
+  removeList({
+    dispatch,
+    commit,
+    state
+  }, {
+    id,
+    taskListIndex,
+    activeTableIndex
+  }) {
     let activeTableId = state.allTasks[activeTableIndex].id;
     // console.log('del table ', "tables/" + activeTableId + "/taskLists" + taskListIndex);
     firebase
@@ -280,7 +338,11 @@ export default {
 
   //Работа со ссылками на столы
 
-  checkUrl({ dispatch, commit, state }) {
+  checkUrl({
+    dispatch,
+    commit,
+    state
+  }) {
     let url = state.activeTableUrl;
     // console.log('смо записался ', url);
 
@@ -294,23 +356,35 @@ export default {
     }
   },
 
-  showGoodNews({ dispatch, commit, state }, mes) {
+  showGoodNews({
+    dispatch,
+    commit,
+    state
+  }, mes) {
     state.goodNewsMes = mes;
     // console.log('Наш текст', state.goodNewsMes);
-    setTimeout(function() {
+    setTimeout(function () {
       state.goodNewsMes = [];
     }, 1500);
   },
-  showBadNews({ dispatch, commit, state }, mes) {
+  showBadNews({
+    dispatch,
+    commit,
+    state
+  }, mes) {
     state.badNewsMes = mes;
     // console.log('Наш текст', state.badNewsMes);
-    setTimeout(function() {
+    setTimeout(function () {
       state.badNewsMes = [];
     }, 5000);
   },
 
   //Меняем цвет списка задач
-  pushListColor({ dispatch, commit, state }, allData) {
+  pushListColor({
+    dispatch,
+    commit,
+    state
+  }, allData) {
     // console.log('Данные для изменения цвета ', allData);
     //    const userId = state.userId;
     const taskListId =
@@ -329,7 +403,14 @@ export default {
       });
   },
 
-  changeEmojiIndex({ dispatch, commit, state }, { index, taskListInd }) {
+  changeEmojiIndex({
+    dispatch,
+    commit,
+    state
+  }, {
+    index,
+    taskListInd
+  }) {
     const actTableInd = state.activeTableIndex;
     const taskListId = state.allTasks[actTableInd].taskLists[taskListInd].id;
 
@@ -352,7 +433,10 @@ export default {
     // console.log("СкролимЛистВНиз");
   },
 
-  logOut({ dispatch, rootState }) {
+  logOut({
+    dispatch,
+    rootState
+  }) {
     firebase
       .auth()
       .signOut()
@@ -362,16 +446,22 @@ export default {
         rootState.allTasks = [];
         rootState.userId = "";
         (rootState.masTaskLists = []),
-          (rootState.masTasks = []),
-          (rootState.masTables = []),
-          (rootState.activeTableUrl = "");
+        (rootState.masTasks = []),
+        (rootState.masTables = []),
+        (rootState.activeTableUrl = "");
       })
       .catch(error => {
         dispatch("showBadNews", "Ошибка выхода из учетнои записи. " + error);
       });
   },
 
-  onSignIn({ dispatch, state }, { email, password }) {
+  onSignIn({
+    dispatch,
+    state
+  }, {
+    email,
+    password
+  }) {
     const t = this;
     //Перед авторизацией делаем сессию бесконечной
     firebase
@@ -425,5 +515,20 @@ export default {
         this.$store.state.authErrorMessage = error.message;
         this.stopSpinner();
       });
+  },
+  // Проверка статуса авторизации и запись данных юзера
+  authHandle({
+    dispatch,
+    rootState
+  }) {
+    //Проверяем юзера на наличие авторизации
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        rootState.authorised = true;
+        rootState.userId = firebase.auth().currentUser.uid;
+
+        dispatch("firstFetchingData")
+      }
+    });
   }
 };

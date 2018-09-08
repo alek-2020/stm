@@ -3,7 +3,6 @@
                 appear>
         <div class="confirm__bg">
             <div class="confirm__box">
-                <div class="confirm__close btn_icon_cancel m-before-0"></div>
                 <div class="confirm__mes">
                     <slot name="message">
                         Confirm your action
@@ -90,11 +89,6 @@ export default {
 .confirm__btn-cancel {
   width: 40%;
   height: 40px;
-}
-.confirm__close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
 }
 </style>
 

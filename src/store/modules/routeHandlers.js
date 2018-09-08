@@ -49,7 +49,7 @@ export default {
                 router.push(toLink);
             } else if (toLink === '/error/') {
                 //Если пушим ошибку юзеру
-                rootState.appRouteLog.push(`Пушим на ${toLInk} из linksHandler`)
+                rootState.appRouteLog.push(`Пушим на ${toLink} из linksHandler`)
                 router.push(toLink);
             } 
             

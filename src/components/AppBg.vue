@@ -1,0 +1,37 @@
+<template>
+    <transition name="fade"
+                mode="out-in">
+        <div :style="{ 'background': 'url(' + currentBgImg + ')'}"
+             class="appBg"></div>
+    </transition>
+</template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+  computed: {
+    ...mapState(["activeTableIndex", "imgForBg", "allTasks"]),
+
+    // Картинка фона стола
+    currentBgImg() {
+      const currentTable = this.allTasks[this.activeTableIndex];
+      const bgIndex = currentTable ? currentTable.bgIndex : 0;
+      return this.imgForBg[bgIndex];
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+.appBg {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+</style>
+

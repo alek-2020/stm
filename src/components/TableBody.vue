@@ -2,35 +2,38 @@
 // FIXME: Сделать грубый перенос с разрывом строки
 // FIXME: СДЕЛАТЬ СООБЩЕНИЕ НЕ ПОВЕРХ А ВЫЛЕЗАЮЩИМИ ПОДНИМАЮЩИМ КОНТЕНТ ОКНА, ЧТО БЫ НЕ МЕШАТЬ
 <template>
-  <div class="table__main-box"
-       ref="tableBox"
-       @click="deactivateSettings">
+  <transition name="fade"
+              mode="out-in">
+    <div class="table__main-box"
+         ref="tableBox"
+         @click="deactivateSettings">
 
-    <VuePerfectScrollbar ref="ps"
-                         class="table__taskList-box-rel">
-      <div class="table__taskLists-box"
-           ref="taskListBox">
-        <TaskList v-for="(TList, index) in thisTableTaskLists"
-                  :TList='TList'
-                  :taskListIndex='index'
-                  :key='TList.id'
-                  ref="list">
-        </TaskList>
+      <VuePerfectScrollbar ref="ps"
+                           class="table__taskList-box-rel">
+        <div class="table__taskLists-box"
+             ref="taskListBox">
+          <TaskList v-for="(TList, index) in thisTableTaskLists"
+                    :TList='TList'
+                    :taskListIndex='index'
+                    :key='TList.id'
+                    ref="list">
+          </TaskList>
 
-        <div class="add-list__bg"
-             v-if="GetAllTasks.length"
-             @click="addList">
-          <img src="../../img/icons/add-plus-button.svg"
-               class='add-list__img'>
+          <div class="add-list__bg"
+               v-if="GetAllTasks.length"
+               @click="addList">
+            <img src="../../img/icons/add-plus-button.svg"
+                 class='add-list__img'>
+          </div>
+
         </div>
+      </VuePerfectScrollbar>
 
-      </div>
-    </VuePerfectScrollbar>
+      <span style="color: white; font-weigth: 500; background: black;">
+      </span>
 
-    <span style="color: white; font-weigth: 500; background: black;">
-    </span>
-
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script>

@@ -1,55 +1,58 @@
 //TODO: Оформить страницу 404
 
 <template>
-  <div>
-    <div class="t-header">
+  <transition name="fade"
+              mode="out-in">
+    <div>
+      <div class="t-header">
 
-      <!-- Кнопка выезжающего меню -->
-      <BtnIconTile :iconColor="iconsColor"
-                   class="t-header__slideMenuBtn"
-                   @click.native="toggleSlideMenu" />
+        <!-- Кнопка выезжающего меню -->
+        <BtnIconTile :iconColor="iconsColor"
+                     class="t-header__slideMenuBtn"
+                     @click.native="toggleSlideMenu" />
 
-      <!-- Блок с названием и настройками стола -->
-      <div class="t-header__name-box"
-           @mouseover="showSettingsBtn"
-           @mouseout="hideSettingsBtn">
+        <!-- Блок с названием и настройками стола -->
+        <div class="t-header__name-box"
+             @mouseover="showSettingsBtn"
+             @mouseout="hideSettingsBtn">
 
-        <HeaderName />
-        <BtnTableSettings :visible="tableSettingsBtnVisible"
-                          :active="tableSettingsActive"
-                          @click.native="showTableSettings" />
-        <BtnDelActiveTable :visible="tableSettingsActive"
-                           @click.native="askConfirmForDelete()" />
+          <HeaderName />
+          <BtnTableSettings :visible="tableSettingsBtnVisible"
+                            :active="tableSettingsActive"
+                            @click.native="showTableSettings" />
+          <BtnDelActiveTable :visible="tableSettingsActive"
+                             @click.native="askConfirmForDelete()" />
 
+        </div>
+
+        <!-- Выход из учетной записи -->
+        <BtnLogout class="t-header__logout"
+                   :iconColor="iconsColor" />
       </div>
 
-      <!-- Выход из учетной записи -->
-      <BtnLogout class="t-header__logout"
-                 :iconColor="iconsColor" />
+      <!-- Выбор темы оформления -->
+      <HeaderSettingsBox :active="tableSettingsActive" />
+
+      <!-- Окно подтверждения удаления РС -->
+      <ConfirmationWindow :askConfirm="askConfirm"
+                          @confirmResponse="delTable">
+        <div slot="message">
+          Confirm removing table
+        </div>
+        <div slot="messageTwo">
+          Delete
+        </div>
+        <div slot="action">
+          Delete
+        </div>
+      </ConfirmationWindow>
+
+      <!-- Левое выезжающее меню -->
+      <SlideTablesMenu paddingTop="40"
+                       :active="slideMenuState" />
+
     </div>
-
-    <!-- Выбор темы оформления -->
-    <HeaderSettingsBox :active="tableSettingsActive" />
-
-    <!-- Окно подтверждения удаления РС -->
-    <ConfirmationWindow :askConfirm="askConfirm"
-                        @confirmResponse="delTable">
-      <div slot="message">
-        Confirm removing table
-      </div>
-      <div slot="messageTwo">
-        Delete
-      </div>
-      <div slot="action">
-        Delete
-      </div>
-    </ConfirmationWindow>
-
-    <!-- Левое выезжающее меню -->
-    <SlideTablesMenu paddingTop="40"
-                     :active="slideMenuState" />
-
-  </div>
+  </transition>
 </template>
 
 <script>
