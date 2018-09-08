@@ -1,0 +1,72 @@
+@mixin btn {
+  font-weight: 400;
+  white-space: nowrap;
+  user-select: none;
+  border: none;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  font-family: inherit;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+
+  &:active {
+    filter: brightness(1.15);
+  }
+
+  :focus {
+    filter: brightness(1.15);
+  }
+}
+
+.btn {
+  @include btn;
+}
+
+//**********************************
+// ЦВЕТА ШРИФТОВ ДЛЯ Hov, Foc, Act
+//**********************************
+@mixin hover-t_white {
+  color: white;
+
+  &:hover {
+    color: white;
+  }
+
+  &:active {
+    color: white;
+  }
+
+  &:focus {
+    color: white;
+  }
+}
+
+@mixin hover-t_black {
+  color: #393939;
+
+  &:hover {
+    color: #393939;
+  }
+
+  &:active {
+    color: #393939;
+  }
+
+  &:focus {
+    color: #393939;
+  }
+}
+
+
+

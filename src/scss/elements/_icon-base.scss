@@ -1,0 +1,11 @@
+@mixin icon-settings {
+  content: '';
+  display: block;
+  position: relative;
+  width: 17px;
+  height: 17px;
+  margin-right: 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+}

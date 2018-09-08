@@ -1,0 +1,22 @@
+//********************************
+// КНОПКИ С ГРАДИЕНТАМИ
+//********************************
+.btn_orange-g {
+  background: linear-gradient(135deg, #d11111, #f97714);
+  border: solid 1px #D56666;
+  @include hover-t_white;
+}
+
+//********************************
+// КНОПКИ С ОДНИМИ БОРДЕРАМИ 
+//********************************
+.btn_black-b {
+  background: white;
+  border: solid 1px #424242 !important;
+  @include hover-t_black;
+}
+
+.btn_border {
+  border: solid 2px gray;
+  background: transparent;
+}

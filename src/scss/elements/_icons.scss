@@ -1,0 +1,23 @@
+@import 'icon-base';
+
+.btn_icon_delete:before {
+  background-image: url(../img/icons/delete-can.svg);
+  @include icon-settings;
+  width: 20px;
+  height: 30px;
+}
+
+.btn_icon_cancel:before {
+  background-image: url(../img/icons/cancel.svg);
+  @include icon-settings;
+  width: 20px;
+  height: 20px;
+}
+
+.btn_icon_add-white:before {
+  background-image: url(../img/icons/add_rounded_white.svg);
+  @include icon-settings;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
