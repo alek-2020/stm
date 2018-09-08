@@ -1,18 +1,18 @@
 <template>
-    <div class="one-task__box">
+  <div class="one-task">
 
-        <input type="text"
-               class="one-task__text"
-               v-model="task.text"
-               @focusout='changeText(task.text)'
-               @keyup.13='changeText(task.text)'
-               disabled>
+    <input type="text"
+           class="one-task__text"
+           v-model="task.text"
+           @focusout='changeText(task.text)'
+           @keyup.13='changeText(task.text)'
+           disabled>
 
-        <div class="del-icon"
-             @click="delTask">
-        </div>
-
+    <div class="del-icon"
+         @click="delTask">
     </div>
+
+  </div>
 </template>
 
 <script>
