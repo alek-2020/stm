@@ -210,20 +210,6 @@ a {
   z-index: -1;
 }
 
-// @media all and (max-width: 480px) {
-//   .t-header__profile,
-//   .btn-filter {
-//     display: none !important;
-//   }
-// }
-
-@media all and (max-width: 480px) {
-  .btn-filter {
-    display: none !important;
-  }
-}
-
-///Transition
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 0.3s;
