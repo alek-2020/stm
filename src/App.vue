@@ -59,6 +59,7 @@ import BigLoadingSpinner from "./components/BigLoadingSpinner.vue";
 import * as firebase from "firebase";
 
 import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "app",
@@ -75,30 +76,23 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      authorised: "authorised"
-    }),
- 
+    ...mapGetters(["authorised"]),
+    ...mapState([
+      "imgForBg",
+      "activeTableIndex",
+      "allTasks",
+      "tasksAreLoadingNow"
+    ]),
+
     // Картинка фона стола
     currentBgImg() {
       const currentTable = this.allTasks[this.activeTableIndex];
       const bgIndex = currentTable ? currentTable.bgIndex : 0;
-      return this.getBackgrounds[bgIndex];
+      return this.imgForBg[bgIndex];
     },
-    getBackgrounds() {
-      return this.$store.state.imgForBg;
-    },
+
     getRoute() {
       return this.$route.path;
-    },
-    activeTableIndex() {
-      return this.$store.state.activeTableIndex;
-    },
-    allTasks() {
-      return this.$store.state.allTasks;
-    },
-    tasksAreLoadingNow() {
-      return this.$store.state.tasksAreLoadingNow;
     }
   },
   methods: {
