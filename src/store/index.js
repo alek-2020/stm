@@ -11,7 +11,6 @@ import newTable from "./modules/newTable";
 import newTaskList from "./modules/newTaskList";
 import newTask from "./modules/newTask";
 import routeHandlers from "./modules/routeHandlers";
-import tableVerification from "./modules/tableVerification";
 
 Vue.use(Vuex);
 
@@ -155,7 +154,6 @@ export const store = new Vuex.Store({
     newTable,
     newTaskList,
     newTask,
-    routeHandlers,
-    tableVerification
+    routeHandlers
   }
 });
