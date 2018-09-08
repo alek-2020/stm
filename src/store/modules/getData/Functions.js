@@ -289,7 +289,7 @@ export default {
       taskLists,
       tasks
     }) {
-      console.log('Данные дошли до обработки', tables, taskLists, tasks)
+        console.log('Данные дошли до обработки', tables, taskLists, tasks)
     }
   }
 };
