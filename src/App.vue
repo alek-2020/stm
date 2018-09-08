@@ -78,9 +78,11 @@ export default {
     ...mapGetters({
       authorised: "authorised"
     }),
-
+ 
+    // Картинка фона стола
     currentBgImg() {
-      const bgIndex = this.allTasks[this.activeTableIndex].bgIndex;
+      const currentTable = this.allTasks[this.activeTableIndex];
+      const bgIndex = currentTable ? currentTable.bgIndex : 0;
       return this.getBackgrounds[bgIndex];
     },
     getBackgrounds() {
