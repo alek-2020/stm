@@ -45,25 +45,31 @@ export default {
       }
     },
 
-    // Переключаем стол во vuex на текущий
+    // Переключаем стол на текущий
     changeActiveTable(index) {
+      // Запишем индекс во vuex
       this.$store.state.activeTableIndex = index;
-      //пишем на сервер index стола
+      // Пишем на сервер активный индекс
       this.updateActiveTable(index);
+      // Пишем новый урл
+      this.updateTableUrl();
     },
 
-    // Корректировка заголовка стола
+    // Корректировка названия стола
     changeTableTitle(NewName) {
       const TableId = this.table.id;
       this.changeTableTitle({ NewName, TableId });
-    }
+    },
+
+    // Запись нового урла
+    updateTableUrl() {}
   },
   computed: {
-    ...mapState(["activeTableIndex"]),
+    ...mapState(["activeTableIndex", "imgForBg"]),
 
     // Фон для кнопки
     btnBg() {
-      return this.$store.state.imgForBg[this.table.bgIndex];
+      return this.imgForBg[this.table.bgIndex];
     }
   }
 };
