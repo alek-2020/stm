@@ -30,8 +30,6 @@ export const store = new Vuex.Store({
       */
       appLog: [],
       appRouteLog: [],
-      //Лоадер загрузки списков стола
-      tableLoaderActive: true,
       authErrorMessage: "",
       //меню добавить
       addMenuActive: false,

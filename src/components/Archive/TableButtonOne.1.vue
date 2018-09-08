@@ -1,50 +1,42 @@
 <template>
 
-<button
-  class="btn desk-btns__one"
-  v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colorOne + ', ' + table.colorTwo }"
-  v-bind:class="{'desk-btns__last': ifLasBtn}"
-  v-bind:id=" 'tableBtn-' + table.BtnId"
-  v-on:click = 'changeActiveTable(index); changeUrl(table.tableUrl)'
-  @dblclick="tableActivation"
-  >
+  <button class="btn desk-btns__one"
+          v-bind:style="{ 'background' : 'linear-gradient( to bottom, ' + table.colorOne + ', ' + table.colorTwo }"
+          v-bind:class="{'desk-btns__last': ifLasBtn}"
+          v-bind:id=" 'tableBtn-' + table.BtnId"
+          v-on:click='changeActiveTable(index); changeUrl(table.tableUrl)'
+          @dblclick="tableActivation">
 
-      <!-- input для вывода названия -->
-      <input 
-      :class="{'desk-btns__input_active':inputActive}"
-      class="desk-btns__input" 
-      type="text"
-      ref="tableBtnInput"
-      :disabled="!inputActive"
-      placeholder=""
-      v-model="table.name"
-      @focusout='changeTableTitle(table.name)'
-      @keyup.enter='changeTableTitle(table.name)'
-      > 
+    <!-- input для вывода названия -->
+    <input :class="{'desk-btns__input_active':inputActive}"
+           class="desk-btns__input"
+           type="text"
+           ref="tableBtnInput"
+           :disabled="!inputActive"
+           placeholder=""
+           v-model="table.name"
+           @focusout='changeTableTitle(table.name)'
+           @keyup.enter='changeTableTitle(table.name)'>
 
-
-      <!-- span для определения ширины адаптивного inputa -->
-      <!-- <span class="desk-btns__inp-buffer"
+    <!-- span для определения ширины адаптивного inputa -->
+    <!-- <span class="desk-btns__inp-buffer"
       ref="inpBuffer">{{ table.name }}</span>
        -->
 
-      <!-- рамка для активной кнопки  -->
-      <div 
-      v-bind:class="{'desk-btns__one-active': actTableInd === index }"
-      :style="{'border-color': table.colorOne}"
-      ></div>
+    <!-- рамка для активной кнопки  -->
+    <div v-bind:class="{'desk-btns__one-active': actTableInd === index }"
+         :style="{'border-color': table.colorOne}"></div>
 
-</button>
+  </button>
 
 </template>
 
 
 <script>
-
-export default ({
+export default {
   data() {
     return {
-      inputActive: false,
+      inputActive: false
       // gradients: [
       //   {
       //     colId: 1,
@@ -97,19 +89,19 @@ export default ({
       if (el.target != this.$refs.tableBtnInput) {
         // console.log("Идентификатор", el.target != this.$refs.headerInput, el);
         this.inputActive = false;
-        window.removeEventListener("click",  this.checkOuterClick);
+        window.removeEventListener("click", this.checkOuterClick);
       }
     },
     changeUrl(url) {
-      this.$store.dispatch('linksHandler', { toLink: `/table/${url}` });
+      this.$store.dispatch("linksHandler", { toLink: `/table/${url}` });
     },
 
     changeActiveTable(index) {
       this.$store.state.activeTableIndex = index;
       //пишем на сервер index стола
-      this.$store.dispatch('updateActiveTable', index);
+      this.$store.dispatch("updateActiveTable", index);
       //Стартуем подгрузку задач, я сказал стартуем
-      this.$store.dispatch("startGetTasks");
+      // this.$store.dispatch("startGetTasks");
     },
 
     changeTableTitle(NewName) {
@@ -127,7 +119,7 @@ export default ({
   //             people(newVal, oldVal) { // watch it
   //               console.log(this.people)}
   //             }
-});
+};
 </script>
 
 

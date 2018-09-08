@@ -112,7 +112,7 @@ export default {
           this.$store.state.userId = newUser.id;
           this.$store.dispatch("linksHandler", { link: this.route });
           //Раз все ок грузим данные и переходим в столы
-          this.$store.dispatch("startGetTasks");
+          this.$store.dispatch("firstFetchingData");
           this.$store.state.appRouteLog.push(
             "routeHandler - вызываем послу авторизации"
           );
@@ -135,7 +135,7 @@ export default {
           this.$store.dispatch("saveBg");
 
           //Раз все ок грузим данные и переходим в столы
-          this.$store.dispatch("startGetTasks");
+          this.$store.dispatch("firstFetchingData");
           this.$store.state.appRouteLog.push(
             "routeHandler - вызываем послу авторизации"
           );

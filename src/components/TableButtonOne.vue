@@ -49,7 +49,7 @@ export default {
       //пишем на сервер index стола
       this.$store.dispatch("updateActiveTable", index);
       //Стартуем подгрузку задач, я сказал стартуем
-      this.$store.dispatch("startGetTasks");
+      // this.$store.dispatch("startGetTasks");
     },
 
     // Корректировка заголовка стола
