@@ -6,7 +6,6 @@
 
 <template>
   <div id="app">
-
     <!-- Фон -->
     <AppBg />
     <!-- Хедер -->
@@ -23,7 +22,6 @@
     <GoodBadNewsMessage/>
     <!-- Спиннер загрузки задач -->
     <BigLoadingSpinner :active="tasksAreLoadingNow" />
-
   </div>
 </template>
 
@@ -55,18 +53,18 @@ export default {
       "authorised"
     ]),
 
-    getRoute() {
-      return this.$route.path;
-    }
+    // getRoute() {
+    //   return this.$route.path;
+    // }
   },
 
   methods: {
     ...mapActions(["authHandle"]),
 
-    callLinksHandler(link) {
-      if (!link) link = this.getRoute;
-      this.$store.dispatch("linksHandler", { link });
-    }
+    // callLinksHandler(link) {
+    //   if (!link) link = this.getRoute;
+    //   this.$store.dispatch("linksHandler", { link });
+    // }
   },
 
   created() {
@@ -77,29 +75,29 @@ export default {
   watch: {
     $route(to, from) {
       // Отправим урл на проверку
-      this.callLinksHandler(to.path);
+      // this.callLinksHandler(to.path);
 
       //Если в приходил ссылка на конкретный стол, то выполняем смену стола
       //Тут расчет на то, что узер вбил ссылку, но минус в том, что метод будет выполняться и когда мы програмно меняем урл
-      if (to.params.link != null) {
-        this.$store.dispatch("changeActiveTable", this.$route.params.link);
-      } else {
-        //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
-        if (to.path.indexOf("/table/") === 0) {
-        } else {
-          //Пока что ничего не делаем
-        }
-      }
+      // if (to.params.link != null) {
+      //   this.$store.dispatch("changeActiveTable", this.$route.params.link);
+      // } else {
+      //   //если в урле есть table и нет ссылки на конкретный стол, то вставляем сслыку активного стола
+      //   if (to.path.indexOf("/table/") === 0) {
+      //   } else {
+      //     //Пока что ничего не делаем
+      //   }
+      // }
     },
     //Cледим за изменением активного стола, что бы пушить новый адрес
-    activeTableIndex(to) {
-      if (this.allTasks[this.activeTableIndex] != null) {
-        this.$store.state.appRouteLog.push(
-          `Выполняем изменение роута из прослушки индекса стола в App`
-        );
-        this.$store.dispatch("pushActiveTableLink");
-      }
-    }
+    // activeTableIndex(to) {
+    //   if (this.allTasks[this.activeTableIndex] != null) {
+    //     this.$store.state.appRouteLog.push(
+    //       `Выполняем изменение роута из прослушки индекса стола в App`
+    //     );
+    //     this.$store.dispatch("pushActiveTableLink");
+    //   }
+    // }
   }
 };
 </script>
@@ -134,19 +132,8 @@ body {
   height: 100%;
 }
 
-h1,
-h2 {
-  font-weight: normal;
-}
-
 ul {
   list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
 }
 
 a {
