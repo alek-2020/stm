@@ -5,7 +5,11 @@
 export default {
   actions: {
     // ПЕРВИЧНОЕ ПОЛУЧЕНИЕ ДАННЫХ
-    firstFetchingData({ dispatch, commit, rootState }) {
+    firstFetchingData({
+      dispatch,
+      commit,
+      rootState
+    }) {
       let userData;
       // 1. Основные данные юзера
       dispatch("getUserData")
@@ -30,15 +34,17 @@ export default {
           // Состояние загрузки
           rootState.tasksAreLoadingNow = false;
           // если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
-          dispatch("linksHandler", {
-            toLink: "/error/"
-          });
+          dispatch("showLoadingError");
           rootState.appLog.push("Ошибка загрузки стола в firstFetchngData");
         });
     },
 
     // ЦЕПОЧКА, КОТОРАЯ ВЫПОЛНЯЕТСЯ, ЕСЛИ ЕСТЬ СТОЛЫ
-    getDataSecondChain({ dispatch, commit, rootState }) {
+    getDataSecondChain({
+      dispatch,
+      commit,
+      rootState
+    }) {
       let tables, taskLists, tasks;
 
       dispatch("getUserTables")
@@ -55,7 +61,11 @@ export default {
         .then(userTasks => {
           tasks = userTasks;
           // 4. Группируем все в один массив
-          return dispatch("groupData", { tables, taskLists, tasks });
+          return dispatch("groupData", {
+            tables,
+            taskLists,
+            tasks
+          });
         })
         .then(userTables => {
           // Вывод задач

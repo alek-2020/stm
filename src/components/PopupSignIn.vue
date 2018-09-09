@@ -110,13 +110,10 @@ export default {
             id: user.user.uid
           };
           this.$store.state.userId = newUser.id;
-          this.$store.dispatch("linksHandler", { link: this.route });
+          // Пушим из расчет на то, что он перекинет на "/table/"
+          this.$store.dispatch("pushActiveTableLink");
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("firstFetchingData");
-          this.$store.state.appRouteLog.push(
-            "routeHandler - вызываем послу авторизации"
-          );
-          this.$store.dispatch("linksHandler", { toLink: "/" });
         })
         .catch(error => {
           this.$store.state.authErrorMessage = error.message;
@@ -133,13 +130,10 @@ export default {
           this.$store.state.userId = user.uid;
           //Сейвим стандартный бг
           this.$store.dispatch("saveBg");
-
+          // Пушим из расчет на то, что он перекинет на "/table/"
+          this.$store.dispatch("pushActiveTableLink");
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("firstFetchingData");
-          this.$store.state.appRouteLog.push(
-            "routeHandler - вызываем послу авторизации"
-          );
-          this.$store.dispatch("linksHandler", { toLink: "/" });
         })
         .catch(error => {
           console.log("Полный провал. Ошибка: ", error);
@@ -172,7 +166,6 @@ export default {
         return "/registration/";
       }
     },
- 
 
     authorised() {
       return this.$store.state.authorised;

@@ -179,16 +179,18 @@ export default {
             //Добавим id нового стола в его обьект
             newTableBtn.id = newTableId;
 
-            rootState.allTasks.push(newTableBtn);
+            let numberOfTables = rootState.allTasks.push(newTableBtn);
 
             //Пушим урл
             //Нужно запушить урл нового стола в адресную стр.
             // console.log('Пушим в роутер');
             let fourCharId = newTableId.slice(newTableId.length - 6);
             // router.push('/table/' + fourCharId);
-            dispatch('linksHandler', {
-              toLink: `/table/'${fourCharId}`
-            })
+
+            // Делаем пследния стол активным и пушие его ссылку в урл
+            rootState.activeTableIndex = numberOfTables - 1;
+            dispatch('pushActiveTableLink');
+
             resolve(newTableId);
             // TODO: undefined при создании нового стола новым юзером
           })
