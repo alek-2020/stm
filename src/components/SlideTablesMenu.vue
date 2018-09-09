@@ -1,6 +1,6 @@
 <template>
   <div class="slideMenu"
-       :style="{ height: `calc(100vh - ${paddingTop}px)`, top: paddingTop + 'px'}"
+       :style="{ height: `calc(100% - ${paddingTop}px)`, top: paddingTop + 'px'}"
        :class="{slideMenu_active: active}">
 
     <!-- Фильтр столов -->

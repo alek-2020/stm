@@ -42,6 +42,7 @@ export default {
   border: solid 1px gray;
   height: 35px;
   flex-shrink: 0;
+  font-family: 'Roboto', sans-serif; 
   svg {
     height: 16px;
     width: 16px;

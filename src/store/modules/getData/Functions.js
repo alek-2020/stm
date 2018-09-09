@@ -121,7 +121,6 @@ export default {
             for (var prop in userTasksObj) {
               userTasksArray.push(userTasksObj[prop]);
             }
-            console.log("Задачи отправляю", userTasksArray);
 
             resolve(userTasksArray);
           })
@@ -154,7 +153,7 @@ export default {
     },
 
     // ГРУПИРОВКА ПОЛУЧЕННЫХ ДАННЫЙ
-    groupData({ rootState }, { tables = [], taskLists = [], tasks = [] }) {
+    groupData({}, { tables = [], taskLists = [], tasks = [] }) {
       return new Promise((resolve, reject) => {
         // 1. Все списки разбирают свои задач
         taskLists.forEach((oneTaskList, index) => {

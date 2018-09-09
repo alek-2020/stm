@@ -259,7 +259,7 @@ export default {
     margin-left: 15px;
 
     width: 220px;
-    height: 160px;
+    height: 151px;
     margin-left: 15px;
     background: #ffffff29;
     border-radius: 4px;
