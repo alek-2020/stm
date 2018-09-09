@@ -50,15 +50,9 @@ export default {
 
             // Преобразуем в массив столы
             for (var tableKey in userTablesObject) {
-              let tablesInArray = userTablesArray.push(
+              userTablesArray.push(
                 userTablesObject[tableKey]
               );
-
-              // Допишем свойства в этот стол
-              let lastTable = userTablesArray[tablesInArray - 1];
-              const tableUrl = lastTable.id.slice(lastTable.id.length - 6);
-
-              lastTable.tableUrl = tableUrl;
             }
 
             rootState.appLog.push("Записали столы", userTablesArray);

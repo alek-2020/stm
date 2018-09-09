@@ -30,7 +30,11 @@ export default {
   },
   props: ["table", "index", "ifLasBtn"],
   methods: {
-    ...mapActions(["updateActiveTable", "changeTableTitle"]),
+    ...mapActions([
+      "updateActiveTable",
+      "changeTableTitle",
+      "pushActiveTableLink"
+    ]),
     // Активируем инпут для редактирования заголовка стола
     inputActivate() {
       this.inputActive = true;
@@ -51,18 +55,15 @@ export default {
       this.$store.state.activeTableIndex = index;
       // Пишем на сервер активный индекс
       this.updateActiveTable(index);
-      // Пишем новый урл
-      this.updateTableUrl();
+      // Пушим новую ссылку
+      this.pushActiveTableLink();
     },
 
     // Корректировка названия стола
     changeTableTitle(NewName) {
       const TableId = this.table.id;
       this.changeTableTitle({ NewName, TableId });
-    },
-
-    // Запись нового урла
-    updateTableUrl() {}
+    }
   },
   computed: {
     ...mapState(["activeTableIndex", "imgForBg"]),

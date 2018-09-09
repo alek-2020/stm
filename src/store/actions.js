@@ -528,6 +528,8 @@ export default {
         rootState.userId = firebase.auth().currentUser.uid;
 
         dispatch("firstFetchingData")
+      } else {
+        dispatch("goToLogin")
       }
     });
   }

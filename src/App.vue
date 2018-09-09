@@ -50,17 +50,27 @@ export default {
       "activeTableIndex",
       "allTasks",
       "tasksAreLoadingNow",
-      "authorised"
+      "authorised",
+      "tasksAreLoadingNow"
     ])
   },
 
   methods: {
-    ...mapActions(["authHandle"])
+    ...mapActions(["authHandle", "pushActiveTableLink", "changeActiveTable"])
   },
 
   created() {
     // Проверка статуса авторизации и запись данных юзера
     this.authHandle();
+  },
+
+  watch: {
+    // После загрузки всех задач
+    tasksAreLoadingNow() {
+      const tableLink = this.$route.params.link;
+      // Пуш активного стола, либо смена индекса на тот, что в ссылке
+      !tableLink ? this.pushActiveTableLink() : this.changeActiveTable(tableLink);
+    }
   }
 };
 </script>
