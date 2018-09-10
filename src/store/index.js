@@ -61,13 +61,12 @@ export const store = new Vuex.Store({
 
       currentBgImg: "",
       tables: [],
-   
+
       userParams: "",
       settings: "",
       //градиенты кнопок столов
       //добавление рс
-      gradients: [
-        {
+      gradients: [{
           colId: 0,
           colorOne: "#D85053",
           colorTwo: "#7C4143"
@@ -118,6 +117,62 @@ export const store = new Vuex.Store({
         "/img/bg/stm-bg-6.jpg",
         "/img/bg/stm-bg-7.jpg",
         "/img/bg/stm-bg-8.jpg",
+        "/img/bg/stm-bg-9.jpg",
+        "/img/bg/stm-bg-10.jpg",
+        "/img/bg/stm-bg-11.jpg",
+        "/img/bg/stm-bg-12.jpg",
+        "/img/bg/stm-bg-13.jpg",
+        "/img/bg/stm-bg-14.jpg",
+        "/img/bg/stm-bg-15.jpg",
+        "/img/bg/stm-bg-16.jpg",
+        "/img/bg/stm-bg-17.jpg",
+        "/img/bg/stm-bg-18.jpg",
+        "/img/bg/stm-bg-19.jpg",
+        "/img/bg/stm-bg-20.jpg",
+        "/img/bg/stm-bg-21.jpg",
+        "/img/bg/stm-bg-22.jpg",
+        "/img/bg/stm-bg-23.jpg",
+        "/img/bg/stm-bg-24.jpg",
+        "/img/bg/stm-bg-25.jpg",
+        "/img/bg/stm-bg-26.jpg",
+        "/img/bg/stm-bg-27.jpg",
+        "/img/bg/stm-bg-28.jpg",
+        "/img/bg/stm-bg-29.jpg",
+        "/img/bg/stm-bg-30.jpg"
+      ],
+      // Ссылки на фоновые изображения
+      themes: [{
+          imgBg: "/img/bg/stm-bg-1.jpg",
+          colorOne: "red"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-2.jpg",
+          colorOne: "black"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-3.jpg",
+          colorOne: "blue"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-4.jpg",
+          colorOne: "pink"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-5.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-6.jpg",
+          colorOne: "yellow"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-7.jpg",
+          colorOne: "gray"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-8.jpg",
+          colorOne: "graylight"
+        },
         "/img/bg/stm-bg-9.jpg",
         "/img/bg/stm-bg-10.jpg",
         "/img/bg/stm-bg-11.jpg",

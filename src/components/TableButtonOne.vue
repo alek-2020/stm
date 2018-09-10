@@ -66,11 +66,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(["activeTableIndex", "imgForBg"]),
+    ...mapState(["activeTableIndex", "themes"]),
 
     // Фон для кнопки
     btnBg() {
-      return this.imgForBg[this.table.bgIndex];
+      return this.themes[this.table.bgIndex].imgBg;
     }
   }
 };

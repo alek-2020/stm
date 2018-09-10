@@ -1,26 +1,16 @@
 import * as firebase from "firebase";
-import router from './../../Router.js';
-
-
 
 export default {
   actions: {
 
-    ///////////////////////
-    // УПРАВЛЯЮЩАЯ ФУНКЦИЯ
-    ///////////////////////
 
+    // Управляющая ф-ция
     addNewTable({
       dispatch,
       commit
     }) {
       // 1.Проверка 'если плюс активен'
-      dispatch('checkTableInput')
-        .then(response => {
-          // console.log('Плюс активен ', response);
-          //1.5 Получим цвет нового стола 
-          return dispatch('getNewColId');
-        })
+      dispatch('getTableParams')
         .then(newColor => {
           // 2. Готовим параметры нового Раб. Ст.
           return dispatch('AddTableBtn', newColor);
@@ -60,46 +50,14 @@ export default {
 
     },
 
-
-    ////////////////////////////
-    // ФУНКЦИИ ДОБАВЛЕНИЯ СТОЛА
-    ////////////////////////////
-
-    checkTableInput({
-      dispatch,
-      commit,
-      state,
+    // Получаем параметры стола
+    getTableParams({
       rootState
     }) {
       return new Promise((resolve, reject) => {
-
-        // if (rootState.plusActive) {
-        //     resolve('newTable. Плюс активен');
-        // }
-
-        // rootState.plusActive = !rootState.plusActive;
-        // reject('newTable. Плюс не активен');
-
-        resolve('newTable. Плюс активен');
-
-      })
-    },
-
-
-    // Узнаем цвет нового стола
-    getNewColId({
-      dispatch,
-      commit,
-      state,
-      rootState,
-      getters
-    }) {
-      return new Promise((resolve, reject) => {
         let lastTableId, newTableCol;
-        // console.log('getcol Последний idd', rootState.allTasks.length);
 
         //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
-
         if (rootState.allTasks.length < 1) {
 
           newTableCol = 0;
@@ -113,23 +71,6 @@ export default {
           }
         }
 
-        // console.log('getcol Последний id', lastTableId);
-        // console.log('getcol Возвращаем ', newTableCol)
-        resolve(newTableCol);
-        // return 3;
-      })
-    },
-
-    // Формируем формируем параметры стола 
-    AddTableBtn({
-      dispatch,
-      commit,
-      state,
-      rootState,
-      getters
-    }, colId) {
-      return new Promise((resolve, reject) => {
-        let userId = rootState.userId;
         let newTableIndex = 0;
         //Получим id последнего рабочего стола массиве, если столов нет - оставим 0
         if (rootState.allTasks.length > 0) {
@@ -139,6 +80,21 @@ export default {
         let newBgIndes = rootState.allTasks[rootState.allTasks.length - 1] ? rootState.allTasks[rootState.allTasks.length - 1].bgIndex + 1 : 0;
         // Если такого индекс больше чем количество изображений
         if (newBgIndes > rootState.imgForBg.length - 1) newBgIndes = rootState.imgForBg.length - 1
+
+
+        // console.log('getcol Последний id', lastTableId);
+        // console.log('getcol Возвращаем ', newTableCol)
+        resolve(newTableCol);
+        // return 3;
+      })
+    },
+
+    // Формируем формируем параметры стола 
+    AddTableBtn({
+      rootState
+    }, colId) {
+      return new Promise((resolve, reject) => {
+        let userId = rootState.userId;
 
         const newTableBtn = {
           name: "Новый стол",

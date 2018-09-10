@@ -11,13 +11,13 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["activeTableIndex", "imgForBg", "allTasks"]),
+    ...mapState(["activeTableIndex", "themes", "allTasks"]),
 
     // Картинка фона стола
     currentBgImg() {
       const currentTable = this.allTasks[this.activeTableIndex];
       const bgIndex = currentTable ? currentTable.bgIndex : 0;
-      return this.imgForBg[bgIndex];
+      return this.themes[bgIndex].imgBg;
     }
   }
 };
