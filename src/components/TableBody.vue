@@ -39,7 +39,7 @@
 <script>
 import TaskList from "./TaskList.vue";
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 //скролл
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
@@ -58,6 +58,7 @@ export default {
       visibleTables: "visibleTables",
       GetAllTasks: "GetAllTasks"
     }),
+    ...mapState(["allTasks", "activeTableIndex"]),
 
     listBoxH() {
       return this.$store.state.taskListBoxHeight;
@@ -73,15 +74,7 @@ export default {
       return this.$store.state.userData;
     },
     thisTableTaskLists() {
-      if (this.$store.state.allTasks.length > 0) {
-        //Проверяем загрузку нужного стола
-        if (
-          this.$store.state.allTasks[this.$store.state.activeTableIndex] != null
-        ) {
-          return this.$store.state.allTasks[this.$store.state.activeTableIndex]
-            .taskLists;
-        }
-      }
+      return this.allTasks[this.activeTableIndex] || [];
     }
   },
   watch: {
