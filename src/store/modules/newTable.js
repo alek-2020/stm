@@ -3,46 +3,37 @@ import * as firebase from "firebase";
 export default {
   actions: {
 
-
     // Управляющая ф-ция
     addNewTable({
       dispatch,
-      commit
+      commit,
+      rootState
     }) {
-      // 1.Проверка 'если плюс активен'
+      // 1. Получаем параметры стола
       dispatch('getTableParams')
-        .then(newColor => {
-          // 2. Готовим параметры нового Раб. Ст.
-          return dispatch('AddTableBtn', newColor);
+        .then(params => {
+          // 2. Формируем объет со всеми параметрами
+          return dispatch('createObjectWidthParams', params);
         })
         .then(newTable => {
-          // console.log('Новый стол готов ', newTable);
-          // 3. Отправим стол на сервер в tables
+          // 3. Отправим стол на сервер
           return dispatch("pushNewTable", newTable);
         })
-        .then(newTableId => {
-          // console.log('Запушили стол в локальный массив в Tables на серв. ', newTableId);
-          //Пушим ключ стола в него же 
-          dispatch('pushKeyToTable', newTableId);
-          //Послу пушв в локальный массив проскролим столы, что бы новый было видно
+        .then(newTableBtn => {
+          console.log(newTableBtn)
+
+          // После прохождения всех этапом пушим в локальный массив
+          let numberOfTables = rootState.allTasks.push(newTableBtn);
+
+          // Делаем последния стол активным и пуше его ссылку в урл
+          rootState.activeTableIndex = numberOfTables - 1;
+          dispatch('pushActiveTableLink');
+
+          // Пушим ключ стола в него же 
+          dispatch('pushKeyToTable', newTableBtn.id);
+
+          // Скролим столы, что бы последний был виден
           commit('scrollButtonsToEnd');
-          //Делаем новосозданный стол активным
-          dispatch('makeLastTableActive');
-
-          // 4. Получим список столов из user/tables, что бы добавить туда новый id
-          //     return dispatch('getTablesList', newTableId);
-          // })
-          // .then(response => {
-          //     console.log('newTable. Получили из user/tables', response.allTables);
-
-          // 5. Пушим новый стол в список столовs
-          // const allTables = response.allTables;
-          // const userId = response.userId;
-
-          return dispatch('apdateTablesList', newTableId);
-        })
-        .then(response => {
-          // console.log('Залили новый список столов в user/tables', response);
         })
         .catch(error => {
           console.log(error);
@@ -55,74 +46,46 @@ export default {
       rootState
     }) {
       return new Promise((resolve, reject) => {
-        let lastTableId, newTableCol;
 
-        //Если ещё нет столов или сайчас у стола последний цвет, то присваиваем цвет с индексом ноль
-        if (rootState.allTasks.length < 1) {
+        //Получим индекс для нового стола
+        let newTableIndex = (rootState.allTasks.length > 0) ? rootState.allTasks[rootState.allTasks.length - 1].tableIndex + 1 : 0
 
-          newTableCol = 0;
-        } else {
-          lastTableId = rootState.allTasks[rootState.allTasks.length - 1].colorId;
-          // console.log('id последнего стола ', lastTableId, rootState.allTasks.length, rootState.allTasks[0].colorId);
-          newTableCol = rootState.allTasks[lastTableId].colorId + 1;
-
-          if (newTableCol > (rootState.gradients.length - 1)) {
-            newTableCol = 0;
-          }
-        }
-
-        let newTableIndex = 0;
-        //Получим id последнего рабочего стола массиве, если столов нет - оставим 0
-        if (rootState.allTasks.length > 0) {
-          newTableIndex = rootState.allTasks[rootState.allTasks.length - 1].tableIndex + 1
-        }
-        // Получим новый индекс фонового изображения
-        let newBgIndes = rootState.allTasks[rootState.allTasks.length - 1] ? rootState.allTasks[rootState.allTasks.length - 1].bgIndex + 1 : 0;
+        // Получим новый индекс темы оформления
+        let newThemeIndex = rootState.allTasks[rootState.allTasks.length - 1] ? rootState.allTasks[rootState.allTasks.length - 1].themeIndex + 1 : 0;
         // Если такого индекс больше чем количество изображений
-        if (newBgIndes > rootState.imgForBg.length - 1) newBgIndes = rootState.imgForBg.length - 1
+        if (newThemeIndex > rootState.themes.length - 1 || !newThemeIndex) newThemeIndex = 0
 
-
-        // console.log('getcol Последний id', lastTableId);
-        // console.log('getcol Возвращаем ', newTableCol)
-        resolve(newTableCol);
-        // return 3;
+        resolve({
+          newTableIndex,
+          newThemeIndex
+        });
       })
     },
 
-    // Формируем формируем параметры стола 
-    AddTableBtn({
+    // Создание объекта с параметрами
+    createObjectWidthParams({
       rootState
-    }, colId) {
+    }, params) {
       return new Promise((resolve, reject) => {
         let userId = rootState.userId;
 
         const newTableBtn = {
-          name: "Новый стол",
-          colorOne: rootState.gradients[colId].colorOne,
-          colorTwo: rootState.gradients[colId].colorTwo,
-          colorId: colId,
+          name: "",
           taskLists: [],
-          tableIndex: newTableIndex,
-          bgIndex: newBgIndes,
+          tableIndex: params.newTableIndex,
+          themeIndex: params.newThemeIndex,
           userId
         };
 
         resolve(newTableBtn);
-
       });
     },
 
-    // закидываем новый стол в tables
-
+    // Пушим на сервер и пишем в массив
     pushNewTable({
-      dispatch,
-      commit,
-      state,
       rootState
     }, newTableBtn) {
       return new Promise((resolve, reject) => {
-
-        const userId = rootState.userId;
 
         firebase
           .database()
@@ -130,79 +93,28 @@ export default {
           .push(newTableBtn)
           .then(data => {
 
-            const newTableId = data.key;
+            // Добавим id нового стола в его обьект
+            newTableBtn.id = data.key;
 
-            //Добавим id нового стола в его обьект
-            newTableBtn.id = newTableId;
-
-            let numberOfTables = rootState.allTasks.push(newTableBtn);
-
-            //Пушим урл
-            //Нужно запушить урл нового стола в адресную стр.
-            // console.log('Пушим в роутер');
-            let fourCharId = newTableId.slice(newTableId.length - 6);
-            // router.push('/table/' + fourCharId);
-
-            // Делаем пследния стол активным и пушие его ссылку в урл
-            rootState.activeTableIndex = numberOfTables - 1;
-            dispatch('pushActiveTableLink');
-
-            resolve(newTableId);
-            // TODO: undefined при создании нового стола новым юзером
+            resolve(newTableBtn);
           })
           .catch(error => {
             console.log('Полный провал. Ошибка: ', error);
           })
-
       });
     },
 
-
-    // 1.5 Допушиваем в стол его же id
-    pushKeyToTable({
-      dispatch,
-      commit,
-      state,
-      rootState
-    }, TableKey) {
-      // console.log('kk ',TableKey);
+    // Допушиваем в стол его же id
+    pushKeyToTable({}, TableKey) {
       firebase
         .database()
         .ref("tables/" + TableKey + "/id")
         .set(TableKey)
-        .then(data => {
-          //    console.log('.newTable. запушили в стол его id ', data);
-        })
+        .then(data => {})
         .catch(error => {
           console.log('Полный провал. Ошибка: ', error);
         })
     },
 
-    // 3. Пушим новый стол в список столов
-    apdateTablesList({
-      rootState
-    }, tableId) {
-      return new Promise((resolve, reject) => {
-
-        const userId = rootState.userId;
-
-        firebase
-          .database()
-          .ref("users/" + userId + "/tables/" + tableId)
-          .set(tableId)
-          .then(data => {
-            console.log('.newTable. Закинули стол в user');
-            resolve(data);
-
-          })
-          .catch(error => {
-            console.log('Полный провал. Ошибка: ', error);
-          })
-
-      })
-    },
-
-
   },
-
 }

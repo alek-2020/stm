@@ -124,6 +124,7 @@ export default {
     font-family: "Roboto", sans-serif;
     font-size: 18px;
     max-width: 100%;
+    min-width: 145px;
     box-sizing: border-box;
     user-select: none;
 
