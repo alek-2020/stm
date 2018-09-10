@@ -70,7 +70,7 @@ export default {
 
     // Фон для кнопки
     btnBg() {
-      return this.themes[this.table.bgIndex].imgBg;
+      return this.themes[this.table.themeIndex].imgBg;
     }
   }
 };

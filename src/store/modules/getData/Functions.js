@@ -137,7 +137,7 @@ export default {
         let localSettings = settings;
 
         // Присвоим фон
-        let bgImg = settings.bg || rootState.imgForBg[0];
+        let bgImg = settings.bg || rootState.themes[0];
         rootState.currentBgImg = bgImg;
 
         // Активный стол

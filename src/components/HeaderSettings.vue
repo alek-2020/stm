@@ -7,7 +7,7 @@
       <div class="settings-block__abs"
            style="display: flex; position: absolute; top: 0; left: 0;">
         <div class="onePreview"
-             v-for="(bg, index) in imgForBg"
+             v-for="(bg, index) in themes"
              :key="index"
              @click="changeBg(index); saveBg();"
              :style="{background: 'url(' + bg + ')'}">
@@ -28,15 +28,15 @@ export default {
   },
   methods: {
     changeBg(index) {
-      this.$store.state.currentBgImg = this.imgForBg[index];
+      this.$store.state.currentBgImg = this.themes[index];
     },
     saveBg() {
       this.$store.dispatch("saveBg");
     }
   },
   computed: {
-    imgForBg() {
-      return this.$store.state.imgForBg;
+    themes() {
+      return this.$store.state.themes;
     }
   },
 

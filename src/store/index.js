@@ -173,28 +173,94 @@ export const store = new Vuex.Store({
           imgBg: "/img/bg/stm-bg-8.jpg",
           colorOne: "graylight"
         },
-        "/img/bg/stm-bg-9.jpg",
-        "/img/bg/stm-bg-10.jpg",
-        "/img/bg/stm-bg-11.jpg",
-        "/img/bg/stm-bg-12.jpg",
-        "/img/bg/stm-bg-13.jpg",
-        "/img/bg/stm-bg-14.jpg",
-        "/img/bg/stm-bg-15.jpg",
-        "/img/bg/stm-bg-16.jpg",
-        "/img/bg/stm-bg-17.jpg",
-        "/img/bg/stm-bg-18.jpg",
-        "/img/bg/stm-bg-19.jpg",
-        "/img/bg/stm-bg-20.jpg",
-        "/img/bg/stm-bg-21.jpg",
-        "/img/bg/stm-bg-22.jpg",
-        "/img/bg/stm-bg-23.jpg",
-        "/img/bg/stm-bg-24.jpg",
-        "/img/bg/stm-bg-25.jpg",
-        "/img/bg/stm-bg-26.jpg",
-        "/img/bg/stm-bg-27.jpg",
-        "/img/bg/stm-bg-28.jpg",
-        "/img/bg/stm-bg-29.jpg",
-        "/img/bg/stm-bg-30.jpg"
+        {
+          imgBg: "/img/bg/stm-bg-9.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-10.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-11.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-12.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-13.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-14.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-15.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-16.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-17.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-18.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-19.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-20.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-21.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-22.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-23.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-24.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-25.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-26.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-27.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-28.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-29.jpg",
+          colorOne: "green"
+        },
+        {
+          imgBg: "/img/bg/stm-bg-30.jpg",
+          colorOne: "green"
+        },
       ]
     };
   },

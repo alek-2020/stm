@@ -16,8 +16,8 @@ export default {
     // Картинка фона стола
     currentBgImg() {
       const currentTable = this.allTasks[this.activeTableIndex];
-      const bgIndex = currentTable ? currentTable.bgIndex : 0;
-      return this.themes[bgIndex].imgBg;
+      const themeIndex = currentTable ? currentTable.themeIndex : 0;
+      return this.themes[themeIndex].imgBg;
     }
   }
 };

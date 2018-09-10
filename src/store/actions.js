@@ -279,18 +279,6 @@ export default {
       });
   },
 
-  //Делает посделний стол активным
-  makeLastTableActive({
-    dispatch,
-    commit,
-    state
-  }) {
-    // console.log('Переключаем последний стол на активный');
-    const last = state.allTasks.length - 1;
-    state.activeTableIndex = last;
-    dispatch("updateActiveTable", last);
-  },
-
   //Апдейт активного стола
   updateActiveTable({
     dispatch,
