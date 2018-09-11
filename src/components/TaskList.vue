@@ -13,7 +13,6 @@
 <template>
 
   <div class="task-list"
-       :style="{ 'border-color': MainListColor.colorOne }"
        ref="taskBox">
 
     <div class="task-list__header-box">
@@ -259,10 +258,7 @@ export default {
       return this.$store.state.gradients[this.themeColorId];
     },
     themeColorId() {
-      if (
-        this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex]
-          .color != null
-      ) {
+      if (this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex]) {
         return this.allTasks[this.activeTableIndex].taskLists[
           this.taskListIndex
         ].color;
@@ -290,6 +286,7 @@ export default {
 
     //фильтруем список по сделанным задачам
     currentTasks() {
+      console.log(this.allTasks, this.activeTableIndex, this.taskListIndex);
       const t = this.allTasks[this.activeTableIndex].taskLists[
         this.taskListIndex
       ].tasks;
@@ -326,8 +323,16 @@ export default {
   mounted() {
     //При первичной загрузке считаем высоту
     this.changeHeightOfList();
+    console.log("При создании индекс", this.taskListIndex, this.TList);
   },
-  filters: {}
+  watch: {
+    TList(val) {
+      console.log("Изменился tList", val);
+    },
+    allTasks(val) {
+      console.log("Изменился массив задач", val);
+    }
+  }
 };
 </script>
 

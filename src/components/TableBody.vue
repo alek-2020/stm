@@ -53,28 +53,35 @@ export default {
     };
   },
   computed: {
-    //три точки переводят значения в обьект или как то так, короче только так работает
-    ...mapGetters({
-      visibleTables: "visibleTables",
-      GetAllTasks: "GetAllTasks"
-    }),
-    ...mapState(["allTasks", "activeTableIndex"]),
+    ...mapGetters(["visibleTables", "GetAllTasks"]),
+    ...mapState([
+      "allTasks",
+      "activeTableIndex",
+      "activeTableIndex",
+      "userData"
+    ]),
 
-    listBoxH() {
-      return this.$store.state.taskListBoxHeight;
-    },
-    allTasks() {
-      return this.$store.state.allTasks;
-    },
-
-    activeTableIndex() {
-      return this.$store.state.activeTableIndex;
-    },
-    userData() {
-      return this.$store.state.userData;
-    },
     thisTableTaskLists() {
-      return this.allTasks[this.activeTableIndex] || [];
+      const activeTable = this.allTasks[this.activeTableIndex];
+
+      if (this.allTasks && activeTable) {
+        console.log(" Лист Из массива");
+        this.allTasks[this.activeTableIndex].taskLists.push({
+          color: 1,
+          id: "-LLobwMChI0zqrg2gcNF",
+          listIndex: 2,
+          name: "ТЕсе",
+          tableId: "-LLobtH3l7gp5l8ej4Iq",
+          userId: "1UTl1RG8rzeb0m6f93DD8vcypNF3"
+        });
+      } else {
+        console.log(" Лист Нулевое");
+      }
+      console.log(
+        "Лист",
+        this.allTasks && activeTable ? activeTable.taskLists : []
+      );
+      return this.allTasks && activeTable ? activeTable.taskLists : [];
     }
   },
   watch: {
@@ -226,13 +233,6 @@ export default {
     //         alert('App $watch $refs.counter.i: ' + val)
     //       }
     //     )
-
-    if (this.$route.params.link != null) {
-      // this.$store.dispatch('checkUrl');
-    } else {
-      // console.log("Нет ссылка на стол");
-    }
-    // console.log("Проверка route ", this.$route);
 
     //Запишем в хранилице высоту блока для расчетов
     this.$store.state.taskListBoxHeight = this.$refs.taskListBox.clientHeight;
