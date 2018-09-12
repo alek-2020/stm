@@ -63,28 +63,13 @@ export default {
 
     thisTableTaskLists() {
       const activeTable = this.allTasks[this.activeTableIndex];
-
-      if (this.allTasks && activeTable) {
-        console.log(" Лист Из массива");
-        this.allTasks[this.activeTableIndex].taskLists.push({
-          color: 1,
-          id: "-LLobwMChI0zqrg2gcNF",
-          listIndex: 2,
-          name: "ТЕсе",
-          tableId: "-LLobtH3l7gp5l8ej4Iq",
-          userId: "1UTl1RG8rzeb0m6f93DD8vcypNF3"
-        });
-      } else {
-        console.log(" Лист Нулевое");
-      }
-      console.log(
-        "Лист",
-        this.allTasks && activeTable ? activeTable.taskLists : []
-      );
       return this.allTasks && activeTable ? activeTable.taskLists : [];
     }
   },
   watch: {
+    allTasks(val) {
+      console.log('изменение главного массива',val)
+    },
     GetAllTasks(val) {
       this.VarThisTableTaskLists = this.thisTableTaskLists;
     }

@@ -131,6 +131,8 @@ import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import Emoji from "./TaskListEmoji";
 import ConfirmationWindow from "./PopupConfirmation.vue";
 
+import { mapState } from "vuex";
+
 export default {
   data: function() {
     return {
@@ -253,6 +255,7 @@ export default {
   },
 
   computed: {
+    ...mapState(["allTasks", "activeTableIndex"]),
     //Цветовая схема списка
     MainListColor() {
       return this.$store.state.gradients[this.themeColorId];
@@ -268,12 +271,6 @@ export default {
     },
     maxBoxHeightFunc() {
       return this.$store.state.taskListBoxHeight - 92 + "px";
-    },
-    allTasks() {
-      return this.$store.state.allTasks;
-    },
-    activeTableIndex() {
-      return this.$store.state.activeTableIndex;
     },
     getListName() {
       const TLName = allTasks[activeTableIndex].taskLists[taskListIndex].name;
