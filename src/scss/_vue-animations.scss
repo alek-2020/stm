@@ -10,56 +10,56 @@ Names:
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .3s
+    transition: opacity 0.3s;
 }
 
 .fade-enter,
 .fade-leave-active,
 .fade-leave-to {
-    opacity: 0
+    opacity: 0;
 }
 
 .jump-enter-active {
-    animation: jump .2s
+    animation: jump 0.2s;
 }
 
 .jump-leave-active {
-    animation: jump .2s reverse
+    animation: jump 0.2s reverse;
 }
 
 @keyframes jump {
     0% {
-        transform: translateY(10px)
+        transform: translateY(10px);
     }
     50% {
-        transform: translateY(-10px)
+        transform: translateY(-10px);
     }
     100% {
-        transform: translateY(0)
+        transform: translateY(0);
     }
 }
 
 .long-form-enter-active {
-    transition: all .2s ease
+    transition: all 0.2s ease;
 }
 
 .long-form-leave-active {
-    transition: all .5s cubic-bezier(1, .5, .8, 1)
+    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .long-form-enter,
 .long-form-leave-to {
     border-right: solid 1px #ddd !important;
     opacity: 0;
-    transform: scaleX(0)
+    transform: scaleX(0);
 }
 
 .scale-up-enter-active {
-    animation: scaleUp .2s
+    animation: scaleUp 0.2s;
 }
 
 .scale-up-leave-active {
-    animation: scaleUp .2s reverse
+    animation: scaleUp 0.2s reverse;
 }
 
 @keyframes scaleUp {
@@ -77,61 +77,90 @@ Names:
 }
 
 .scale-down-enter-active {
-    animation: scaleDown .2s
+    animation: scaleDown 0.2s;
 }
 
 .scale-down-leave-active {
-    animation: scaleDown .2s reverse
+    animation: scaleDown 0.2s reverse;
 }
 
 @keyframes scaleDown {
     0% {
-        transform: scale3D(1.2, 1.2, 1.2)
+        transform: scale3D(1.2, 1.2, 1.2);
     }
     50% {
-        transform: scale3D(.8, .8, .8)
+        transform: scale3D(0.8, 0.8, 0.8);
     }
     100% {
-        transform: scale3D(1, 1, 1)
+        transform: scale3D(1, 1, 1);
     }
 }
 
 .slide-left-enter-active {
-    animation: slideLeft .2s
+    animation: slideLeft 0.2s;
 }
 
 .slide-left-leave-active {
-    animation: slideLeft .2s reverse
+    animation: slideLeft 0.2s reverse;
 }
 
 @keyframes slideLeft {
     0% {
-        transform: translate3d(30px, 0, 0)
+        transform: translate3d(30px, 0, 0);
     }
     70% {
-        transform: translate3d(-5px, 0, 0)
+        transform: translate3d(-5px, 0, 0);
     }
     100% {
-        transform: translate3d(0, 0, 0)
+        transform: translate3d(0, 0, 0);
     }
 }
 
 .slide-right-enter-active {
-    animation: slideRight .2s
+    animation: slideRight 0.2s;
 }
 
 .slide-right-leave-active {
-    animation: slideRight .2s reverse
+    animation: slideRight 0.2s reverse;
 }
 
 @keyframes slideRight {
     0% {
-        transform: translate3d(-30px, 0, 0)
+        transform: translate3d(-30px, 0, 0);
     }
     70% {
-        transform: translate3d(5px, 0, 0)
+        transform: translate3d(5px, 0, 0);
     }
     100% {
-        transform: translate3d(0, 0, 0)
+        transform: translate3d(0, 0, 0);
     }
+}
+
+/* Анимация добавления-удаления задачи */
+
+.tasks-leave-active {
+    position: absolute;
+} //стартовая точка
+.tasks-enter {
+    transform: translateX(-130%);
+    opacity: 0;
+} //Конечная точка
+.tasks-leave-to {
+    opacity: 0;
+    transform: translateX(130%);
+}
+
+.tasks-move {
+    transition: all 1s;
+    background: red !important;
+    border: solid !important;
+} //Анимация кнопки на списке
+.doneBtn-enter,
+.doneBtn-leave-to {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.doneBtn-enter-to {
+    transition: opacity 0.5s;
 }

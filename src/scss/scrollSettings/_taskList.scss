@@ -1,0 +1,65 @@
+.task-list {
+    /////////////////////////
+    // КАСТОМИЗАЦИЯ СКРОЛЛА
+    /////////////////////////
+    ////////СКРОЕМ СКРОЛЛ ПО ДРУГОЙ ОСИ
+    ////////ОБЫЧНОЕ СОТОЯНИЕ
+    //Область скролла
+    & .ps.ps--active-y>.ps__scrollbar-y-rail {
+        display: block;
+        background-color: transparent;
+        width: 6px;
+        transition: height 0.3s;
+        opacity: 1;
+        border-radius: 0;
+    } //скроллбар
+    & .ps.ps--active-y>.ps__scrollbar-y-rail>.ps__scrollbar-y {
+        background-color: #b7b7b7f8;
+        width: 6px;
+        transition: height 0.3s;
+        opacity: 1;
+        border-radius: 3;
+        bottom: 0;
+    } ////////HOVER
+    //Область скролла
+    & .ps.ps--active-y>.ps__scrollbar-y-rail:hover {
+        width: 6px;
+        transition: height 0.2s;
+        background-color: transparent;
+    } //скроллбар
+    & .ps:hover>.ps__scrollbar-y-rail:hover>.ps__scrollbar-y {
+        width: 6px; // padding: 0;
+        background-color: #b7b7b7f8;
+        opacity: 1; // border-radius: 0;
+        bottom: 0;
+    } //////АCTIVE
+    & .ps__scrollbar-y-rail {
+        right: 0px;
+        background-color: #b7b7b7f8;
+        width: 6px;
+    } //область скролла
+    & .ps:hover.ps--in-scrolling.ps--y>.ps__scrollbar-y-rail {
+        background-color: transparent;
+        opacity: 1;
+        width: 6px;
+    } //скроллбар
+    & .ps:hover.ps--in-scrolling.ps--y>.ps__scrollbar-y-rail>.ps__scrollbar-y {
+        background-color: #b7b7b7f8;
+        opacity: 1;
+        width: 6px;
+    } //////АCTIVE NOT HOVER
+    //область скролла
+    & .ps.ps--in-scrolling.ps--y>.ps__scrollbar-y-rail {
+        background-color: transparent;
+        opacity: 1;
+        width: 6px;
+    } //скроллбар
+    & .ps.ps--in-scrolling.ps--y>.ps__scrollbar-y-rail>.ps__scrollbar-y {
+        width: 6px;
+        opacity: 1;
+        background-color: #b7b7b7f8;
+    } //Сделано через родителя, потому что иначе перебиваются настройки плагина
+    & .smoothScroll .desk-btns__rel-cont {
+        scroll-behavior: smooth;
+    }
+}

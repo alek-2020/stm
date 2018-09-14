@@ -131,6 +131,8 @@ import VuePerfectScrollbar from "vue-perfect-scrollbar";
 import Emoji from "./TaskListEmoji";
 import ConfirmationWindow from "./PopupConfirmation.vue";
 
+import { mapState } from "vuex";
+
 export default {
   data: function() {
     return {
@@ -253,63 +255,35 @@ export default {
   },
 
   computed: {
+    ...mapState([
+      "allTasks",
+      "activeTableIndex",
+      "gradients",
+      "taskListBoxHeight"
+    ]),
     //Цветовая схема списка
     MainListColor() {
-      return this.$store.state.gradients[this.themeColorId];
+      return this.gradients[this.themeColorId];
     },
+    // Цвет списка
     themeColorId() {
-      if (this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex]) {
-        return this.allTasks[this.activeTableIndex].taskLists[
-          this.taskListIndex
-        ].color;
-      } else {
-        return 0;
-      }
+      return this.activeTaskList ? this.activeTaskList.color : 0;
     },
-    maxBoxHeightFunc() {
-      return this.$store.state.taskListBoxHeight - 92 + "px";
+    // Текущий список
+    activeTaskList() {
+      return this.allTasks[this.activeTableIndex].taskLists[this.taskListIndex];
     },
-    allTasks() {
-      return this.$store.state.allTasks;
+    // Таски списка
+    tasks() {
+      return this.activeTaskList.tasks;
     },
-    activeTableIndex() {
-      return this.$store.state.activeTableIndex;
-    },
-    getListName() {
-      const TLName = allTasks[activeTableIndex].taskLists[taskListIndex].name;
-      if (TLName) {
-        return TLName;
-      } else {
-        return Hello;
-      }
-    },
-
-    //фильтруем список по сделанным задачам
+    // Активные задачи
     currentTasks() {
-      console.log(this.allTasks, this.activeTableIndex, this.taskListIndex);
-      const t = this.allTasks[this.activeTableIndex].taskLists[
-        this.taskListIndex
-      ].tasks;
-      if (t != null) {
-        return t.filter(function(task) {
-          return !task.isDone;
-        });
-      } else {
-        return [];
-      }
+      return this.tasks ? this.tasks.filter(task => !task.isDone) : [];
     },
-
+    // Сделанные задачи
     doneTasks() {
-      const t = this.allTasks[this.activeTableIndex].taskLists[
-        this.taskListIndex
-      ].tasks;
-      if (t != null) {
-        return t.filter(function(task) {
-          return task.isDone;
-        });
-      } else {
-        return [];
-      }
+      return this.tasks ? this.tasks.filter(task => task.isDone) : [];
     }
   },
 
@@ -338,6 +312,9 @@ export default {
 
 
 <style  lang="scss">
+// Скролл
+@import "../scss/scrollSettings/_taskList.scss";
+
 .task-list {
   border: none;
   margin-left: 15px;
@@ -417,7 +394,6 @@ export default {
   &__emoji {
     position: absolute;
     left: 12px;
-    // top: 10px;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -455,187 +431,14 @@ export default {
   }
 }
 
-.task-list {
-  /////////////////////////
-  // КАСТОМИЗАЦИЯ СКРОЛЛА
-  /////////////////////////
-
-  ////////СКРОЕМ СКРОЛЛ ПО ДРУГОЙ ОСИ
-  ////////ОБЫЧНОЕ СОТОЯНИЕ
-
-  //Область скролла
-  & .ps.ps--active-y > .ps__scrollbar-y-rail {
-    display: block;
-    background-color: transparent;
-    width: 6px;
-    transition: height 0.3s;
-    opacity: 1;
-    border-radius: 0;
-  }
-
-  //скроллбар
-  & .ps.ps--active-y > .ps__scrollbar-y-rail > .ps__scrollbar-y {
-    background-color: #b7b7b7f8;
-    width: 6px;
-    transition: height 0.3s;
-    opacity: 1;
-    border-radius: 3;
-    bottom: 0;
-  }
-
-  ////////HOVER
-
-  //Область скролла
-  & .ps.ps--active-y > .ps__scrollbar-y-rail:hover {
-    width: 6px;
-    transition: height 0.2s;
-    background-color: transparent;
-  }
-
-  //скроллбар
-  & .ps:hover > .ps__scrollbar-y-rail:hover > .ps__scrollbar-y {
-    width: 6px;
-    // padding: 0;
-    background-color: #b7b7b7f8;
-    opacity: 1;
-    // border-radius: 0;
-    bottom: 0;
-  }
-
-  //////АCTIVE
-
-  & .ps__scrollbar-y-rail {
-    right: 0px;
-    background-color: #b7b7b7f8;
-    width: 6px;
-  }
-  //область скролла
-  & .ps:hover.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail {
-    background-color: transparent;
-    opacity: 1;
-    width: 6px;
-  }
-
-  //скроллбар
-
-  &
-    .ps:hover.ps--in-scrolling.ps--y
-    > .ps__scrollbar-y-rail
-    > .ps__scrollbar-y {
-    background-color: #b7b7b7f8;
-    opacity: 1;
-    width: 6px;
-  }
-
-  //////АCTIVE NOT HOVER
-
-  //область скролла
-  & .ps.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail {
-    background-color: transparent;
-    opacity: 1;
-    width: 6px;
-  }
-
-  //скроллбар
-
-  & .ps.ps--in-scrolling.ps--y > .ps__scrollbar-y-rail > .ps__scrollbar-y {
-    width: 6px;
-    opacity: 1;
-    background-color: #b7b7b7f8;
-  }
-
-  //Сделано через родителя, потому что иначе перебиваются настройки плагина
-  & .smoothScroll .desk-btns__rel-cont {
-    scroll-behavior: smooth;
-  }
-}
-
-// @media screen and (min-width: 300px) {
-//   .task-list {
-//     //( 100 - 3*3 )/2
-//      width: 94%;
-//   }
-// }
-
-// @media screen and (min-width: 550px) {
-//   .task-list {
-
-//     // min-width: 200px;
-//     // max-width: 500px;
-//     // flex-grow: 1;
-//     //( 100 - 3*3 )/2
-//      width: 45.5%;
-//   }
-// }
-
-// @media screen and (min-width: 850px) {
-//   .task-list {
-//     //( 100 - 3*3 )/2
-//      width: calc( 88% / 3 );
-//   }
-// }
-
-//Анимация для списка задач
-// .tasks-item {
-//     transition: all 1s;
-// }
-
-// .tasks-enter-active, .tasks-leave-active {
-//   opacity: 0;
-// }
-
 .tasks-list__transition-box {
   transition: all 1s;
-}
-
-// .tasks-enter-active,
-// .tasks-leave-active {
-//   // opacity: 0;
-//   // transform: translateX(-130%);
-//   // transition: all .5s;
-// }
-
-.tasks-leave-active {
-  position: absolute;
-}
-//стартовая точка
-.tasks-enter {
-  transform: translateX(-130%);
-  opacity: 0;
-}
-
-//Конечная точка
-.tasks-leave-to {
-  opacity: 0;
-  transform: translateX(130%);
-}
-
-.tasks-move {
-  transition: all 1s;
-  background: red !important;
-  border: solid !important;
-}
-
-// .list-complete-leave-active {
-//   position: absolute;
-// }
-
-//Анимация кнопки на списке
-.doneBtn-enter,
-.doneBtn-leave-to {
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-
-.doneBtn-enter-to {
-  transition: opacity 0.5s;
 }
 
 // Подгоняем ширину списка на мобильных
 @media screen and (max-width: 400px) {
   .task-list,
   .add-list__bg {
-    //( 100 - 3*3 )/2
     width: 94vw;
     min-width: 250px;
   }
