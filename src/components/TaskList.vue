@@ -41,7 +41,6 @@
                 @newColor="changeMainColor"
                 @listMenuOpen="changeMenuState"></listMenu>
     </div>
-    <!-- v-once :settings="settings" -->
 
     <VuePerfectScrollbar class="task-list__scroll-box"
                          ref="ps"
@@ -91,6 +90,7 @@
     <div class="task-list__bottom-box">
       <transition name="doneBtn">
         <div class="task-list__add"
+             :style="{backgroundImage: !addingTask ? addIcon : loadingIcon }"
              v-show="!onlyDoneTasks"
              @click="AddEmptyInp(taskListIndex, (activeTableIndex))">
           <div class="task-list__text"></div>
@@ -146,7 +146,9 @@ export default {
       nameVisible: true,
       emojiState: false,
       menuState: false,
-      askConfirm: false
+      askConfirm: false,
+      // Задача добавляется
+      addingTask: false
     };
   },
 
@@ -211,7 +213,10 @@ export default {
 
     //Добавляем новую задачу (пока что просто пустой инпут)
     AddEmptyInp(taskListInd, tableInd) {
-      this.$store.dispatch("addNewTask", { tableInd, taskListInd });
+      this.addingTask = true;
+      this.$store.dispatch("addNewTask", { tableInd, taskListInd }).then(() => {
+        this.addingTask = false;
+      });
     },
 
     changeListTitle(NewName) {
@@ -261,6 +266,14 @@ export default {
       "gradients",
       "taskListBoxHeight"
     ]),
+    // Иконка 'ПЛЮС'
+    addIcon() {
+      return "url(../../img/icons/add-task.svg)";
+    },
+    // Лоадек
+    loadingIcon() {
+      return "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDBweCIgaGVpZ2h0PSIyMDBweCIgY2xhc3M9Imxkcy1yb2xsaW5nIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCIgc3R5bGU9ImJhY2tncm91bmQ6bm9uZSIgdmlld0JveD0iMCAwIDEwMCAxMDAiPg0KICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjM1IiBmaWxsPSJub25lIiBzdHJva2U9ImdyYXkiIHN0cm9rZS1kYXNoYXJyYXk9IjE2NC45MzM2MTQzMTM0NjQxNSA1Ni45Nzc4NzE0Mzc4MjEzOCIgc3Ryb2tlLXdpZHRoPSIxMCIgbmctYXR0ci1yPSJ7e2NvbmZpZy5yYWRpdXN9fSIgbmctYXR0ci1zdHJva2U9Int7Y29uZmlnLmNvbG9yfX0iIG5nLWF0dHItc3Ryb2tlLWRhc2hhcnJheT0ie3tjb25maWcuZGFzaGFycmF5fX0iIG5nLWF0dHItc3Ryb2tlLXdpZHRoPSJ7e2NvbmZpZy53aWR0aH19IiB0cmFuc2Zvcm09InJvdGF0ZSgxMzcuOTA4IDUwIDUwKSI+DQogICAgICAgIDxhbmltYXRlVHJhbnNmb3JtIGF0dHJpYnV0ZU5hbWU9InRyYW5zZm9ybSIgYmVnaW49IjBzIiBjYWxjTW9kZT0ibGluZWFyIiBkdXI9IjFzIiBrZXlUaW1lcz0iMDsxIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgdHlwZT0icm90YXRlIiB2YWx1ZXM9IjAgNTAgNTA7MzYwIDUwIDUwIi8+DQogICAgPC9jaXJjbGU+DQo8L3N2Zz4NCg==')";
+    },
     //Цветовая схема списка
     MainListColor() {
       return this.gradients[this.themeColorId];
@@ -353,7 +366,6 @@ export default {
   &__add {
     height: 17px;
     width: 17px;
-    background-image: url(../../img/icons/add-task.svg);
     background-size: 100%;
     margin-top: 10px;
   }
