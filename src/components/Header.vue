@@ -8,6 +8,7 @@
 
         <!-- Кнопка выезжающего меню -->
         <BtnIconTile :iconColor="iconsColor"
+                     :active="slideMenuState"
                      class="t-header__slideMenuBtn"
                      @click.native="toggleSlideMenu" />
 

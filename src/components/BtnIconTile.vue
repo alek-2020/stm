@@ -6,18 +6,48 @@
 <template>
   <!-- Кнопка выезжающего меню -->
   <div class="btnIconTile">
-    <svg version="1.1"
-         id="Capa_1"
-         xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
-         x="0px"
-         y="0px"
-         viewBox="0 0 443.733 443.733"
-         style="enable-background:new 0 0 443.733 443.733;"
-         xml:space="preserve"
-         v-html="tile"
-         :style="{fill: iconColor}">
-    </svg>
+
+    <div class="btnIconTile__box"
+         :class="{btnIconTile__box_active:active}">
+      <div class="btnIconTile__one
+         "></div>
+      <div class="btnIconTile__two
+         "></div>
+      <div class="btnIconTile__three
+         "></div>
+    </div>
+
+    <!-- <svg version="1.1
+         "
+         id="Capa_1
+         "
+         xmlns="http://www.w3.org/2000/svg
+         "
+         xmlns:xlink="http://www.w3.org/1999/xlink
+         "
+         x="0px
+         "
+         y="0px
+         "
+         viewBox="0
+         0
+         443.733
+         443.733
+         "
+         style="enable-background:new
+         0
+         0
+         443.733
+         443.733;
+         "
+         xml:space="preserve
+         "
+         v-html="tile
+         "
+         :style="{fill:
+         iconColor}
+         ">
+    </svg> -->
   </div>
 </template>
 
@@ -30,7 +60,8 @@ export default {
     };
   },
   props: {
-    iconColor: String
+    iconColor: String,
+    active: Boolean
   }
 };
 </script>
@@ -43,6 +74,43 @@ export default {
   & svg {
     height: 25px;
     width: 25px;
+  }
+  &__one {
+    width: 100%;
+  }
+  &__two {
+    width: 60%;
+  }
+  &__three {
+    width: 75%;
+  }
+  &__one,
+  &__two,
+  &__three {
+    height: 30%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  &__box {
+    height: 30px;
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    &_active {
+      & .btnIconTile {
+        &__one {
+          width: 80%;
+        }
+        &__two {
+          width: 100%;
+        }
+        &__three {
+          width: 45%;
+        }
+      }
+    }
   }
 }
 </style>
