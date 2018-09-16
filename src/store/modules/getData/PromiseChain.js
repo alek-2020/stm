@@ -5,11 +5,7 @@
 export default {
   actions: {
     // ПЕРВИЧНОЕ ПОЛУЧЕНИЕ ДАННЫХ
-    firstFetchingData({
-      dispatch,
-      commit,
-      rootState
-    }) {
+    firstFetchingData({ dispatch, commit, rootState }) {
       let userData;
       // 1. Основные данные юзера
       dispatch("getUserData")
@@ -40,13 +36,10 @@ export default {
     },
 
     // ЦЕПОЧКА, КОТОРАЯ ВЫПОЛНЯЕТСЯ, ЕСЛИ ЕСТЬ СТОЛЫ
-    getDataSecondChain({
-      dispatch,
-      commit,
-      rootState
-    }) {
+    getDataSecondChain({ dispatch, commit, rootState }) {
       let tables, taskLists, tasks;
 
+      // 1. Получаем столы
       dispatch("getUserTables")
         .then(userTables => {
           tables = userTables;

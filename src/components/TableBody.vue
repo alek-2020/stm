@@ -61,14 +61,19 @@ export default {
       "userData"
     ]),
 
+    activeTable() {
+      return this.allTasks[this.activeTableIndex];
+    },
+
     thisTableTaskLists() {
-      const activeTable = this.allTasks[this.activeTableIndex];
-      return this.allTasks && activeTable ? activeTable.taskLists : [];
+      return this.allTasks && this.activeTable && this.activeTable.taskLists
+        ? this.activeTable.taskLists
+        : [];
     }
   },
   watch: {
     allTasks(val) {
-      console.log('изменение главного массива',val)
+      console.log("изменение главного массива", val);
     },
     GetAllTasks(val) {
       this.VarThisTableTaskLists = this.thisTableTaskLists;
@@ -154,7 +159,6 @@ export default {
           window.clearInterval(slideTimer);
         }
       }, speed);
-      // }
     },
     deactivateSettings() {
       this.$store.state.tableSettingsActive = false;
