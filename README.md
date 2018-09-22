@@ -2,10 +2,6 @@
 
 I working on it now and it's not ready.
 
-## You can look at builded version here:
-## https://stm-14898.firebaseapp.com
-
-
 > A Vue.js project
 
 ## Build Setup
