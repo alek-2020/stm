@@ -128,7 +128,7 @@ import listMenu from "./TaskListMenu.vue";
 import OneTask from "./OneTaskCurrent.vue";
 import OneDoneTask from "./OneTaskDone.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
-import Emoji from "./TaskListEmoji";
+import Emoji from './TaskLIstEmoji'
 import ConfirmationWindow from "./PopupConfirmation.vue";
 
 import { mapState } from "vuex";
