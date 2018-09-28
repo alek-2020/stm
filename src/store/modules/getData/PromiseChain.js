@@ -5,73 +5,37 @@
 export default {
   actions: {
     // ПЕРВИЧНОЕ ПОЛУЧЕНИЕ ДАННЫХ
-    firstFetchingData({ dispatch, commit, rootState }) {
-      let userData;
-      // 1. Основные данные юзера
-      dispatch("getUserData")
-        .then(uData => {
-          userData = uData;
-          const settings = uData.settings;
-          return dispatch("writeSettings", settings);
-        })
-        .then(() => {
-          //Продолжаем, если есть столы
-          if (userData.tables != null) {
-            rootState.appLog.push("firstFetchingData - Есть столы ");
-            return dispatch("getDataSecondChain");
-          } else {
-            // Состояние загрузки
-            rootState.tasksAreLoadingNow = false;
-            rootState.appLog.push("firstFetchngData - Нет столов для загрузки");
-          }
-        })
-        .catch(error => {
-          console.log("Ошибка получения данных юзера", error);
-          // Состояние загрузки
+    async firstFetchingData({ dispatch, commit, rootState }) {
+      try {
+        const userData = await dispatch("getUserData")
+        await dispatch("writeSettings", userData.settings)
+
+        if (userData.tables) {
           rootState.tasksAreLoadingNow = false;
-          // если есть ошибки на этапе загрузки, то выкидываем попап перезагрузки страницы
-          dispatch("showLoadingError");
-          rootState.appLog.push("Ошибка загрузки стола в firstFetchngData");
+          return
+        };
+
+        const tables = await dispatch("getUserTables")
+        const taskLists = await dispatch("getTableTaskLists");
+        const tasks = await dispatch("getTasks");
+
+        const combinedData = await dispatch("groupData", {
+          tables,
+          taskLists,
+          tasks
         });
-    },
 
-    // ЦЕПОЧКА, КОТОРАЯ ВЫПОЛНЯЕТСЯ, ЕСЛИ ЕСТЬ СТОЛЫ
-    getDataSecondChain({ dispatch, commit, rootState }) {
-      let tables, taskLists, tasks;
+        console.log('data', combinedData)
 
-      // 1. Получаем столы
-      dispatch("getUserTables")
-        .then(userTables => {
-          tables = userTables;
-          // 2. Получаем списки
-          return dispatch("getTableTaskLists");
-        })
-        .then(userTaskLists => {
-          taskLists = userTaskLists;
-          // 3. Получаем задачи
-          return dispatch("getTasks");
-        })
-        .then(userTasks => {
-          tasks = userTasks;
-          // 4. Группируем все в один массив
-          return dispatch("groupData", {
-            tables,
-            taskLists,
-            tasks
-          });
-        })
-        .then(userTables => {
-          // Вывод задач
-          rootState.allTasks = userTables;
-          // Состояние загрузки
-          rootState.tasksAreLoadingNow = false;
-        })
-        .catch(error => {
-          // Состояние загрузки
-          rootState.tasksAreLoadingNow = false;
+        rootState.allTasks = combinedData;
 
-          console.log(error);
-        });
+        rootState.tasksAreLoadingNow = false;
+
+      } catch (error) {
+        rootState.tasksAreLoadingNow = false;
+        dispatch("showLoadingError");
+        console.log(error);
+      };
     }
   }
 };
