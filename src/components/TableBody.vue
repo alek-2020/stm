@@ -10,10 +10,10 @@
 
       <VuePerfectScrollbar ref="ps"
                            class="table__taskList-box-rel">
-        <div class="table__taskLists-box"
+        <div v-if="thisTableTaskLists.length > 0" class="table__taskLists-box"
              ref="taskListBox">
           <TaskList v-for="(TList, index) in thisTableTaskLists"
-                    :TList='TList'
+                    :TList='TList'                   
                     :taskListIndex='index'
                     :key='TList.id'
                     ref="list">
@@ -224,7 +224,7 @@ export default {
     //     )
 
     //Запишем в хранилице высоту блока для расчетов
-    this.$store.state.taskListBoxHeight = this.$refs.taskListBox.clientHeight;
+    // this.$store.state.taskListBoxHeight = this.$refs.taskListBox.clientHeight;
   },
   components: {
     TaskList,
