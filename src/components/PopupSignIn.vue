@@ -105,9 +105,9 @@ export default {
             .auth()
             .signInWithEmailAndPassword(t.email, t.password);
         })
-        .then(user => {
+        .then(data => {
           const newUser = {
-            id: user.user.uid
+            id: data.user.uid
           };
           this.$store.state.userId = newUser.id;
           // Пушим из расчет на то, что он перекинет на "/table/"
@@ -126,11 +126,11 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
-        .then(user => {
-          this.$store.state.userId = user.uid;
+        .then(data => {
+          this.$store.state.userId = data.user.uid;
           //Сейвим стандартный бг
           this.$store.dispatch("saveBg");
-          // Пушим из расчет на то, что он перекинет на "/table/"
+          // Пушим из расчета на то, что он перекинет на "/table/"
           this.$store.dispatch("pushActiveTableLink");
           //Раз все ок грузим данные и переходим в столы
           this.$store.dispatch("firstFetchingData");
@@ -143,11 +143,7 @@ export default {
     },
     enableRegMode() {
       //Если компонент появился на стр регистрации
-      if (this.route == "/registration/") {
-        this.reg = true;
-      } else {
-        this.reg = false;
-      }
+      this.reg = (this.route === "/registration/")
     }
   },
 
