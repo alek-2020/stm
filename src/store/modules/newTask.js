@@ -2,49 +2,23 @@ import * as firebase from "firebase";
 
 export default {
   actions: {
-    ///////////////////////
-    // УПРАВЛЯЮЩАЯ ФУНКЦИЯ
-    ///////////////////////
+    // УПРАВЛЯЮЩАЯ Ф-ЦИЯ
+    async addNewTask({ dispatch }, { tableInd, taskListInd, endEddingTask }) {
+      // return new Promise((resolve, reject) => {
+        try {
+          const newTask = await dispatch("addTask", { tableInd, taskListInd })
+          const Key = newTask.Key;
+          const tableInd = newTask.tableInd;
 
-    addNewTask({ dispatch }, { tableInd, taskListInd }) {
-      return new Promise((resolve, reject) => {
-        // 1. Формируем параметры задачи и отправляем на сервер в tasks
-        dispatch("addTask", { tableInd, taskListInd })
-          .then(response => {
-            console.log(
-              "newTask. Сформировали параметры задачи и отправляем на сервер в tasks ",
-              response
-            );
-            const Key = response.Key;
-            const tableInd = response.tableInd;
-            const taskListId = response.taskListId;
-            const newTask = response.task;
+          dispatch("pushKeyInThisTask", Key);
 
-            dispatch("pushIdInTask", Key);
-            // 2. Получаем у листа id-шники задач
-            //     return dispatch('addTaskInTasks', { Key, tableInd, taskListInd });
-            // }).then(response => {
-            //     console.log('newTask. Получили у листа id-шники задач', response);
-            //     const taskId = response.taskId;
-            //     const tasks = response.tasks;
-            // 3. Отправим обновленные ключи задач
-            return dispatch("addTaskInTasksNext", {
-              Key,
-              taskListId,
-              tableInd,
-              taskListInd,
-              newTask
-            });
-          })
-          .then(response => {
-            console.log(response);
-            resolve("Задача добавлена");
-          })
-          .catch(error => {
-            console.log("newTask. Полный провал. Ошибка: ", error);
-            reject("Ошибка добавления задачи");
-          });
-      });
+          endEddingTask();
+
+        } catch (error) {
+          console.log("newTask. Полный провал. Ошибка: ", error);
+          reject("Ошибка добавления задачи");
+        }
+      // });
     },
 
     //Формируем параметры задачи и закидываем новую задачу на сервер
@@ -94,29 +68,5 @@ export default {
       });
     },
 
-    addTaskInTasksNext(
-      { dispatch, commit, state, rootState },
-      { Key, taskListId, tableInd, taskListInd, newTask }
-    ) {
-      return new Promise((resolve, reject) => {
-        firebase
-          .database()
-          .ref("taskLists/" + taskListId + "/tasks/" + Key)
-          .set(Key)
-          .then(data => {
-            const mas =
-              rootState.allTasks[tableInd].taskLists[taskListInd].tasks;
-            newTask.id = Key;
-            mas.push(newTask);
-
-            dispatch("scrollListDown", taskListId);
-            resolve("newTask. Задача добавлена. Это успех!");
-          })
-          .catch(error => {
-            console.log("newTask. Полный провал. Ошибка: ", error);
-            dispatch("showBadNews", "Ошибка добаления задачи");
-          });
-      });
-    }
   }
 };

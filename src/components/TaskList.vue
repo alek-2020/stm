@@ -128,7 +128,7 @@ import listMenu from "./TaskListMenu.vue";
 import OneTask from "./OneTaskCurrent.vue";
 import OneDoneTask from "./OneTaskDone.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
-import Emoji from './TaskLIstEmoji'
+import Emoji from "./TaskLIstEmoji";
 import ConfirmationWindow from "./PopupConfirmation.vue";
 
 import { mapState } from "vuex";
@@ -186,7 +186,7 @@ export default {
       }
       this.hideListName(val);
     },
-    //Принимает новый цвет из палитны и меняем
+    //Принимает новый цвет из палитры и меняем
     changeMainColor(index) {
       this.$store.state.allTasks[this.activeTableIndex].taskLists[
         this.taskListIndex
@@ -214,8 +214,16 @@ export default {
     //Добавляем новую задачу (пока что просто пустой инпут)
     AddEmptyInp(taskListInd, tableInd) {
       this.addingTask = true;
-      this.$store.dispatch("addNewTask", { tableInd, taskListInd }).then(() => {
+
+      const endEddingTask = () => {
+        this.addingTask = this.addingTask.bind(this);
         this.addingTask = false;
+      };
+
+      this.$store.dispatch("addNewTask", {
+        tableInd,
+        taskListInd,
+        endEddingTask
       });
     },
 
