@@ -10,13 +10,13 @@ export default {
           const Key = newTask.Key;
           const tableInd = newTask.tableInd;
 
-          dispatch("pushKeyInThisTask", Key);
+          ditableIndspatch("pushKeyInThisTask", Key);
 
           endEddingTask();
 
         } catch (error) {
           console.log("newTask. Полный провал. Ошибка: ", error);
-          reject("Ошибка добавления задачи");
+          // reject("Ошибка добавления задачи");
         }
       // });
     },
@@ -24,6 +24,7 @@ export default {
     //Формируем параметры задачи и закидываем новую задачу на сервер
     addTask({ dispatch, commit, state, rootState }, { tableInd, taskListInd }) {
       return new Promise((resolve, reject) => {
+        console.log('ti', tableInd);
         const tableId = rootState.allTasks[tableInd].id;
         const taskListId =
           rootState.allTasks[tableInd].taskLists[taskListInd].id;

@@ -318,7 +318,6 @@ export default {
   mounted() {
     //При первичной загрузке считаем высоту
     this.changeHeightOfList();
-    console.log("При создании индекс", this.taskListIndex, this.TList);
   },
   watch: {
     TList(val) {

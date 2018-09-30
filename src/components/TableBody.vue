@@ -10,15 +10,16 @@
 
       <VuePerfectScrollbar ref="ps"
                            class="table__taskList-box-rel">
-        <div v-if="thisTableTaskLists.length > 0" class="table__taskLists-box"
+        <div class="table__taskLists-box"
              ref="taskListBox">
-          <TaskList v-for="(TList, index) in thisTableTaskLists"
-                    :TList='TList'                   
-                    :taskListIndex='index'
-                    :key='TList.id'
-                    ref="list">
-          </TaskList>
-
+          <!-- <div v-if="thisTableTaskLists.length > 0"> -->
+            <TaskList v-for="(TList, index) in thisTableTaskLists"
+                      :TList='TList'                   
+                      :taskListIndex='index'
+                      :key='TList.id'
+                      ref="list">
+            </TaskList>
+          <!-- </div> -->
           <div class="add-list__bg"
                v-if="GetAllTasks.length"
                @click="addList">
