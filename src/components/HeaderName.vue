@@ -6,6 +6,7 @@
         <input class="actTabName__inp"
                type="text"
                :class="{'actTabName__inp_active':inputActive}"
+               :style="{color: fontColor}"
                v-model="actTabName"
                :disabled="!inputActive"
                placeholder="Название стола"
@@ -77,6 +78,9 @@ export default {
     actTableIndex() {
       return this.$store.state.activeTableIndex;
     }
+  },
+  props: {
+    fontColor: String,
   }
 };
 </script>
@@ -106,7 +110,7 @@ export default {
   }
   &__inp {
     border-radius: 6px;
-    transition: all 0.2s;
+    transition: all 0.3s;
     overflow: hidden;
     text-overflow: ellipsis;
     position: absolute;

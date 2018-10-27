@@ -10,15 +10,13 @@ export default {
           const Key = newTask.Key;
           const tableInd = newTask.tableInd;
 
-          ditableIndspatch("pushKeyInThisTask", Key);
+          dispatch("pushKeyInThisTask", Key);
 
           endEddingTask();
 
         } catch (error) {
           console.log("newTask. Полный провал. Ошибка: ", error);
-          // reject("Ошибка добавления задачи");
         }
-      // });
     },
 
     //Формируем параметры задачи и закидываем новую задачу на сервер

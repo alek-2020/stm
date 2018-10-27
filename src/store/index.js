@@ -143,11 +143,11 @@ export const store = new Vuex.Store({
       // Ссылки на фоновые изображения
       themes: [{
           imgBg: "/img/bg/stm-bg-1.jpg",
-          colorOne: "red"
+          colorOne: "rgb(73, 83, 59)"
         },
         {
           imgBg: "/img/bg/stm-bg-2.jpg",
-          colorOne: "black"
+          colorOne: "rgb(158, 152, 136)"
         },
         {
           imgBg: "/img/bg/stm-bg-3.jpg",
@@ -163,7 +163,7 @@ export const store = new Vuex.Store({
         },
         {
           imgBg: "/img/bg/stm-bg-6.jpg",
-          colorOne: "yellow"
+          colorOne: "rgb(185, 109, 140)"
         },
         {
           imgBg: "/img/bg/stm-bg-7.jpg",
@@ -179,23 +179,23 @@ export const store = new Vuex.Store({
         },
         {
           imgBg: "/img/bg/stm-bg-10.jpg",
-          colorOne: "green"
+          colorOne: "rgb(1, 118, 136)"
         },
         {
           imgBg: "/img/bg/stm-bg-11.jpg",
-          colorOne: "green"
+          colorOne: "rgb(204, 2, 98)"
         },
         {
           imgBg: "/img/bg/stm-bg-12.jpg",
-          colorOne: "green"
+          colorOne: "rgb(108, 116, 125)"
         },
         {
           imgBg: "/img/bg/stm-bg-13.jpg",
-          colorOne: "green"
+          colorOne: "rgb(232, 100, 23)"
         },
         {
           imgBg: "/img/bg/stm-bg-14.jpg",
-          colorOne: "green"
+          colorOne: "rgb(72, 123, 2)"
         },
         {
           imgBg: "/img/bg/stm-bg-15.jpg",

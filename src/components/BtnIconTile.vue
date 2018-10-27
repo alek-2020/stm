@@ -1,63 +1,22 @@
-/* Входные параметры компонента:
- *** iconColor - цвет иконки
- ***
- */
-
 <template>
-  <!-- Кнопка выезжающего меню -->
   <div class="btnIconTile">
-
     <div class="btnIconTile__box"
-         :class="{btnIconTile__box_active:active}">
-      <div class="btnIconTile__one
-         "></div>
-      <div class="btnIconTile__two
-         "></div>
-      <div class="btnIconTile__three
-         "></div>
+         :class="{btnIconTile__box_active:active}"
+         >
+      <div class="btnIconTile__one"
+         :style="{background: iconColor}"></div>
+      <div class="btnIconTile__two"
+           :style="{background: iconColor}"></div>
+      <div class="btnIconTile__three"
+           :style="{background: iconColor}"></div>
     </div>
-
-    <!-- <svg version="1.1
-         "
-         id="Capa_1
-         "
-         xmlns="http://www.w3.org/2000/svg
-         "
-         xmlns:xlink="http://www.w3.org/1999/xlink
-         "
-         x="0px
-         "
-         y="0px
-         "
-         viewBox="0
-         0
-         443.733
-         443.733
-         "
-         style="enable-background:new
-         0
-         0
-         443.733
-         443.733;
-         "
-         xml:space="preserve
-         "
-         v-html="tile
-         "
-         :style="{fill:
-         iconColor}
-         ">
-    </svg> -->
   </div>
 </template>
 
 <script>
 export default {
   data: function() {
-    return {
-      tile:
-        '<g> <g> <path d="M187.733,0H17.067C7.641,0,0,7.641,0,17.067v170.667c0,9.426,7.641,17.067,17.067,17.067h170.667 c9.426,0,17.067-7.641,17.067-17.067V17.067C204.8,7.641,197.159,0,187.733,0z"/> </g> </g> <g> <g> <path d="M426.667,0H256c-9.426,0-17.067,7.641-17.067,17.067v170.667c0,9.426,7.641,17.067,17.067,17.067h170.667 c9.426,0,17.067-7.641,17.067-17.067V17.067C443.733,7.641,436.092,0,426.667,0z"/> </g> </g> <g> <g> <path d="M187.733,238.933H17.067C7.641,238.933,0,246.574,0,256v170.667c0,9.426,7.641,17.067,17.067,17.067h170.667 c9.426,0,17.067-7.641,17.067-17.067V256C204.8,246.574,197.159,238.933,187.733,238.933z"/> </g> </g> <g> <g> <path d="M426.667,238.933H256c-9.426,0-17.067,7.641-17.067,17.067v170.667c0,9.426,7.641,17.067,17.067,17.067h170.667 c9.426,0,17.067-7.641,17.067-17.067V256C443.733,246.574,436.092,238.933,426.667,238.933z"/> </g> </g>'
-    };
+    return {};
   },
   props: {
     iconColor: String,
@@ -90,7 +49,7 @@ export default {
     height: 30%;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 2px;
-    transition: width 0.3s;
+    transition: width 0.3s, background .3s;
   }
   &__box {
     height: 30px;

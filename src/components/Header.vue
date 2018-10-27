@@ -7,7 +7,7 @@
       <div class="t-header">
 
         <!-- Кнопка выезжающего меню -->
-        <BtnIconTile :iconColor="iconsColor"
+        <BtnIconTile :iconColor="colorOne"
                      :active="slideMenuState"
                      class="t-header__slideMenuBtn"
                      @click.native="toggleSlideMenu" />
@@ -17,8 +17,8 @@
              @mouseover="showSettingsBtn"
              @mouseout="hideSettingsBtn">
 
-          <HeaderName />
-          <BtnTableSettings :visible="tableSettingsBtnVisible"
+          <HeaderName :fontColor="colorOne" />
+          <BtnTableSettings :visible="tableSettingsVisible"
                             :active="tableSettingsActive"
                             @click.native="showTableSettings" />
           <BtnDelActiveTable :visible="tableSettingsActive"
@@ -28,7 +28,7 @@
 
         <!-- Выход из учетной записи -->
         <BtnLogout class="t-header__logout"
-                   :iconColor="iconsColor" />
+                   :iconColor="colorOne" />
       </div>
 
       <!-- Выбор темы оформления -->
@@ -66,6 +66,8 @@ import BtnDelActiveTable from "./BtnDelActiveTable.vue";
 import BtnTableSettings from "./BtnTableSettings.vue";
 import HeaderSettingsVue from "./HeaderSettings.vue";
 import SlideTablesMenu from "./SlideTablesMenu.vue";
+
+import { mapState, mapActions } from "vuex";
 
 import * as firebase from "firebase";
 
@@ -117,17 +119,20 @@ export default {
     }
   },
   computed: {
-    // Цвет иконок в хедере
-    iconsColor() {
-      return "gray";
+    ...mapState([
+      "tableSettingsActive",
+      "tableSettingsVisible",
+      "activeTableIndex",
+      "allTasks",
+      "themes"
+    ]),
+    themeIndex() {
+      const currentTable = this.allTasks[this.activeTableIndex];
+      return currentTable ? currentTable.themeIndex : 0;
     },
-    // Состояние настроек(открыти или нет)
-    tableSettingsActive() {
-      return this.$store.state.tableSettingsActive;
-    },
-    // Видимость кнопки настроек
-    tableSettingsBtnVisible() {
-      return this.$store.state.tableSettingsVisible;
+    colorOne() {
+      console.log('colorOne', this.themes, this.themeIndex)
+      return this.themes[this.themeIndex].colorOne;
     }
   },
   components: {

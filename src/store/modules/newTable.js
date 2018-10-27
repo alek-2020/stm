@@ -70,7 +70,7 @@ export default {
         let userId = rootState.userId;
 
         const newTableBtn = {
-          name: "",
+          name: "Новый стол",
           taskLists: [],
           tableIndex: params.newTableIndex,
           themeIndex: params.newThemeIndex,
