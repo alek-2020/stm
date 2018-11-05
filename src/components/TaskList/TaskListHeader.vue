@@ -1,6 +1,5 @@
 <template>
      <div class="task-list__header-box">
-     <Fire/>
       <Emoji class="task-list__emoji"
              :taskListIndex="taskListIndex"
              :activeTableIndex="activeTableIndex"
@@ -26,7 +25,6 @@
 <script>
 import Emoji from "./Emoji";
 import { mapState } from "vuex";
-import Fire from "./img/emoji/fire.svg";
 
 export default {
   data: () => {
@@ -85,8 +83,7 @@ export default {
     name: String
   },
   components: {
-    Emoji,
-    Fire
+    Emoji
   }
 };
 </script>

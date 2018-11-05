@@ -61,9 +61,16 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/
       },
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'vue-svg-loader'
+      // },
       {
         test: /\.svg$/,
-        loader: 'vue-svg-loader'
+        use: [
+          'svg-sprite-loader',
+          'svgo-loader',
+        ],
       },
       {
         test: /\.(png|jpg|gif)$/,
