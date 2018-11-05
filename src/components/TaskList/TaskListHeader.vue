@@ -1,6 +1,6 @@
 <template>
      <div class="task-list__header-box">
-     {{fire}}
+     <Fire/>
       <Emoji class="task-list__emoji"
              :taskListIndex="taskListIndex"
              :activeTableIndex="activeTableIndex"
@@ -26,7 +26,7 @@
 <script>
 import Emoji from "./Emoji";
 import { mapState } from "vuex";
-import fire from "./img/emoji/fire.svg";
+import Fire from "./img/emoji/fire.svg";
 
 export default {
   data: () => {
@@ -39,6 +39,9 @@ export default {
     ...mapState(["allTasks", "activeTableIndex", "gradients"])
   },
   methods: {
+    fire() {
+      return fire;
+    },
     tableActivation() {
       let t = this;
       this.inputActive = true;
@@ -83,7 +86,7 @@ export default {
   },
   components: {
     Emoji,
-    fire
+    Fire
   }
 };
 </script>

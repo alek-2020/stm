@@ -87,9 +87,7 @@ export default {
 
       }
     },
-    mounted() {
-        console.log('emoji mounted', this.$store.state.testData, this.$store.state.taskListState.testData)
-    },
+    mounted() {},
     watch: {
        //Закрытие меню из родительского компонента
        
