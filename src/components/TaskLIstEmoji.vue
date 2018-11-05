@@ -119,7 +119,6 @@ export default {
        }
        &__box {
            display: flex;
-           width: calc(100% - 55px);
        }
         &__box-abs {
          display: flex;
@@ -127,7 +126,6 @@ export default {
          top: 5px;
          left: 0;
          width: auto;
-
        }
        &__box-rel {
            position: relative;

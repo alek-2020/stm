@@ -21,7 +21,7 @@
              :MainListColor="MainListColor"
              :taskListIndex="taskListIndex"
              :activeTableIndex="activeTableIndex"
-             :emojiState="emojiState"></Emoji>
+             :emojiState="emojiState" />
       <transition name="fade">
         <div class="task-list__name-box"
              @dblclick="tableActivation">
@@ -37,9 +37,9 @@
                  @keyup.enter='changeListTitle(TList.name)'>
         </div>
       </transition>
-      <listMenu class="task-list__menu"
+      <!-- <listMenu class="task-list__menu"
                 @newColor="changeMainColor"
-                @listMenuOpen="changeMenuState"></listMenu>
+                @listMenuOpen="changeMenuState"></listMenu> -->
     </div>
 
     <VuePerfectScrollbar class="task-list__scroll-box"
@@ -50,7 +50,8 @@
 
         <transition-group name="tasks"
                           class="tasks-list__transition-box"
-                          v-on:after-leave="afterLeave">
+                          v-on:after-leave="afterLeave"
+                          >
 
           <OneTask style="{display: flex; transition: all .5s;}"
                    v-for="(task, index) in currentTasks"
@@ -403,20 +404,20 @@ export default {
     top: 0;
     height: 60px;
     min-height: 60px;
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content auto;
     align-items: center;
+    grid-column-gap: 12px;
+    padding: 12px;
   }
   &__emoji {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
   }
 
   &__name {
     border: none;
     background: transparent;
-    text-align: center;
+    // text-align: center;
     font-size: 18px;
     color: #1a1919;
     font-weight: 500;
@@ -434,7 +435,7 @@ export default {
     }
   }
   &__name-box {
-    padding: 0 50px;
+    // padding: 0 50px;
     z-index: 10;
   }
 
