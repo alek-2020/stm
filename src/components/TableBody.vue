@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import TaskList from "./TaskList.vue";
+import TaskList from "./TaskList/TaskList.vue";
 
 import { mapGetters, mapState } from "vuex";
 

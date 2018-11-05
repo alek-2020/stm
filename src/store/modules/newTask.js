@@ -3,16 +3,12 @@ import * as firebase from "firebase";
 export default {
   actions: {
     // УПРАВЛЯЮЩАЯ Ф-ЦИЯ
-    async addNewTask({ dispatch }, { tableInd, taskListInd, endEddingTask }) {
-      // return new Promise((resolve, reject) => {
+    async addNewTask({ dispatch }, { tableInd, taskListInd }) {
         try {
           const newTask = await dispatch("addTask", { tableInd, taskListInd })
           const Key = newTask.Key;
-          const tableInd = newTask.tableInd;
 
-          dispatch("pushKeyInThisTask", Key);
-
-          endEddingTask();
+          dispatch("pushIdInTask", Key);
 
         } catch (error) {
           console.log("newTask. Полный провал. Ошибка: ", error);
