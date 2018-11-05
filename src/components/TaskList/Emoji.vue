@@ -13,7 +13,8 @@
                     v-html="currentEmoji">
                 </svg>
         </div>
-        <vue-perfect-scrollbar class="emoji__box-rel"
+
+        <!-- <vue-perfect-scrollbar class="emoji__box-rel"
           v-show="emojiListActive"
           :settings="scrollSettings">
             <transition-group name="fade"
@@ -32,12 +33,12 @@
                     </svg>
                 </div>
             </transition-group>
-        </vue-perfect-scrollbar>
+        </vue-perfect-scrollbar> -->
     </div>
 </template>
 
 <script>
-import { svgEmoji } from "./../OtherSrc/svg.js";
+import { svgEmoji } from "./../../OtherSrc/svg.js";
 
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 
@@ -87,10 +88,10 @@ export default {
       }
     },
     mounted() {
+        console.log('emoji mounted', this.$store.state.testData, this.$store.state.taskListState.testData)
     },
     watch: {
        //Закрытие меню из родительского компонента
-       // FIXME: Почему то сдесь присваивание работает , но не отражается на сстоянии списка
        
       emojiState: (val) => {
            this.emojiListActive = val;

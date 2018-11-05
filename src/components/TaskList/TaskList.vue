@@ -15,32 +15,9 @@
   <div class="task-list"
        ref="taskBox">
 
-    <div class="task-list__header-box">
-      <Emoji class="task-list__emoji"
-             @listMenuOpen="changeEmojiState"
-             :MainListColor="MainListColor"
-             :taskListIndex="taskListIndex"
-             :activeTableIndex="activeTableIndex"
-             :emojiState="emojiState" />
-      <transition name="fade">
-        <div class="task-list__name-box"
-             @dblclick="tableActivation">
-          <input class="task-list__name"
-                 type="text"
-                 :class="{'task-list__name_active':inputActive}"
-                 :disabled="!inputActive"
-                 ref="listHeaderInput"
-                 placeholder="Название списка задач"
-                 v-model="TList.name"
-                 v-show="nameVisible"
-                 @focusout='changeListTitle(TList.name)'
-                 @keyup.enter='changeListTitle(TList.name)'>
-        </div>
-      </transition>
-      <!-- <listMenu class="task-list__menu"
-                @newColor="changeMainColor"
-                @listMenuOpen="changeMenuState"></listMenu> -->
-    </div>
+    <TaskListHeader 
+       :name="TList.name" 
+       :taskListIndex="taskListIndex" />
 
     <VuePerfectScrollbar class="task-list__scroll-box"
                          ref="ps"
@@ -129,22 +106,20 @@ import listMenu from "../TaskListMenu.vue";
 import OneTask from "../OneTaskCurrent.vue";
 import OneDoneTask from "../OneTaskDone.vue";
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
-import Emoji from "../TaskLIstEmoji";
 import ConfirmationWindow from "../PopupConfirmation.vue";
+import TaskListHeader from "./TaskLIstHeader.vue";
 
 import { mapState } from "vuex";
 
 export default {
   data: function() {
     return {
-      inputActive: false,
       taskBoxHeight: 0,
       maxBoxHeight: 0,
       onlyDoneTasks: false,
       scrollSettings: {
         suppressScrollY: false
       },
-      nameVisible: true,
       emojiState: false,
       menuState: false,
       askConfirm: false,
@@ -154,39 +129,9 @@ export default {
   },
 
   methods: {
-    tableActivation() {
-      let t = this;
-      this.inputActive = true;
-      window.addEventListener("click", this.checkOuterClick);
-    },
-    checkOuterClick(el) {
-      if (el.target != this.$refs.listHeaderInput) {
-        this.inputActive = false;
-        window.removeEventListener("click", this.checkOuterClick);
-      }
-    },
-    //Скрытие названия списка при открытом меню
-    hideListName(val) {
-      if (this.emojiState || this.menuState) {
-        this.nameVisible = false;
-      } else {
-        this.nameVisible = true;
-      }
-    },
-    changeEmojiState(val) {
-      this.emojiState = val;
-      if (val == true) {
-        this.menuState = false;
-      }
-      this.hideListName(val);
-    },
-    changeMenuState(val) {
-      this.menuState = val;
-      if (val == true) {
-        this.emojiState = false;
-      }
-      this.hideListName(val);
-    },
+
+
+   
     //Принимает новый цвет из палитры и меняем
     changeMainColor(index) {
       this.$store.state.allTasks[this.activeTableIndex].taskLists[
@@ -226,10 +171,6 @@ export default {
         });
     },
 
-    changeListTitle(NewName) {
-      const ListId = this.TList.id;
-      this.$store.dispatch("changeListTitle", { NewName, ListId });
-    },
 
     removeList(id, taskListIndex, activeTableIndex) {
       this.dataForRemoving = {
@@ -262,8 +203,8 @@ export default {
     OneTask,
     OneDoneTask,
     VuePerfectScrollbar,
-    Emoji,
-    ConfirmationWindow
+    ConfirmationWindow,
+    TaskListHeader
   },
 
   computed: {
@@ -398,47 +339,6 @@ export default {
 
 //Header box
 .task-list {
-  &__header-box {
-    position: relative;
-    width: 100%;
-    top: 0;
-    height: 60px;
-    min-height: 60px;
-    display: grid;
-    grid-template-columns: max-content auto;
-    align-items: center;
-    grid-column-gap: 12px;
-    padding: 12px;
-  }
-  &__emoji {
-    position: relative;
-  }
-
-  &__name {
-    border: none;
-    background: transparent;
-    // text-align: center;
-    font-size: 18px;
-    color: #1a1919;
-    font-weight: 500;
-    font-family: "Roboto", sans-serif;
-    width: 100%;
-    text-overflow: elipsis;
-    overflow: hidden;
-    padding: 5px;
-    border-radius: 4px;
-    &_active {
-      background: rgba(255, 255, 255, 0.774);
-      border: solid 1px rgb(163, 163, 163);
-      user-select: unset;
-      text-align: left;
-    }
-  }
-  &__name-box {
-    // padding: 0 50px;
-    z-index: 10;
-  }
-
   &__menu {
     position: absolute;
     right: 10px;
